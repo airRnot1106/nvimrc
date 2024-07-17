@@ -1,0 +1,91 @@
+{
+  "suggest.autoTrigger": "always",
+  "suggest.insertMode": "insert",
+  "signature.enable": false,
+  "signature.target": "float",
+  "coc.preferences.formatOnSave": true,
+  "Lua.workspace.library": [
+    "${3rd}/luv/library"
+  ],
+  "sumneko-lua.enableNvimLuaDev": true,
+  "ruff.autoFixOnSave": true,
+  "languageserver": {
+    "bash": {
+      "command": "bash-language-server",
+      "args": [
+        "start"
+      ],
+      "filetypes": [
+        "sh"
+      ]
+    },
+    "dockerfile": {
+      "command": "docker-langserver",
+      "filetypes": [
+        "dockerfile"
+      ],
+      "args": [
+        "--stdio"
+      ]
+    },
+    "dockercompose": {
+      "command": "docker-compose-langserver",
+      "args": [
+        "--stdio"
+      ],
+      "filetypes": [
+        "dockercompose"
+      ],
+      "rootPatterns": [
+        ".git",
+        ".env",
+        "docker-compose.yml",
+        "compose.yml"
+      ]
+    },
+    "graphql": {
+      "command": "graphql-lsp",
+      "args": [
+        "server",
+        "-m",
+        "stream"
+      ],
+      // customize filetypes to your needs
+      "filetypes": [
+        "typescript",
+        "typescriptreact",
+        "graphql"
+      ]
+    },
+    "gleam": {
+      "command": "gleam",
+      "args": [
+        "lsp"
+      ],
+      "filetypes": [
+        "gleam"
+      ]
+    },
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": [
+        "go.mod"
+      ],
+      "filetypes": [
+        "go"
+      ]
+    },
+    "sql": {
+      "module": "/path/to/node_modules/sql-language-server/dist/bin/cli.js",
+      "args": [
+        "up",
+        "--method",
+        "node-ipc"
+      ],
+      "filetypes": [
+        "sql",
+        "mysql"
+      ]
+    }
+  }
+}
