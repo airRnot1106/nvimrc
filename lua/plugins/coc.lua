@@ -16,6 +16,7 @@ return {
                 "coc-pyright",
                 "coc-prisma",
                 "coc-rust-analyzer",
+                "coc-sql",
                 "coc-stylua",
                 "coc-sumneko-lua",
                 "coc-tsserver",
