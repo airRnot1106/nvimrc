@@ -7,8 +7,8 @@ vim.g.mapleader = " "
 keymap("i", "jj", "<Esc>", { noremap = true, silent = true })
 
 -- cursor
-keymap("n", "k", "gk", { noremap = true, silent = true })
-keymap("n", "j", "gj", { noremap = true, silent = true })
+keymap("", "k", "gk", { noremap = true, silent = true })
+keymap("", "j", "gj", { noremap = true, silent = true })
 keymap("", "K", "10k", { noremap = true, silent = true })
 keymap("", "J", "10j", { noremap = true, silent = true })
 keymap("", "H", "0", { noremap = true, silent = true })
