@@ -11,6 +11,7 @@ return {
                 "coc-html",
                 "coc-json",
                 "coc-markdownlint",
+                "coc-markdown-preview-enhanced",
                 "coc-pairs",
                 "coc-postfix",
                 "coc-pyright",
@@ -20,6 +21,7 @@ return {
                 "coc-stylua",
                 "coc-sumneko-lua",
                 "coc-tsserver",
+                "coc-webview",
                 "coc-yaml",
                 "@yaegassy/coc-ruff",
             }
