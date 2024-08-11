@@ -8,6 +8,7 @@ return {
             vim.g.coc_global_extensions = {
                 "coc-biome",
                 "coc-go",
+                "coc-graphql",
                 "coc-html",
                 "coc-json",
                 "coc-markdownlint",
@@ -24,6 +25,7 @@ return {
                 "coc-webview",
                 "coc-yaml",
                 "@yaegassy/coc-ruff",
+                "@yaegassy/coc-tailwindcss3",
             }
             -- autocmd for setting filetype to yaml.docker-compose
             vim.api.nvim_create_autocmd("FileType", {
