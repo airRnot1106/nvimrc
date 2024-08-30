@@ -31,9 +31,12 @@ keymap("x", "<C-d>", "d", { noremap = true, silent = true })
 
 -- buffer
 keymap("", "<Leader>w", ":w<CR>", { noremap = true, silent = true })
-keymap("n", "<Leader>[", ":bprev<CR>", { noremap = true, silent = true })
-keymap("n", "<Leader>]", ":bnext<CR>", { noremap = true, silent = true })
-keymap("n", "<Leader>d", ":bd<CR>", { noremap = true, silent = true })
+keymap("n", "<Leader>[", "<Cmd>BufferPrevious<CR>", { noremap = true, silent = true })
+keymap("n", "<Leader>]", "<Cmd>BufferNext<CR>", { noremap = true, silent = true })
+keymap("n", "<Leader>d", "<Cmd>BufferClose<CR>", { noremap = true, silent = true })
+keymap("n", "<Leader>to", "<Cmd>BufferCloseAllButCurrentOrPinned<CR>", { noremap = true, silent = true })
+keymap("n", "<Leader>pp", "<Cmd>BufferPick<CR>", { noremap = true, silent = true })
+keymap("n", "<Leader>pd", "<Cmd>BufferPickDelete<CR>", { noremap = true, silent = true })
 
 -- window
 keymap("n", "<Leader>gs", ":split<CR>", { noremap = true, silent = true })
