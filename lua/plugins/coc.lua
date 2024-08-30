@@ -8,7 +8,6 @@ return {
             vim.g.coc_global_extensions = {
                 "coc-biome",
                 "coc-go",
-                "coc-graphql",
                 "coc-html",
                 "coc-json",
                 "coc-markdownlint",
