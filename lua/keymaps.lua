@@ -61,5 +61,5 @@ keymap("n", "<Leader>tgl", "<Cmd>Telescope git_commits<CR>", { noremap = true, s
 keymap("n", "<Leader>tfb", "<Cmd>Telescope buffers<CR>", { noremap = true, silent = true })
 keymap("n", "<Leader>tfo", "<Cmd>Telescope oldfiles<CR>", { noremap = true, silent = true })
 keymap("n", "<Leader>tfv", "<Cmd>Telescope vim_options<CR>", { noremap = true, silent = true })
-keymap("n", "<Leadder>tfk", "<Cmd>Telescope keymaps<CR>", { noremap = true, silent = true })
+keymap("n", "<Leader>tfk", "<Cmd>Telescope keymaps<CR>", { noremap = true, silent = true })
 keymap("n", "<Leader>tfr", "<Cmd>Telescope registers<CR>", { noremap = true, silent = true })
