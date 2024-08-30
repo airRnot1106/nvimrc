@@ -70,14 +70,14 @@ return {
             }
         end,
     },
-    {
-        "echasnovski/mini.jump2d",
-        version = false,
-        event = { "BufReadPre", "BufNewFile" },
-        config = function()
-            require("mini.jump2d").setup()
-        end,
-    },
+    -- {
+    --     "echasnovski/mini.jump2d",
+    --     version = false,
+    --     event = { "BufReadPre", "BufNewFile" },
+    --     config = function()
+    --         require("mini.jump2d").setup()
+    --     end,
+    -- },
     {
         "echasnovski/mini.cursorword",
         version = false,
