@@ -1,0 +1,10 @@
+{
+  "lazy.nvim": { "branch": "main", "commit": "a09c876f6ef642c8feaea45932df73b058d9a083" },
+  "mini.comment": { "branch": "main", "commit": "6b6da2c272545ac6a201fb45af3aba66ef96d052" },
+  "mini.cursorword": { "branch": "main", "commit": "b6fb7e8556b3e3bb09c5cca1937d8e542f8a0261" },
+  "mini.files": { "branch": "main", "commit": "759e2d213b13914fcd125eb8bfb80e3f3c607367" },
+  "mini.indentscope": { "branch": "main", "commit": "a8274b6ea2d868198d27bd91a31ed5ea3a6a5744" },
+  "mini.pairs": { "branch": "main", "commit": "927d19cbdd0e752ab1c7eed87072e71d2cd6ff51" },
+  "mini.splitjoin": { "branch": "main", "commit": "db26e1c991ff5f8cf377e800ef7fba6b5618306b" },
+  "mini.trailspace": { "branch": "main", "commit": "f43e2dff55a07e0a84c01ba4b25ed976a12eea44" }
+}
