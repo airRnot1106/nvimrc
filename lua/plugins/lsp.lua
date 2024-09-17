@@ -6,70 +6,53 @@ return {
         opts = {},
     },
     {
-        "williamboman/mason-lspconfig.nvim",
+        "neovim/nvim-lspconfig",
         dependencies = {
-            "williamboman/mason.nvim",
-            "neovim/nvim-lspconfig",
-            "creativenull/efmls-configs-nvim",
             "Shougo/ddc-source-lsp",
             "uga-rosa/ddc-source-lsp-setup",
+            "creativenull/efmls-configs-nvim",
         },
         event = { "BufReadPre", "BufNewFile" },
         config = function()
-            require("mason").setup()
-            require("mason-lspconfig").setup {
-                ensure_installed = {
-                    "efm",
-                    "lua_ls",
-                    "tsserver",
-                },
-            }
-            local lspconfig = require "lspconfig"
             require("ddc_source_lsp_setup").setup()
             local capabilities = require("ddc_source_lsp").make_client_capabilities()
-            require("mason-lspconfig").setup_handlers {
-                function(server_name)
-                    lspconfig[server_name].setup {
-                        capabilities = capabilities,
-                    }
-                end,
-                ["lua_ls"] = function()
-                    lspconfig.lua_ls.setup {
-                        capabilities = capabilities,
-                        settings = {
-                            Lua = {
-                                diagnostics = {
-                                    globals = { "vim" },
-                                },
-                                workspace = {
-                                    checkThirdParty = false,
-                                },
-                                format = {
-                                    enable = false,
-                                },
-                            },
+
+            local lspconfig = require "lspconfig"
+
+            lspconfig.lua_ls.setup {
+                capabilities = capabilities,
+                settings = {
+                    Lua = {
+                        diagnostics = {
+                            globals = { "vim" },
                         },
-                    }
-                end,
-                ["efm"] = function()
-                    local stylua = require "efmls-configs.formatters.stylua"
-                    local languages = {
-                        lua = { stylua },
-                    }
-                    lspconfig.efm.setup {
-                        capabilities = capabilities,
-                        filetypes = vim.tbl_keys(languages),
-                        init_options = {
-                            documentFormatting = true,
-                            documentRangeFormatting = true,
+                        workspace = {
+                            checkThirdParty = false,
                         },
-                        settings = {
-                            rootMarkers = { ".git/" },
-                            languages = languages,
+                        format = {
+                            enable = false,
                         },
-                    }
-                end,
+                    },
+                },
             }
+
+            local stylua = require "efmls-configs.formatters.stylua"
+            local languages = {
+                lua = { stylua },
+            }
+            lspconfig.efm.setup {
+                capabilities = capabilities,
+                filetypes = vim.tbl_keys(languages),
+                init_options = {
+                    documentFormatting = true,
+                    documentRangeFormatting = true,
+                },
+                settings = {
+                    rootMarkers = { ".git/" },
+                    languages = languages,
+                },
+            }
+
             local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
             vim.api.nvim_create_autocmd("LspAttach", {
                 group = augroup,
