@@ -36,8 +36,14 @@ return {
                 },
             }
 
+            lspconfig.nil_ls.setup {
+                capabilities = capabilities,
+            }
+
+            local nixfmt = require "efmls-configs.formatters.nixfmt"
             local stylua = require "efmls-configs.formatters.stylua"
             local languages = {
+                nix = { nixfmt },
                 lua = { stylua },
             }
             lspconfig.efm.setup {
