@@ -15,7 +15,6 @@ return {
             "tani/ddc-fuzzy",
             "matsui54/denops-popup-preview.vim",
             "L3MON4D3/LuaSnip",
-            "echasnovski/mini.pairs",
         },
         event = { "BufReadPre", "BufNewFile" },
         config = function()
@@ -128,7 +127,6 @@ return {
             vim.fn["ddc#enable_cmdline_completion"]()
 
             local pum_map_select_relative = vim.fn["pum#map#select_relative"]
-            local pum_visible = vim.fn["pum#visible"]
             vim.api.nvim_create_autocmd("InsertEnter", {
                 callback = function()
                     local ls = require "luasnip"
@@ -161,9 +159,10 @@ return {
                         return "<Cmd>call pum#map#confirm()<CR>"
                     end, { expr = true, silent = true, noremap = false })
 
-                    vim.keymap.set("i", "<CR>", function()
-                        return pum_visible() and "<Cmd>call pum#map#confirm()<CR>" or require("mini.pairs").cr()
-                    end, { expr = true, silent = true, noremap = false })
+                    vim.cmd [[
+inoremap <silent><expr> <CR> pum#visible() ? pum#map#confirm() :
+	\ "\<Cmd>call feedkeys(v:lua.require('nvim-autopairs').autopairs_cr(), 'in')\<CR>"
+]]
                 end,
             })
 
