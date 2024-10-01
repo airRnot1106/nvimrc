@@ -34,6 +34,10 @@ return {
                 capabilities = capabilities,
             }
 
+            lspconfig.ts_ls.setup {
+                capabilities = capabilities,
+            }
+
             local biome = require "efmls-configs.formatters.biome"
             local nixfmt = require "efmls-configs.formatters.nixfmt"
             local stylua = require "efmls-configs.formatters.stylua"
