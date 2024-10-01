@@ -1,11 +1,5 @@
 return {
     {
-        "williamboman/mason.nvim",
-        build = ":MasonUpdate",
-        event = { "BufReadPre", "BufNewFile" },
-        opts = {},
-    },
-    {
         "neovim/nvim-lspconfig",
         dependencies = {
             "Shougo/ddc-source-lsp",
