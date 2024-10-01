@@ -34,12 +34,12 @@ return {
                 capabilities = capabilities,
             }
 
+            local biome = require "efmls-configs.formatters.biome"
             local nixfmt = require "efmls-configs.formatters.nixfmt"
             local stylua = require "efmls-configs.formatters.stylua"
-            local biome = require "efmls-configs.formatters.biome"
             local languages = {
-                nix = { nixfmt },
                 lua = { stylua },
+                nix = { nixfmt },
                 typescript = { biome },
             }
             lspconfig.efm.setup {
