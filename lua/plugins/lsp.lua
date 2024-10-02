@@ -46,6 +46,7 @@ return {
             local nixfmt = require "efmls-configs.formatters.nixfmt"
             local stylua = require "efmls-configs.formatters.stylua"
             local languages = {
+                json = { biome },
                 lua = { stylua },
                 nix = { nixfmt },
                 typescript = { biome },
