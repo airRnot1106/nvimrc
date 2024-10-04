@@ -13,6 +13,10 @@ return {
 
             local lspconfig = require "lspconfig"
 
+            lspconfig.astro.setup {
+                capabilities = capabilities,
+            }
+
             lspconfig.lua_ls.setup {
                 capabilities = capabilities,
                 settings = {
@@ -46,6 +50,7 @@ return {
             local nixfmt = require "efmls-configs.formatters.nixfmt"
             local stylua = require "efmls-configs.formatters.stylua"
             local languages = {
+                astro = { biome },
                 json = { biome },
                 lua = { stylua },
                 nix = { nixfmt },
