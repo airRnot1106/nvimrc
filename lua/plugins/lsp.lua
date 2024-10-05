@@ -38,9 +38,9 @@ return {
                 capabilities = capabilities,
             }
 
-            lspconfig.tailwindcss.setup {
-                capabilities = capabilities,
-            }
+            -- lspconfig.tailwindcss.setup {
+            --     capabilities = capabilities,
+            -- }
 
             lspconfig.ts_ls.setup {
                 capabilities = capabilities,
@@ -48,13 +48,15 @@ return {
 
             local biome = require "efmls-configs.formatters.biome"
             local nixfmt = require "efmls-configs.formatters.nixfmt"
+            local prettier = require "efmls-configs.formatters.prettier"
             local stylua = require "efmls-configs.formatters.stylua"
             local languages = {
-                astro = { biome },
+                astro = { prettier },
                 json = { biome },
                 lua = { stylua },
                 nix = { nixfmt },
                 typescript = { biome },
+                typescriptreact = { biome },
             }
             lspconfig.efm.setup {
                 capabilities = capabilities,
