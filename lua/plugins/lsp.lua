@@ -52,6 +52,8 @@ return {
             local stylua = require "efmls-configs.formatters.stylua"
             local languages = {
                 astro = { prettier },
+                javascript = { biome },
+                javascriptreact = { biome },
                 json = { biome },
                 lua = { stylua },
                 nix = { nixfmt },
