@@ -17,6 +17,10 @@ return {
                 capabilities = capabilities,
             }
 
+            lspconfig.biome.setup {
+                cmd = { "pnpm", "biome", "lsp-proxy" },
+            }
+
             lspconfig.lua_ls.setup {
                 capabilities = capabilities,
                 settings = {
@@ -46,19 +50,13 @@ return {
                 capabilities = capabilities,
             }
 
-            local biome = require "efmls-configs.formatters.biome"
             local nixfmt = require "efmls-configs.formatters.nixfmt"
             local prettier = require "efmls-configs.formatters.prettier"
             local stylua = require "efmls-configs.formatters.stylua"
             local languages = {
                 astro = { prettier },
-                javascript = { biome },
-                javascriptreact = { biome },
-                json = { biome },
                 lua = { stylua },
                 nix = { nixfmt },
-                typescript = { biome },
-                typescriptreact = { biome },
             }
             lspconfig.efm.setup {
                 capabilities = capabilities,
