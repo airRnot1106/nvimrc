@@ -93,21 +93,19 @@ return {
                     vim.keymap.set("n", "g]", "<cmd>lua vim.diagnostic.goto_next()<CR>")
                     vim.keymap.set("n", "g[", "<cmd>lua vim.diagnostic.goto_prev()<CR>")
 
-                    local client = vim.lsp.get_client_by_id(ev.data.client_id)
-                    if client == nil then
-                        return
-                    end
-
-                    if client.supports_method "textDocument/formatting" then
-                        vim.api.nvim_clear_autocmds { group = augroup, buffer = ev.bufnr }
-                        vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-                            group = augroup,
-                            buffer = ev.bufnr,
-                            callback = function()
-                                vim.lsp.buf.format { async = false }
-                            end,
-                        })
-                    end
+                    vim.api.nvim_create_autocmd("BufWritePre", {
+                        buffer = ev.buffer,
+                        callback = function()
+                            local client = vim.lsp.get_client_by_id(ev.data.client_id)
+                            if client == nil then
+                                return
+                            end
+                            if not client.supports_method "textDocument/formatting" then
+                                return
+                            end
+                            vim.lsp.buf.format { async = false }
+                        end,
+                    })
                 end,
             })
 
