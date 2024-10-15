@@ -18,6 +18,7 @@ return {
             }
 
             lspconfig.biome.setup {
+                capabilities = capabilities,
                 cmd = { "pnpm", "biome", "lsp-proxy" },
             }
 
