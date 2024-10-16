@@ -55,11 +55,16 @@ return {
                 end,
             }
 
+            local kdlfmt = {
+                formatCommand = "kdlfmt format -",
+                formatStdin = true,
+            }
             local nixfmt = require "efmls-configs.formatters.nixfmt"
             local prettier = require "efmls-configs.formatters.prettier"
             local stylua = require "efmls-configs.formatters.stylua"
             local languages = {
                 astro = { prettier },
+                kdl = { kdlfmt },
                 lua = { stylua },
                 nix = { nixfmt },
             }
