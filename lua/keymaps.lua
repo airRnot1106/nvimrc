@@ -55,14 +55,3 @@ keymap("n", "<Leader>e", ":lua MiniFiles.open()<CR>", { noremap = true, silent =
 
 -- apprearance
 keymap("n", "<Esc><Esc>", ":nohlsearch<CR>", { noremap = true, silent = true })
-
--- telescope
-keymap("n", "<Leader>tff", "<Cmd>Telescope find_files<CR>", { noremap = true, silent = true })
-keymap("n", "<Leader>tfg", "<Cmd>Telescope live_grep<CR>", { noremap = true, silent = true })
-keymap("n", "<Leader>tgs", "<Cmd>Telescope git_status<CR>", { noremap = true, silent = true })
-keymap("n", "<Leader>tgl", "<Cmd>Telescope git_commits<CR>", { noremap = true, silent = true })
-keymap("n", "<Leader>tfb", "<Cmd>Telescope buffers<CR>", { noremap = true, silent = true })
-keymap("n", "<Leader>tfo", "<Cmd>Telescope oldfiles<CR>", { noremap = true, silent = true })
-keymap("n", "<Leader>tfv", "<Cmd>Telescope vim_options<CR>", { noremap = true, silent = true })
-keymap("n", "<Leader>tfk", "<Cmd>Telescope keymaps<CR>", { noremap = true, silent = true })
-keymap("n", "<Leader>tfr", "<Cmd>Telescope registers<CR>", { noremap = true, silent = true })
