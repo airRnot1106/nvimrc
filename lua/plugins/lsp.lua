@@ -59,6 +59,7 @@ return {
                 formatCommand = "kdlfmt format -",
                 formatStdin = true,
             }
+            local eslint = require "efmls-configs.linters.eslint"
             local nixfmt = require "efmls-configs.formatters.nixfmt"
             local prettier = require "efmls-configs.formatters.prettier"
             local stylua = require "efmls-configs.formatters.stylua"
@@ -67,19 +68,29 @@ return {
                 kdl = { kdlfmt },
                 lua = { stylua },
                 nix = { nixfmt },
+                javascript = { eslint },
+                javascriptreact = { eslint },
+                typescript = { eslint },
+                typescriptreact = { eslint },
             }
-            lspconfig.efm.setup {
-                capabilities = capabilities,
+            local efmls_config = {
                 filetypes = vim.tbl_keys(languages),
-                init_options = {
-                    documentFormatting = true,
-                    documentRangeFormatting = true,
-                },
                 settings = {
                     rootMarkers = { ".git/" },
                     languages = languages,
                 },
+                init_options = {
+                    documentFormatting = true,
+                    documentRangeFormatting = true,
+                    hover = true,
+                    documentSymbol = true,
+                    codeAction = true,
+                    completion = true,
+                },
             }
+            lspconfig.efm.setup(vim.tbl_extend("force", efmls_config, {
+                capabilities = capabilities,
+            }))
 
             local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
             vim.api.nvim_create_autocmd("LspAttach", {
