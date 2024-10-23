@@ -27,6 +27,7 @@ keymap("n", "<C-d>", "dd", { noremap = true, silent = true })
 keymap("x", "d", '"_d', { noremap = true, silent = true })
 keymap("x", "D", '"_D', { noremap = true, silent = true })
 keymap("x", "<C-d>", "d", { noremap = true, silent = true })
+keymap("v", "p", '"_dP', { noremap = true, silent = true })
 
 -- buffer
 keymap("", "<Leader>w", ":w<CR>", { noremap = true, silent = true })
