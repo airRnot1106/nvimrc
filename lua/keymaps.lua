@@ -12,7 +12,6 @@ keymap("", "j", "gj", { noremap = true, silent = true })
 keymap("", "K", "10gk", { noremap = true, silent = true })
 keymap("", "J", "10gj", { noremap = true, silent = true })
 keymap("", "H", "0", { noremap = true, silent = true })
-keymap("", "<C-h>", "^", { noremap = true, silent = true })
 keymap("", "L", "$", { noremap = true, silent = true })
 
 -- edit
