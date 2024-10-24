@@ -10,6 +10,7 @@ return {
             "yuki-yano/ddu-filter-fzf",
             "uga-rosa/ddu-filter-converter_devicon",
             "Shougo/ddu-kind-file",
+            "matsui54/ddu-vim-ui-select",
         },
         event = { "BufReadPre", "BufNewFile" },
         config = function()
@@ -159,6 +160,27 @@ return {
                     vim.fn["ddu#ui#ff#restore_cmaps"]()
                 end,
             })
+
+            vim.ui.select = function(items, opts, on_choice)
+                vim.fn["ddu#custom#patch_global"] {
+                    uiParams = {
+                        ff = {
+                            autoResize = true,
+                            floatingTitle = opts.prompt,
+                            winCol = math.floor(vim.opt.columns:get() * 0.3),
+                            winRow = vim.opt.lines:get() / 2 - 10,
+                            winWidth = math.floor(vim.opt.columns:get() * 0.4),
+                        },
+                    },
+                    kindOptions = {
+                        ui_select = {
+                            defaultAction = "select",
+                        },
+                    },
+                }
+                require("ddu-vim-ui-select").select(items, opts, on_choice)
+                resize()
+            end
 
             local dduStart = function(options)
                 return function()
