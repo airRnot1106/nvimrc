@@ -82,6 +82,7 @@ return {
                             previewRow = previewWindow.row,
                             previewWidth = previewWindow.width,
                             previewHeight = 20,
+                            floatingTitle = "",
                         },
                     },
                 }
