@@ -55,6 +55,3 @@ keymap("n", "<Leader>e", ":lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<CR>"
 
 -- apprearance
 keymap("n", "<Esc><Esc>", ":nohlsearch<CR>", { noremap = true, silent = true })
-
--- fzf
-keymap("n", "<Leader>tf", '<Cmd>call ddu#start(#{name:"file_external"})<CR>', { noremap = true, silent = true })
