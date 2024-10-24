@@ -82,10 +82,10 @@ return {
                 init_options = {
                     documentFormatting = true,
                     documentRangeFormatting = true,
-                    hover = true,
-                    documentSymbol = true,
-                    codeAction = true,
-                    completion = true,
+                    -- hover = true,
+                    -- documentSymbol = true,
+                    -- codeAction = true,
+                    -- completion = true,
                 },
             }
             lspconfig.efm.setup(vim.tbl_extend("force", efmls_config, {
