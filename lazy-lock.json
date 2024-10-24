@@ -20,6 +20,7 @@
   "ddu-source-file_external": { "branch": "main", "commit": "4866476371886fc3eba73bdf3d3d6fe9ad2efcee" },
   "ddu-source-rg": { "branch": "main", "commit": "4e856b8ae2fc67b4e43c7c085577835ea1ac395f" },
   "ddu-ui-ff": { "branch": "main", "commit": "ebab43049da919b6bdba89cc345bea7ba4fe102b" },
+  "ddu-vim-ui-select": { "branch": "main", "commit": "c5b48f77d0e58981137181c86862eb8d19a9449e" },
   "ddu.vim": { "branch": "main", "commit": "9bb89d84e7556aaa2a0fbc805d3d8340d04cd98d" },
   "denops-popup-preview.vim": { "branch": "main", "commit": "5a62ac76478791a86f17ac79f064ab302c41f5eb" },
   "denops.vim": { "branch": "main", "commit": "3a38e081f922e0134671236edd3e6dcbb251d10c" },
