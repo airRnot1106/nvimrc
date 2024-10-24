@@ -18,6 +18,7 @@
   "ddu-filter-fzf": { "branch": "main", "commit": "e968510d192260264cbd99431a2060fe9eb5f0ae" },
   "ddu-kind-file": { "branch": "main", "commit": "a99dcf753558e69e78ad7198785bfe020302f7fb" },
   "ddu-source-file_external": { "branch": "main", "commit": "4866476371886fc3eba73bdf3d3d6fe9ad2efcee" },
+  "ddu-source-rg": { "branch": "main", "commit": "4e856b8ae2fc67b4e43c7c085577835ea1ac395f" },
   "ddu-ui-ff": { "branch": "main", "commit": "ebab43049da919b6bdba89cc345bea7ba4fe102b" },
   "ddu.vim": { "branch": "main", "commit": "9bb89d84e7556aaa2a0fbc805d3d8340d04cd98d" },
   "denops-popup-preview.vim": { "branch": "main", "commit": "5a62ac76478791a86f17ac79f064ab302c41f5eb" },
