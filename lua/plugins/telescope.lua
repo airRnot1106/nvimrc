@@ -5,8 +5,7 @@ return {
         dependencies = {
             "nvim-lua/plenary.nvim",
         },
-        event = { "BufReadPre", "BufNewFile" },
-        cmd = { "Telescope" },
+        event = { "VimEnter" },
         config = function()
             local actions = require "telescope.actions"
             require("telescope").setup {
@@ -74,12 +73,10 @@ return {
     {
         "nvim-telescope/telescope-fzf-native.nvim",
         build = "make",
-        event = { "BufReadPre", "BufNewFile" },
-        cmd = { "Telescope" },
+        event = { "VimEnter" },
     },
     {
         "nvim-telescope/telescope-ui-select.nvim",
-        event = { "BufReadPre", "BufNewFile" },
-        cmd = { "Telescope" },
+        event = { "VimEnter" },
     },
 }
