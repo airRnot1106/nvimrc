@@ -30,6 +30,7 @@ local options = {
     guifont = "Hack Nerd font",
     scrolloff = 12,
     mouse = "",
+    termguicolors = true,
 
     -- editor
     whichwrap = "b,s,h,l,[,],<,>,~",
