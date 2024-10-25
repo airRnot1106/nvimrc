@@ -5,6 +5,7 @@ return {
             "Shougo/ddc-source-lsp",
             "uga-rosa/ddc-source-lsp-setup",
             "creativenull/efmls-configs-nvim",
+            "Shougo/cmdline.vim",
         },
         event = { "BufReadPre", "BufNewFile" },
         config = function()
@@ -104,6 +105,22 @@ return {
                     vim.keymap.set("n", "gi", "<Cmd>lua vim.lsp.buf.implementation()<CR>")
                     vim.keymap.set("n", "gt", "<Cmd>lua vim.lsp.buf.type_definition()<CR>")
                     vim.keymap.set("n", "<F2>", function()
+                        local columns = vim.opt.columns:get()
+                        local lines = vim.opt.lines:get()
+                        local width = math.floor(columns * 0.8)
+                        local window = {
+                            col = math.floor(columns * 0.1),
+                            row = lines / 2,
+                            width = width,
+                        }
+                        vim.fn["cmdline#set_option"] {
+                            border = "rounded",
+                            highlight_prompt = "Statement",
+                            highlight_window = "None",
+                            row = window.row,
+                            col = window.col,
+                            width = window.width,
+                        }
                         vim.fn["cmdline#enable"]()
                         vim.lsp.buf.rename()
                     end)
