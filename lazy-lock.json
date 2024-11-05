@@ -49,5 +49,6 @@
   "tiny-devicons-auto-colors.nvim": { "branch": "main", "commit": "a39fa4c92268832f6034306793b8acbfec2a7549" },
   "toggleterm.nvim": { "branch": "main", "commit": "48be57eaba817f038d61bbf64d2c597f578c0827" },
   "vim-smartword": { "branch": "master", "commit": "608d4883bb1eff4131f44857a21119220e55886d" },
+  "vim-wakatime": { "branch": "master", "commit": "f699e30ca1ba0c7f316847316fd0ba19d3ee51c1" },
   "vimdoc-ja": { "branch": "master", "commit": "b7ca1a93ea8fb40ec6f0aea57e8ad59eab4b1ba7" }
 }
