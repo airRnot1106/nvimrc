@@ -50,11 +50,30 @@ return {
 
             lspconfig.ts_ls.setup {
                 capabilities = capabilities,
+                filetypes = {
+                    "javascript",
+                    "javascriptreact",
+                    "typescript",
+                    "typescriptreact",
+                    "vue",
+                },
                 on_attach = function(client)
                     client.server_capabilities.documentFormattingProvider = false
                     client.server_capabilities.documentRangeFormattingProvider = false
                 end,
+                root_dir = lspconfig.util.root_pattern { "package.json", "node_modules" },
+                init_options = {
+                    plugins = {
+                        {
+                            name = "@vue/typescript-plugin",
+                            location = vim.env.HOME .. "/.nix-profile/lib/node_modules/@vue/language-server",
+                            languages = { "javascript", "typescript", "vue" },
+                        },
+                    },
+                },
             }
+
+            lspconfig.volar.setup {}
 
             local kdlfmt = {
                 formatCommand = "kdlfmt format -",
