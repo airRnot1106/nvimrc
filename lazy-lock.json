@@ -3,6 +3,7 @@
   "LuaSnip": { "branch": "master", "commit": "8d7aa7a7b7c0875e4878d1d2590924bc1c229305" },
   "alpha-nvim": { "branch": "main", "commit": "bf3c8bb8c02ed3d9644cc5bbc48e2bdc39349cd7" },
   "barbar.nvim": { "branch": "master", "commit": "7c28de8c22f4c00ed43a78ae16c13dd6a248fe1a" },
+  "bufpreview.vim": { "branch": "master", "commit": "8e53ffdbf0cbb5136dbd62357cbec873d509d414" },
   "cmdline.vim": { "branch": "main", "commit": "fd1005088de161155c47a85a10069c13718780e0" },
   "ddc-emoji": { "branch": "master", "commit": "e790f20394ebd6cd83d6e69108ef55dab126b01f" },
   "ddc-fuzzy": { "branch": "main", "commit": "ecc164ef958c087aec048915609c222d09ea3b2a" },
