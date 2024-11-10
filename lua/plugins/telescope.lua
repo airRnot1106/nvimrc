@@ -17,6 +17,8 @@ return {
                         "Parallels",
                         "^Movies",
                         "^Music",
+                        "node_modules",
+                        ".next",
                     },
                     vimgrep_arguments = {
                         "rg",
