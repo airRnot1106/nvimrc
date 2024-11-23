@@ -1,10 +1,14 @@
 return {
     {
+        "airRnot1106/efmls-configs-nvim",
+        version = false,
+        branch = "kdlfmt/init",
+    },
+    {
         "neovim/nvim-lspconfig",
         dependencies = {
             "Shougo/ddc-source-lsp",
             "uga-rosa/ddc-source-lsp-setup",
-            "creativenull/efmls-configs-nvim",
             "Shougo/cmdline.vim",
         },
         event = { "BufReadPre", "BufNewFile" },
@@ -75,10 +79,7 @@ return {
 
             lspconfig.volar.setup {}
 
-            local kdlfmt = {
-                formatCommand = "kdlfmt format -",
-                formatStdin = true,
-            }
+            local kdlfmt = require "efmls-configs.formatters.kdlfmt"
             local eslint = require "efmls-configs.linters.eslint"
             local nixfmt = require "efmls-configs.formatters.nixfmt"
             local prettier = require "efmls-configs.formatters.prettier"
