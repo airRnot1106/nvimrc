@@ -5,6 +5,7 @@
   "barbar.nvim": { "branch": "master", "commit": "508864eb63178187faa06c59b283fd0a266d2844" },
   "bufpreview.vim": { "branch": "master", "commit": "8e53ffdbf0cbb5136dbd62357cbec873d509d414" },
   "cmdline.vim": { "branch": "main", "commit": "8e6399c5d806607b4d4e7ac238d0d51bec74d45e" },
+  "collama.nvim": { "branch": "main", "commit": "28f76e05b6a5dea8d80802fa3f783a2796f7b880" },
   "ddc-emoji": { "branch": "master", "commit": "e790f20394ebd6cd83d6e69108ef55dab126b01f" },
   "ddc-fuzzy": { "branch": "main", "commit": "49dbbadcd00daee1f233aab6838cb6345bd4e942" },
   "ddc-source-around": { "branch": "main", "commit": "b52e19f8d93d9b868842e58b211cebd5f7fe60b6" },
