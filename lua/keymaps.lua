@@ -57,7 +57,12 @@ keymap("n", "<Leader>e", ":lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<CR>"
 keymap("n", "<Esc><Esc>", ":nohlsearch<CR>", { noremap = true, silent = true })
 
 -- telescope
-keymap("n", "<Leader>ff", "<Cmd>Telescope find_files hidden=true<CR>", { noremap = true, silent = true })
+keymap(
+    "n",
+    "<Leader>ff",
+    "<Cmd>Telescope find_files hidden=true previewer=false<CR>",
+    { noremap = true, silent = true }
+)
 keymap("n", "<Leader>fr", "<Cmd>Telescope live_grep<CR>", { noremap = true, silent = true })
 keymap("n", "<Leader>fgb", "<Cmd>Telescope git_branches<CR>", { noremap = true, silent = true })
 keymap("n", "<Leader>fgs", "<Cmd>Telescope git_status<CR>", { noremap = true, silent = true })
