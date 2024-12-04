@@ -13,9 +13,13 @@ return {
         event = { "BufReadPre", "BufNewFile" },
         config = function()
             require("ddc_source_lsp_setup").setup()
+            local lspconfig = require "lspconfig"
+
             local capabilities = require("ddc_source_lsp").make_client_capabilities()
 
-            local lspconfig = require "lspconfig"
+            local is_node_dir = function()
+                return lspconfig.util.root_pattern "package.json"(vim.fn.getcwd())
+            end
 
             lspconfig.astro.setup {
                 capabilities = capabilities,
@@ -24,6 +28,15 @@ return {
             lspconfig.biome.setup {
                 capabilities = capabilities,
                 cmd = { "pnpm", "biome", "lsp-proxy" },
+            }
+
+            lspconfig.denols.setup {
+                capabilities = capabilities,
+                on_attach = function(client)
+                    if is_node_dir() then
+                        client.stop(true)
+                    end
+                end,
             }
 
             lspconfig.lua_ls.setup {
@@ -61,6 +74,9 @@ return {
                     "vue",
                 },
                 on_attach = function(client)
+                    if not is_node_dir() then
+                        client.stop(true)
+                    end
                     client.server_capabilities.documentFormattingProvider = false
                     client.server_capabilities.documentRangeFormattingProvider = false
                 end,
