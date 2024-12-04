@@ -16,7 +16,6 @@ return {
             "matsui54/denops-popup-preview.vim",
             "L3MON4D3/LuaSnip",
         },
-        event = { "BufReadPre", "BufNewFile" },
         config = function()
             local patch_global = vim.fn["ddc#custom#patch_global"]
             local patch_filetype = vim.fn["ddc#custom#patch_filetype"]
