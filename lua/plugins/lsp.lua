@@ -1,8 +1,7 @@
 return {
     {
-        "airRnot1106/efmls-configs-nvim",
+        "creativenull/efmls-configs-nvim",
         version = false,
-        branch = "kdlfmt/init",
     },
     {
         "neovim/nvim-lspconfig",
