@@ -94,11 +94,12 @@ return {
 
             lspconfig.volar.setup {}
 
-            local kdlfmt = require "efmls-configs.formatters.kdlfmt"
             local eslint = require "efmls-configs.linters.eslint"
+            local kdlfmt = require "efmls-configs.formatters.kdlfmt"
             local nixfmt = require "efmls-configs.formatters.nixfmt"
             local prettier = require "efmls-configs.formatters.prettier"
             local stylua = require "efmls-configs.formatters.stylua"
+
             local languages = {
                 astro = { prettier },
                 kdl = { kdlfmt },
