@@ -53,7 +53,7 @@ keymap("n", "<Leader>gto", "<C-w>o", { noremap = true, silent = true })
 -- filer
 keymap("n", "<Leader>e", ":lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<CR>", { noremap = true, silent = true })
 
--- apprearance
+-- appearance
 keymap("n", "<Esc><Esc>", ":nohlsearch<CR>", { noremap = true, silent = true })
 
 -- search
