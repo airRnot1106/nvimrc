@@ -111,6 +111,15 @@ return {
 
             lspconfig.volar.setup {}
 
+            local cspell = {
+                lintCommand = 'cspell --no-color --no-progress --no-summary --config ~/.config/cspell/cspell.json "${INPUT}"',
+                lintFormats = { "%f:%l:%c - %m", "%f:%l:%c %m" },
+                lintIgnoreExitCode = true,
+                lintSeverity = 3,
+                lintSource = "efm/cspell",
+                lintStdin = false,
+                prefix = "cspell",
+            }
             local eslint = require "efmls-configs.linters.eslint"
             local kdlfmt = require "efmls-configs.formatters.kdlfmt"
             local nixfmt = require "efmls-configs.formatters.nixfmt"
@@ -118,14 +127,14 @@ return {
             local stylua = require "efmls-configs.formatters.stylua"
 
             local languages = {
-                astro = { prettier },
-                kdl = { kdlfmt },
-                lua = { stylua },
-                nix = { nixfmt },
-                javascript = { eslint },
-                javascriptreact = { eslint },
-                typescript = { eslint },
-                typescriptreact = { eslint },
+                astro = { cspell, prettier },
+                kdl = { cspell, kdlfmt },
+                lua = { cspell, stylua },
+                nix = { cspell, nixfmt },
+                javascript = { cspell, eslint },
+                javascriptreact = { cspell, eslint },
+                typescript = { cspell, eslint },
+                typescriptreact = { cspell, eslint },
             }
             local efmls_config = {
                 filetypes = vim.tbl_keys(languages),
