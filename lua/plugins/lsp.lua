@@ -9,6 +9,7 @@ return {
             "Shougo/ddc-source-lsp",
             "uga-rosa/ddc-source-lsp-setup",
             "Shougo/cmdline.vim",
+            "b0o/schemastore.nvim",
         },
         event = { "BufReadPre", "BufNewFile" },
         config = function()
@@ -37,6 +38,22 @@ return {
                         client.stop(true)
                     end
                 end,
+            }
+
+            lspconfig.jsonls.setup {
+                settings = {
+                    json = {
+                        schemas = require("schemastore").json.schemas {
+                            select = {
+                                "CSpell (cspell.json)",
+                                ".eslintrc",
+                                "package.json",
+                                "tsconfig.json",
+                            },
+                        },
+                        validate = { enable = true },
+                    },
+                },
             }
 
             lspconfig.lua_ls.setup {
