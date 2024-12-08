@@ -42,4 +42,5 @@ vim.g.loaded_rrhelper = true
 require "options"
 require "autocmds"
 require "keymaps"
+require "commands"
 require "lazy-nvim"
