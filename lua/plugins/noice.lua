@@ -7,6 +7,25 @@ return {
         },
         event = { "VeryLazy" },
         config = function()
+            local special_chars = {
+                ["("] = "%(",
+                [")"] = "%)",
+                ["."] = "%.",
+                ["%"] = "%%",
+                ["+"] = "%+",
+                ["-"] = "%-",
+                ["*"] = "%*",
+                ["?"] = "%?",
+                ["["] = "%[",
+                ["]"] = "%]",
+                ["^"] = "%^",
+                ["$"] = "%$",
+            }
+
+            local function pattern_quote(s)
+                return string.gsub(s, ".", special_chars)
+            end
+
             require("noice").setup {
                 views = {
                     cmdline_popup = {
