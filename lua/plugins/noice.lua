@@ -44,6 +44,14 @@ return {
                         },
                         opts = { skip = true },
                     },
+                    {
+                        filter = {
+                            event = "notify",
+                            kind = "info",
+                            find = "^" .. pattern_quote "[LSP] Format request failed, no matching",
+                        },
+                        opts = { skip = true },
+                    },
                 },
                 cmdline = {
                     enabled = true,
