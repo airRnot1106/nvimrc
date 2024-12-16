@@ -77,6 +77,16 @@ return {
                 capabilities = capabilities,
             }
 
+            lspconfig.rust_analyzer.setup {
+                settings = {
+                    ["rust-analyzer"] = {
+                        diagnostics = {
+                            enable = false,
+                        },
+                    },
+                },
+            }
+
             -- lspconfig.tailwindcss.setup {
             --     capabilities = capabilities,
             -- }
