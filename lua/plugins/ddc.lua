@@ -11,7 +11,7 @@ return {
             "LumaKernel/ddc-source-file",
             "gamoutatsumi/ddc-emoji",
             "Shougo/ddc-source-cmdline",
-            "Shougo/ddc-source-cmdline-history",
+            "Shougo/ddc-source-cmdline_history",
             "tani/ddc-fuzzy",
             "matsui54/denops-popup-preview.vim",
             "L3MON4D3/LuaSnip",
@@ -36,7 +36,7 @@ return {
                     "file",
                     "emoji",
                     "cmdline",
-                    "cmdline-history",
+                    "cmdline_history",
                 },
                 sourceOptions = {
                     _ = {
@@ -70,7 +70,7 @@ return {
                     ["cmdline"] = {
                         mark = "CMD",
                     },
-                    ["cmdline-history"] = {
+                    ["cmdline_history"] = {
                         mark = "CMD-H",
                     },
                 },
@@ -110,7 +110,7 @@ return {
             patch_global("cmdlineSources", {
                 [":"] = {
                     "cmdline",
-                    "cmdline-history",
+                    "cmdline_history",
                     "around",
                 },
                 ["/"] = {
