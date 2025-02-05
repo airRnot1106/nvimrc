@@ -2,6 +2,7 @@ return {
     {
         "creativenull/efmls-configs-nvim",
         version = false,
+        event = { "BufReadPre", "BufNewFile" },
     },
     {
         "neovim/nvim-lspconfig",
