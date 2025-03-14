@@ -134,11 +134,10 @@ return {
             local eslint = require "efmls-configs.linters.eslint"
             local kdlfmt = require "efmls-configs.formatters.kdlfmt"
             local nixfmt = require "efmls-configs.formatters.nixfmt"
-            local prettier = require "efmls-configs.formatters.prettier"
             local stylua = require "efmls-configs.formatters.stylua"
 
             local languages = {
-                astro = { cspell, prettier },
+                astro = { cspell },
                 kdl = { cspell, kdlfmt },
                 lua = { cspell, stylua },
                 nix = { cspell, nixfmt },
