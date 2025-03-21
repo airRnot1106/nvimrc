@@ -94,4 +94,29 @@ return {
             require("mini.trailspace").setup()
         end,
     },
+    {
+        "echasnovski/mini.extra",
+        version = false,
+        event = { "BufReadPre", "BufNewFile" },
+        config = function()
+            require("mini.extra").setup()
+        end,
+    },
+    {
+        "echasnovski/mini.ai",
+        version = false,
+        event = { "BufReadPre", "BufNewFile" },
+        config = function()
+            local gen_ai_spec = require("mini.extra").gen_ai_spec
+            require("mini.ai").setup {
+                custom_textobjects = {
+                    B = gen_ai_spec.buffer(),
+                    D = gen_ai_spec.diagnostic(),
+                    I = gen_ai_spec.indent(),
+                    L = gen_ai_spec.line(),
+                    N = gen_ai_spec.number(),
+                },
+            }
+        end,
+    },
 }
