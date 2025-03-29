@@ -8,3 +8,10 @@ autocmd("TextYankPost", {
         vim.highlight.on_yank { higroup = "IncSearch", timeout = 200 }
     end,
 })
+
+autocmd("User", {
+    pattern = "MiniFilesActionRename",
+    callback = function(event)
+        Snacks.rename.on_rename_file(event.data.from, event.data.to)
+    end,
+})
