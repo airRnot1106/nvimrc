@@ -10,32 +10,13 @@ return {
             local actions = require "telescope.actions"
             require("telescope").setup {
                 defaults = {
-                    file_ignore_patterns = {
-                        "^.git/",
-                        "^.cache/",
-                        "^Library/",
-                        "Parallels",
-                        "^Movies",
-                        "^Music",
-                        "node_modules",
-                        ".next",
-                    },
-                    vimgrep_arguments = {
-                        "rg",
-                        "--color=never",
-                        "--no-heading",
-                        "--with-filename",
-                        "--line-number",
-                        "--column",
-                        "--smart-case",
-                        "-uu",
-                    },
                     mappings = {
                         i = {
                             ["<Esc>"] = actions.close,
                         },
                         n = {
                             ["<Esc>"] = actions.close,
+                            ["q"] = actions.close,
                         },
                     },
                 },

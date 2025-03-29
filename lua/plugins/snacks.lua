@@ -8,6 +8,9 @@ return {
             git = {
                 enabled = true,
             },
+            gitbrowse = {
+                enabled = true,
+            },
             input = {
                 enabled = true,
             },
@@ -31,6 +34,14 @@ return {
                 "<Leader>gbl",
                 function()
                     Snacks.git.blame_line()
+                end,
+            },
+
+            -- gitbrowse
+            {
+                "<Leader>gop",
+                function()
+                    Snacks.gitbrowse.open()
                 end,
             },
 
