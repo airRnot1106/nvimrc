@@ -11,9 +11,6 @@ return {
             gitbrowse = {
                 enabled = true,
             },
-            input = {
-                enabled = true,
-            },
             lazygit = {
                 enabled = true,
             },
@@ -168,6 +165,8 @@ return {
         },
         config = function()
             require("snacks").setup()
+            vim.ui.input = Snacks.input.input
+            vim.ui.select = Snacks.picker.select
         end,
     },
 }
