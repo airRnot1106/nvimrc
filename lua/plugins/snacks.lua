@@ -1,30 +1,17 @@
+local picker_ignore_patterns = {
+    "node_modules/*",
+    "^.git/*",
+    ".next/*",
+    "dist/*",
+    ".DS_Store",
+}
+
 return {
     {
         "folke/snacks.nvim",
         priority = 1000,
         lazy = false,
         ---@type snacks.Config
-        opts = {
-            git = {
-                enabled = true,
-            },
-            gitbrowse = {
-                enabled = true,
-            },
-            lazygit = {
-                enabled = true,
-            },
-            picker = {
-                enabled = true,
-                ui_select = true,
-            },
-            rename = {
-                enabled = true,
-            },
-            scratch = {
-                enabled = true,
-            },
-        },
         keys = {
             -- git
             {
@@ -54,7 +41,7 @@ return {
             {
                 "<Leader>fsm",
                 function()
-                    Snacks.picker.smart { hidden = true, ignored = true }
+                    Snacks.picker.smart { hidden = true, ignored = true, exclude = picker_ignore_patterns }
                 end,
             },
             {
@@ -66,7 +53,7 @@ return {
             {
                 "<Leader>fgr",
                 function()
-                    Snacks.picker.grep { hidden = true, ignored = true }
+                    Snacks.picker.grep { hidden = true, ignored = true, exclude = picker_ignore_patterns }
                 end,
             },
             {
@@ -84,7 +71,7 @@ return {
             {
                 "<Leader>ff",
                 function()
-                    Snacks.picker.smart { hidden = true, ignored = true }
+                    Snacks.picker.smart { hidden = true, ignored = true, exclude = picker_ignore_patterns }
                 end,
             },
             {
@@ -164,7 +151,21 @@ return {
             },
         },
         config = function()
-            require("snacks").setup()
+            require("snacks").setup {
+                lazygit = {
+                    config = {
+                        os = {
+                            edit = '[ -z "$NVIM" ] && (nvim -- {{filename}}) || (nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{filename}})',
+                            editAtLine = '[ -z "$NVIM" ] && (nvim +{{line}} -- {{filename}}) || (nvim --server "$NVIM" --remote-send "q" &&  nvim --server "$NVIM" --remote {{filename}} && nvim --server "$NVIM" --remote-send ":{{line}}<CR>")',
+                            editAtLineAndWait = "nvim +{{line}} {{filename}}",
+                            openDirInEditor = '[ -z "$NVIM" ] && (nvim -- {{dir}}) || (nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{dir}})',
+                        },
+                    },
+                },
+                picker = {
+                    ui_select = true,
+                },
+            }
             vim.ui.input = Snacks.input.input
             vim.ui.select = Snacks.picker.select
         end,
