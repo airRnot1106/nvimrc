@@ -14,7 +14,11 @@ return {
         },
         event = { "BufReadPre", "BufNewFile" },
         config = function()
-            require("ddc_source_lsp_setup").setup()
+            require("ddc_source_lsp_setup").setup {
+                override_capabilities = true,
+                respect_trigger = true,
+            }
+
             local lspconfig = require "lspconfig"
 
             local capabilities = require("ddc_source_lsp").make_client_capabilities()
@@ -36,7 +40,7 @@ return {
                 capabilities = capabilities,
                 on_attach = function(client)
                     if is_node_dir() then
-                        client.stop(true)
+                        client:stop(true)
                     end
                 end,
             }
@@ -115,18 +119,7 @@ return {
                     client.server_capabilities.documentRangeFormattingProvider = false
                 end,
                 root_dir = lspconfig.util.root_pattern { "package.json", "node_modules" },
-                init_options = {
-                    plugins = {
-                        {
-                            name = "@vue/typescript-plugin",
-                            location = vim.env.HOME .. "/.nix-profile/lib/node_modules/@vue/language-server",
-                            languages = { "javascript", "typescript", "vue" },
-                        },
-                    },
-                },
             }
-
-            lspconfig.volar.setup {}
 
             local cspell = {
                 lintCommand = 'cspell --no-color --no-progress --no-summary --config ~/.config/cspell/cspell.json "${INPUT}"',
@@ -192,12 +185,12 @@ return {
                     if client == nil then
                         return
                     end
-                    if not client.supports_method "textDocument/formatting" then
+                    if not client:supports_method "textDocument/formatting" then
                         return
                     end
 
                     vim.api.nvim_create_autocmd("BufWritePre", {
-                        buffer = ev.buffer,
+                        buffer = ev.buf,
                         group = augroup,
                         callback = function()
                             vim.lsp.buf.format { async = false }
@@ -206,8 +199,9 @@ return {
                 end,
             })
 
-            vim.lsp.handlers["textDocument/publishDiagnostics"] =
-                vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = true })
+            vim.lsp.handlers["textDocument/publishDiagnostics"] = function(err, result, ctx)
+                vim.lsp.diagnostic.on_publish_diagnostics(err, result, ctx)
+            end
         end,
     },
 }
