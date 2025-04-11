@@ -58,20 +58,3 @@ keymap("n", "<Esc><Esc>", ":nohlsearch<CR>", { noremap = true, silent = true })
 
 -- search
 keymap("n", "*", "*N", { noremap = true, silent = true })
-
--- telescope
-keymap(
-    "n",
-    "<Leader>ff",
-    "<Cmd>Telescope find_files hidden=true previewer=false<CR>",
-    { noremap = true, silent = true }
-)
-keymap("n", "<Leader>fr", "<Cmd>Telescope live_grep<CR>", { noremap = true, silent = true })
-keymap("n", "<Leader>fgb", "<Cmd>Telescope git_branches<CR>", { noremap = true, silent = true })
-keymap("n", "<Leader>fgs", "<Cmd>Telescope git_status<CR>", { noremap = true, silent = true })
-keymap("n", "<Leader>fgc", "<Cmd>Telescope git_commits<CR>", { noremap = true, silent = true })
-keymap("n", "<Leader>fb", "<Cmd>Telescope buffers<CR>", { noremap = true, silent = true })
-keymap("n", "<Leader>fk", "<Cmd>Telescope keymaps<CR>", { noremap = true, silent = true })
-keymap("n", "<Leader>fld", "<Cmd>Telescope lsp_definitions<CR>", { noremap = true, silent = true })
-keymap("n", "<Leader>flr", "<Cmd>Telescope lsp_references<CR>", { noremap = true, silent = true })
-keymap("n", "<Leader>fn", "<Cmd>Telescope notify<CR>", { noremap = true, silent = true })
