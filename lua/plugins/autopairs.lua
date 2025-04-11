@@ -1,12 +1,12 @@
 return {
     {
         "windwp/nvim-autopairs",
-        event = { "InsertEnter" },
+        event = { "BufReadPre", "BufNewFile" },
         config = true,
     },
     {
         "windwp/nvim-ts-autotag",
-        event = { "InsertEnter" },
+        event = { "BufReadPre", "BufNewFile" },
         config = function()
             require("nvim-ts-autotag").setup {
                 opts = {
