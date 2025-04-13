@@ -133,15 +133,18 @@ return {
             local eslint = require "efmls-configs.linters.eslint"
             local kdlfmt = require "efmls-configs.formatters.kdlfmt"
             local nixfmt = require "efmls-configs.formatters.nixfmt"
+            local stylelint = require "efmls-configs.linters.stylelint"
             local stylua = require "efmls-configs.formatters.stylua"
 
             local languages = {
                 astro = { cspell },
+                css = { cspell, stylelint },
                 kdl = { cspell, kdlfmt },
                 lua = { cspell, stylua },
                 nix = { cspell, nixfmt },
                 javascript = { cspell, eslint },
                 javascriptreact = { cspell, eslint },
+                scss = { cspell, stylelint },
                 typescript = { cspell, eslint },
                 typescriptreact = { cspell, eslint },
             }
