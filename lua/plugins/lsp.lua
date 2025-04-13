@@ -178,8 +178,8 @@ return {
                     vim.keymap.set("n", "<F2>", "<Cmd>lua vim.lsp.buf.rename()<CR>")
                     vim.keymap.set("n", "<Leader>.", "<Cmd>lua vim.lsp.buf.code_action()<CR>")
                     vim.keymap.set("n", "ge", "<Cmd>lua vim.diagnostic.open_float()<CR>")
-                    vim.keymap.set("n", "g]", "<Cmd>lua vim.diagnostic.goto_next()<CR>")
-                    vim.keymap.set("n", "g[", "<Cmd>lua vim.diagnostic.goto_prev()<CR>")
+                    vim.keymap.set("n", "g]", "<Cmd>lua vim.diagnostic.jump({ count = 1, float = true })<CR>")
+                    vim.keymap.set("n", "g[", "<Cmd>lua vim.diagnostic.jump({ count = -1, float = true})<CR>")
 
                     local client = vim.lsp.get_client_by_id(ev.data.client_id)
                     if client == nil then
