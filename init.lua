@@ -39,6 +39,8 @@ vim.g.did_indent_on = true
 vim.g.did_load_ftplugin = true
 vim.g.loaded_rrhelper = true
 
+vim.g.copilot_filetypes = { markdown = true }
+
 require "options"
 require "autocmds"
 require "keymaps"
