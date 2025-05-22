@@ -149,6 +149,34 @@ return {
                     Snacks.scratch.open()
                 end,
             },
+
+            -- terminal
+            {
+                "<Leader>tv",
+                function()
+                    Snacks.terminal.open(nil, {
+                        win = {
+                            position = "right",
+                            relative = "editor",
+                        },
+                        start_insert = false,
+                        auto_insert = false,
+                    })
+                end,
+            },
+            {
+                "<Leader>ts",
+                function()
+                    Snacks.terminal.open(nil, {
+                        win = {
+                            position = "bottom",
+                            relative = "editor",
+                        },
+                        start_insert = false,
+                        auto_insert = false,
+                    })
+                end,
+            },
         },
         config = function()
             require("snacks").setup {
@@ -161,9 +189,29 @@ return {
                             openDirInEditor = '[ -z "$NVIM" ] && (nvim -- {{dir}}) || (nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{dir}})',
                         },
                     },
+                    win = {
+                        keys = {
+                            term_jj = false,
+                        },
+                    },
                 },
                 picker = {
                     ui_select = true,
+                },
+                terminal = {
+                    win = {
+                        style = "terminal",
+                        keys = {
+                            term_jj = {
+                                "jj",
+                                function()
+                                    vim.cmd "stopinsert"
+                                end,
+                                mode = "t",
+                                desc = "Exit terminal insert mode",
+                            },
+                        },
+                    },
                 },
             }
             vim.ui.input = Snacks.input.input
