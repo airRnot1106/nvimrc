@@ -1,10 +1,5 @@
 return {
     {
-        "creativenull/efmls-configs-nvim",
-        version = false,
-        event = { "BufReadPre", "BufNewFile" },
-    },
-    {
         "neovim/nvim-lspconfig",
         dependencies = {
             "Shougo/ddc-source-lsp",
@@ -124,52 +119,6 @@ return {
                 root_dir = lspconfig.util.root_pattern { "package.json", "node_modules" },
             }
 
-            local cspell = {
-                lintCommand = 'cspell --no-color --no-progress --no-summary --config ~/.config/cspell/cspell.json "${INPUT}"',
-                lintFormats = { "%f:%l:%c - %m", "%f:%l:%c %m" },
-                lintIgnoreExitCode = true,
-                lintSeverity = 3,
-                lintSource = "efm/cspell",
-                lintStdin = false,
-                prefix = "cspell",
-            }
-            local eslint = require "efmls-configs.linters.eslint"
-            local kdlfmt = require "efmls-configs.formatters.kdlfmt"
-            local nixfmt = require "efmls-configs.formatters.nixfmt"
-            local stylelint = require "efmls-configs.linters.stylelint"
-            local stylua = require "efmls-configs.formatters.stylua"
-
-            local languages = {
-                astro = { cspell },
-                css = { cspell, stylelint },
-                kdl = { cspell, kdlfmt },
-                lua = { cspell, stylua },
-                nix = { cspell, nixfmt },
-                javascript = { cspell, eslint },
-                javascriptreact = { cspell, eslint },
-                scss = { cspell, stylelint },
-                typescript = { cspell, eslint },
-                typescriptreact = { cspell, eslint },
-            }
-            local efmls_config = {
-                filetypes = vim.tbl_keys(languages),
-                settings = {
-                    rootMarkers = { ".git/" },
-                    languages = languages,
-                },
-                init_options = {
-                    documentFormatting = true,
-                    documentRangeFormatting = true,
-                    -- hover = true,
-                    -- documentSymbol = true,
-                    -- codeAction = true,
-                    -- completion = true,
-                },
-            }
-            lspconfig.efm.setup(vim.tbl_extend("force", efmls_config, {
-                capabilities = capabilities,
-            }))
-
             local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
             vim.api.nvim_create_autocmd("LspAttach", {
                 group = augroup,
@@ -191,23 +140,95 @@ return {
                     if client == nil then
                         return
                     end
-                    if not client:supports_method "textDocument/formatting" then
-                        return
-                    end
-
-                    vim.api.nvim_create_autocmd("BufWritePre", {
-                        buffer = ev.buf,
-                        group = augroup,
-                        callback = function()
-                            vim.lsp.buf.format { async = false }
-                        end,
-                    })
                 end,
             })
 
             vim.lsp.handlers["textDocument/publishDiagnostics"] = function(err, result, ctx)
                 vim.lsp.diagnostic.on_publish_diagnostics(err, result, ctx)
             end
+        end,
+    },
+    {
+        "mfussenegger/nvim-lint",
+        event = { "BufReadPre", "BufNewFile" },
+        config = function()
+            local lint = require "lint"
+            lint.linters.cspell.args = vim.list_extend(lint.linters.cspell.args, {
+                "--config",
+                vim.fn.expand "~/.config/cspell/cspell.json",
+            })
+            lint.linters.luacheck.args = vim.list_extend(lint.linters.luacheck.args, {
+                "--globals",
+                "vim",
+            })
+
+            local function has_tool(tool_name, config_patterns)
+                local bin_exists = vim.fn.filereadable("./node_modules/.bin/" .. tool_name) == 1
+                if bin_exists then
+                    return true
+                end
+
+                if config_patterns then
+                    for _, pattern in ipairs(config_patterns) do
+                        if vim.fn.filereadable(pattern) == 1 then
+                            return true
+                        end
+                    end
+                end
+
+                return false
+            end
+
+            local function filter_available_tools(tools, config_map)
+                local available = {}
+                for _, tool in ipairs(tools) do
+                    local config_patterns = config_map and config_map[tool] or nil
+                    if has_tool(tool, config_patterns) then
+                        table.insert(available, tool)
+                    end
+                end
+                return available
+            end
+
+            local js_linters = filter_available_tools { "eslint" }
+            local react_linters = filter_available_tools { "eslint", "markuplint" }
+
+            lint.linters_by_ft = {
+                javascript = js_linters,
+                javascriptreact = react_linters,
+                lua = { "luacheck" },
+                typescript = js_linters,
+                typescriptreact = react_linters,
+            }
+
+            vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+                callback = function()
+                    lint.try_lint()
+                    lint.try_lint "cspell"
+                end,
+            })
+        end,
+    },
+    {
+        "stevearc/conform.nvim",
+        event = { "BufReadPre", "BufNewFile" },
+        config = function()
+            local js_formatters = { "biome-check", "prettierd", "prettier", stop_after_first = true }
+            require("conform").setup {
+                formatters_by_ft = {
+                    javascript = js_formatters,
+                    javascriptreact = js_formatters,
+                    lua = { "stylua" },
+                    nix = { "nixfmt" },
+                    kdl = { "kdlfmt" },
+                    typescript = js_formatters,
+                    typescriptreact = js_formatters,
+                },
+                format_on_save = {
+                    timeout_ms = 1000,
+                    lsp_format = "fallback",
+                },
+            }
         end,
     },
 }
