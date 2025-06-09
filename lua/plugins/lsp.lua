@@ -9,7 +9,6 @@ return {
         dependencies = {
             "Shougo/ddc-source-lsp",
             "uga-rosa/ddc-source-lsp-setup",
-            "Shougo/cmdline.vim",
             "b0o/schemastore.nvim",
         },
         event = { "BufReadPre", "BufNewFile" },
