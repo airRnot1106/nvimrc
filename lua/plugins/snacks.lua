@@ -189,29 +189,9 @@ return {
                             openDirInEditor = '[ -z "$NVIM" ] && (nvim -- {{dir}}) || (nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{dir}})',
                         },
                     },
-                    win = {
-                        keys = {
-                            term_jj = false,
-                        },
-                    },
                 },
                 picker = {
                     ui_select = true,
-                },
-                terminal = {
-                    win = {
-                        style = "terminal",
-                        keys = {
-                            term_jj = {
-                                "jj",
-                                function()
-                                    vim.cmd "stopinsert"
-                                end,
-                                mode = "t",
-                                desc = "Exit terminal insert mode",
-                            },
-                        },
-                    },
                 },
             }
             vim.ui.input = Snacks.input.input
