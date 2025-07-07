@@ -160,6 +160,7 @@ return {
             lint.linters.luacheck.args = vim.list_extend(lint.linters.luacheck.args, {
                 "--globals",
                 "vim",
+                "Snacks",
             })
 
             local function has_tool(tool_name, config_patterns)
