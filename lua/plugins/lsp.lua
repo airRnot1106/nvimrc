@@ -1,3 +1,8 @@
+local function is_deno_project()
+    local cwd = vim.fn.getcwd()
+    return vim.fn.filereadable(cwd .. "/deno.json") == 1 or vim.fn.filereadable(cwd .. "/deno.jsonc") == 1
+end
+
 return {
     {
         "neovim/nvim-lspconfig",
@@ -44,6 +49,7 @@ return {
                     json = {
                         schemas = require("schemastore").json.schemas {
                             select = {
+                                "Biome Formatter Config",
                                 "CSpell (cspell.json)",
                                 ".eslintrc",
                                 "package.json",
@@ -111,12 +117,17 @@ return {
                 },
                 on_attach = function(client)
                     if not is_node_dir() then
-                        client.stop(true)
+                        client:stop(true)
                     end
                     client.server_capabilities.documentFormattingProvider = false
                     client.server_capabilities.documentRangeFormattingProvider = false
                 end,
                 root_dir = lspconfig.util.root_pattern { "package.json", "node_modules" },
+            }
+
+            lspconfig.tsp_server.setup {
+                capabilities = capabilities,
+                cmd = { "pnpm", "tsp-server", "--stdio" },
             }
 
             local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
@@ -191,7 +202,7 @@ return {
                 return available
             end
 
-            local js_linters = filter_available_tools { "eslint" }
+            local js_linters = is_deno_project() and { "deno" } or filter_available_tools { "eslint" }
             local react_linters = filter_available_tools { "eslint", "markuplint" }
 
             lint.linters_by_ft = {
@@ -214,7 +225,8 @@ return {
         "stevearc/conform.nvim",
         event = { "BufReadPre", "BufNewFile" },
         config = function()
-            local js_formatters = { "biome-check", "prettierd", "prettier", stop_after_first = true }
+            local js_formatters = is_deno_project() and { "deno_fmt" }
+                or { "biome-check", "prettierd", "prettier", stop_after_first = true }
             require("conform").setup {
                 formatters_by_ft = {
                     javascript = js_formatters,
