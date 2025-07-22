@@ -44,6 +44,10 @@ return {
                 end,
             }
 
+            lspconfig.gleam.setup {
+                capabilities = capabilities,
+            }
+
             lspconfig.jsonls.setup {
                 settings = {
                     json = {
