@@ -52,6 +52,14 @@ return {
                         },
                         opts = { skip = true },
                     },
+                    {
+                        filter = {
+                            event = "msg_show",
+                            kind = "lua_error",
+                            find = "E31:",
+                        },
+                        opts = { skip = true },
+                    },
                 },
                 cmdline = {
                     enabled = true,
