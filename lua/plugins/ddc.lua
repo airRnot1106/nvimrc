@@ -8,6 +8,7 @@ return {
             "Shougo/ddc-source-around",
             "matsui54/ddc-source-buffer",
             "Shougo/ddc-source-lsp",
+            "Shougo/ddc-filter-sorter_lsp_kind",
             "LumaKernel/ddc-source-file",
             "gamoutatsumi/ddc-emoji",
             "Shougo/ddc-source-cmdline",
@@ -19,6 +20,7 @@ return {
         config = function()
             local patch_global = vim.fn["ddc#custom#patch_global"]
             local patch_filetype = vim.fn["ddc#custom#patch_filetype"]
+
             patch_global("ui", "pum")
 
             patch_global("autoCompleteEvents", {
@@ -55,7 +57,7 @@ return {
                         mark = "LSP",
                         dup = "keep",
                         keywordPattern = [[\k+]],
-                        sorters = { "sorter_lsp-kind" },
+                        sorters = { "sorter_lsp_kind" },
                     },
                     ["file"] = {
                         mark = "F",
