@@ -119,6 +119,20 @@ return {
                     "typescriptreact",
                     "vue",
                 },
+                init_options = {
+                    plugins = {
+                        {
+                            name = "@vue/typescript-plugin",
+                            location = vim.fs.joinpath(
+                                vim.fs.dirname(
+                                    vim.fs.dirname(vim.fn.system "echo -n $(readlink -f $(which vue-language-server))")
+                                ),
+                                "lib/language-tools/packages/language-server"
+                            ),
+                            languages = { "javascript", "typescript", "vue" },
+                        },
+                    },
+                },
                 on_attach = function(client)
                     if not is_node_dir() then
                         client:stop(true)
@@ -133,6 +147,8 @@ return {
                 capabilities = capabilities,
                 cmd = { "pnpm", "tsp-server", "--stdio" },
             }
+
+            lspconfig.volar.setup {}
 
             local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
             vim.api.nvim_create_autocmd("LspAttach", {
@@ -237,10 +253,12 @@ return {
                     javascript = js_formatters,
                     javascriptreact = js_formatters,
                     lua = { "stylua" },
+                    markdown = { "prettierd", "prettier", stop_after_first = true },
                     nix = { "nixfmt" },
                     kdl = { "kdlfmt" },
                     typescript = js_formatters,
                     typescriptreact = js_formatters,
+                    vue = { "prettierd", "prettier", stop_after_first = true },
                 },
                 format_on_save = {
                     timeout_ms = 1000,
