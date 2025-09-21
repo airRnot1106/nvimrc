@@ -1,8 +1,3 @@
-local function is_deno_project()
-    local cwd = vim.fn.getcwd()
-    return vim.fn.filereadable(cwd .. "/deno.json") == 1 or vim.fn.filereadable(cwd .. "/deno.jsonc") == 1
-end
-
 return {
     {
         "neovim/nvim-lspconfig",
@@ -18,137 +13,27 @@ return {
                 respect_trigger = true,
             }
 
-            local lspconfig = require "lspconfig"
+            ---@type vim.lsp.Config
+            vim.lsp.config("*", {
+                capabilities = require("ddc_source_lsp").make_client_capabilities(),
+            })
 
-            local capabilities = require("ddc_source_lsp").make_client_capabilities()
-
-            local is_node_dir = function()
-                return lspconfig.util.root_pattern "package.json"(vim.fn.getcwd())
-            end
-
-            lspconfig.astro.setup {
-                capabilities = capabilities,
+            local lsp_names = {
+                "astro",
+                "biome",
+                "denols",
+                "gleam",
+                "jsonls",
+                "lua_ls",
+                "mdx_analyzer",
+                "nil_ls",
+                "rust_analyzer",
+                "ts_ls",
+                "tsp_server",
+                "vue_ls",
             }
 
-            lspconfig.biome.setup {
-                capabilities = capabilities,
-                cmd = { "pnpm", "biome", "lsp-proxy" },
-            }
-
-            lspconfig.denols.setup {
-                capabilities = capabilities,
-                on_attach = function(client)
-                    if is_node_dir() then
-                        client:stop(true)
-                    end
-                end,
-            }
-
-            lspconfig.gleam.setup {
-                capabilities = capabilities,
-            }
-
-            lspconfig.jsonls.setup {
-                settings = {
-                    json = {
-                        schemas = require("schemastore").json.schemas {
-                            select = {
-                                "Biome Formatter Config",
-                                "CSpell (cspell.json)",
-                                ".eslintrc",
-                                "package.json",
-                                "tsconfig.json",
-                            },
-                        },
-                        validate = { enable = true },
-                    },
-                },
-            }
-
-            lspconfig.lua_ls.setup {
-                capabilities = capabilities,
-                settings = {
-                    Lua = {
-                        runtime = {
-                            version = "LuaJIT",
-                            pathStrict = true,
-                            path = { "?.lua", "?/init.lua" },
-                        },
-                        diagnostics = {
-                            globals = { "vim" },
-                        },
-                        workspace = {
-                            checkThirdParty = false,
-                            library = vim.list_extend(vim.api.nvim_get_runtime_file("lua", true), {
-                                "${3rd}/luv/library",
-                                "${3rd}/busted/library",
-                                "${3rd}/luassert/library",
-                            }),
-                        },
-                        format = {
-                            enable = false,
-                        },
-                    },
-                },
-            }
-
-            lspconfig.mdx_analyzer.setup {
-                capabilities = capabilities,
-            }
-
-            lspconfig.nil_ls.setup {
-                capabilities = capabilities,
-            }
-
-            lspconfig.rust_analyzer.setup {
-                settings = {
-                    ["rust-analyzer"] = {
-                        diagnostics = {
-                            enable = false,
-                        },
-                    },
-                },
-            }
-
-            lspconfig.ts_ls.setup {
-                capabilities = capabilities,
-                filetypes = {
-                    "javascript",
-                    "javascriptreact",
-                    "typescript",
-                    "typescriptreact",
-                    "vue",
-                },
-                init_options = {
-                    plugins = {
-                        {
-                            name = "@vue/typescript-plugin",
-                            location = vim.fs.joinpath(
-                                vim.fs.dirname(
-                                    vim.fs.dirname(vim.fn.system "echo -n $(readlink -f $(which vue-language-server))")
-                                ),
-                                "lib/language-tools/packages/language-server"
-                            ),
-                            languages = { "javascript", "typescript", "vue" },
-                        },
-                    },
-                },
-                on_attach = function(client)
-                    if not is_node_dir() then
-                        client:stop(true)
-                    end
-                    client.server_capabilities.documentFormattingProvider = false
-                    client.server_capabilities.documentRangeFormattingProvider = false
-                end,
-                root_dir = lspconfig.util.root_pattern { "package.json", "node_modules" },
-            }
-
-            lspconfig.tsp_server.setup {
-                capabilities = capabilities,
-                cmd = { "pnpm", "tsp-server", "--stdio" },
-            }
-
-            lspconfig.volar.setup {}
+            vim.lsp.enable(lsp_names)
 
             local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
             vim.api.nvim_create_autocmd("LspAttach", {
@@ -184,6 +69,8 @@ return {
         event = { "BufReadPre", "BufNewFile" },
         config = function()
             local lint = require "lint"
+
+            -- 各linterの設定
             lint.linters.cspell.args = vim.list_extend(lint.linters.cspell.args, {
                 "--config",
                 vim.fn.expand "~/.config/cspell/cspell.json",
@@ -194,48 +81,79 @@ return {
                 "Snacks",
             })
 
-            local function has_tool(tool_name, config_patterns)
-                local bin_exists = vim.fn.filereadable("./node_modules/.bin/" .. tool_name) == 1
-                if bin_exists then
-                    return true
-                end
+            -- javascript系で使用するlinterのリスト
+            local js_linters = { "eslint", "markuplint" }
 
-                if config_patterns then
-                    for _, pattern in ipairs(config_patterns) do
-                        if vim.fn.filereadable(pattern) == 1 then
-                            return true
-                        end
-                    end
-                end
-
-                return false
-            end
-
-            local function filter_available_tools(tools, config_map)
-                local available = {}
-                for _, tool in ipairs(tools) do
-                    local config_patterns = config_map and config_map[tool] or nil
-                    if has_tool(tool, config_patterns) then
-                        table.insert(available, tool)
-                    end
-                end
-                return available
-            end
-
-            local js_linters = is_deno_project() and { "deno" } or filter_available_tools { "eslint" }
-            local react_linters = filter_available_tools { "eslint", "markuplint" }
-
+            -- filetypeごとのlinterの設定
             lint.linters_by_ft = {
                 javascript = js_linters,
-                javascriptreact = react_linters,
+                javascriptreact = js_linters,
                 lua = { "luacheck" },
                 typescript = js_linters,
-                typescriptreact = react_linters,
+                typescriptreact = js_linters,
             }
 
-            vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-                callback = function()
-                    lint.try_lint()
+            -- javascript系のlinterの存在判定に使用するファイルの一覧
+            local linter_root_markers = {
+                eslint = {
+                    "eslint.config.js",
+                    "eslint.config.mjs",
+                    "eslint.config.cjs",
+                    "eslint.config.ts",
+                    "eslint.config.mts",
+                    "eslint.config.cts",
+                    -- deprecated
+                    ".eslintrc.js",
+                    ".eslintrc.cjs",
+                    ".eslintrc.yaml",
+                    ".eslintrc.yml",
+                    ".eslintrc.json",
+                },
+                markuplint = {
+                    ".markuplintrc",
+                    ".markuplintrc.json",
+                    ".markuplintrc.yaml",
+                    ".markuplintrc.yml",
+                },
+            }
+
+            -- javascript系のfiletypeの一覧
+            local js_filetypes = { "typescript", "javascript", "typescriptreact", "javascriptreact" }
+
+            -- linter実行時の処理
+            local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
+            vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+                group = lint_augroup,
+                callback = function(args)
+                    local filetype = vim.api.nvim_get_option_value("filetype", { buf = args.buf })
+
+                    -- filetypeの判定
+                    if vim.tbl_contains(js_filetypes, filetype) then
+                        -- javascript系のlinterを実行
+                        -- Denoプロジェクトの場合はDenoのlinterを優先して実行
+                        if require("lspconfig.util").root_pattern("deno.json", "deno.jsonc", "deps.ts")(args.buf) then
+                            lint.try_lint "deno"
+                        else
+                            -- linterの一覧を取得
+                            local names = lint.linters_by_ft[filetype] or {}
+
+                            -- linterが登録されているか、存在しているかを判定
+                            for _, name in pairs(names) do
+                                local next = next
+                                if
+                                    linter_root_markers[name] == nil
+                                    or next(vim.fs.find(linter_root_markers[name], { upward = true }))
+                                then
+                                    lint.try_lint(name)
+                                end
+                            end
+                        end
+                    else
+                        -- javascript系以外のfiletypeのlinterを実行
+                        lint.try_lint()
+                    end
+
+                    -- filetypeに依存しないlinterを実行
                     lint.try_lint "cspell"
                 end,
             })
@@ -245,19 +163,31 @@ return {
         "stevearc/conform.nvim",
         event = { "BufReadPre", "BufNewFile" },
         config = function()
-            local js_formatters = is_deno_project() and { "deno_fmt" }
-                or { "biome-check", "prettierd", "prettier", stop_after_first = true }
+            local function is_deno_project()
+                local cwd = vim.fn.getcwd()
+                return vim.fn.filereadable(cwd .. "/deno.json") == 1
+                    or vim.fn.filereadable(cwd .. "/deno.jsonc") == 1
+                    or vim.fn.filereadable(cwd .. "/deps.ts") == 1
+            end
+            local web_formatter = function()
+                if is_deno_project() then
+                    -- Denoプロジェクトの場合はLSP(denols)のフォーマットを使う (fallback)
+                    return {}
+                end
+                return { "biome-check", "prettierd", "prettier", stop_after_first = true }
+            end
+
             require("conform").setup {
                 formatters_by_ft = {
                     gleam = { "gleam" },
-                    javascript = js_formatters,
-                    javascriptreact = js_formatters,
+                    javascript = web_formatter,
+                    javascriptreact = web_formatter,
                     lua = { "stylua" },
                     markdown = { "prettierd", "prettier", stop_after_first = true },
                     nix = { "nixfmt" },
                     kdl = { "kdlfmt" },
-                    typescript = js_formatters,
-                    typescriptreact = js_formatters,
+                    typescript = web_formatter,
+                    typescriptreact = web_formatter,
                     vue = { "prettierd", "prettier", stop_after_first = true },
                 },
                 format_on_save = {
