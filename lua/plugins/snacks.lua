@@ -4,6 +4,7 @@ local picker_ignore_patterns = {
     ".next/*",
     "dist/*",
     ".DS_Store",
+    "package-lock.json",
 }
 
 return {
