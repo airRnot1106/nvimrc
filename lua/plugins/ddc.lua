@@ -168,7 +168,6 @@ inoremap <silent><expr> <CR> pum#visible() ? pum#map#confirm() :
             })
 
             vim.api.nvim_set_keymap("n", ":", "<Cmd>lua CommandlinePre()<CR>:", { noremap = true })
-            vim.api.nvim_set_keymap("n", ";", "<Cmd>lua CommandlinePre()<CR>:", { noremap = true })
 
             function CommandlinePost()
                 vim.api.nvim_del_keymap("c", "<Tab>")
