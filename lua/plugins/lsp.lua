@@ -27,6 +27,7 @@ return {
                 "lua_ls",
                 "mdx_analyzer",
                 "nil_ls",
+                "pylsp",
                 "rust_analyzer",
                 "ts_ls",
                 "tsp_server",

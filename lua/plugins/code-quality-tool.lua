@@ -59,6 +59,8 @@ return {
                     },
                     -- lua
                     null_ls.builtins.diagnostics.selene,
+                    -- python
+                    null_ls.builtins.diagnostics.mypy,
                 },
             }
         end,
