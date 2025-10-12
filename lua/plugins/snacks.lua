@@ -145,7 +145,7 @@ return {
 
             -- scratch
             {
-                "<Leader>sc",
+                "<Leader>cr",
                 function()
                     Snacks.scratch.open()
                 end,
