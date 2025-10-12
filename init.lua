@@ -41,6 +41,8 @@ vim.g.loaded_rrhelper = true
 
 vim.g.copilot_filetypes = { markdown = true }
 
+vim.g.qs_highlight_on_keys = { "f", "F", "t", "T" }
+
 require "options"
 require "autocmds"
 require "keymaps"
