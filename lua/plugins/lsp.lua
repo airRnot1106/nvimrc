@@ -32,6 +32,7 @@ return {
                 "ts_ls",
                 "tsp_server",
                 "vue_ls",
+                "yamlls",
             }
 
             vim.lsp.enable(lsp_names)
