@@ -61,6 +61,9 @@ return {
                     null_ls.builtins.diagnostics.selene,
                     -- python
                     null_ls.builtins.diagnostics.mypy,
+                    -- textlint
+                    null_ls.builtins.diagnostics.textlint.with { filetypes = { "markdown" } },
+                    null_ls.builtins.code_actions.textlint.with { filetypes = { "markdown" } },
                 },
             }
         end,
