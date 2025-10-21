@@ -66,6 +66,6 @@
   "vim-expand-region": { "branch": "master", "commit": "966513543de0ddc2d673b5528a056269e7917276" },
   "vim-smartword": { "branch": "master", "commit": "608d4883bb1eff4131f44857a21119220e55886d" },
   "vim-wakatime": { "branch": "master", "commit": "d7973b157a632d1edeff01818f18d67e584eeaff" },
-  "vimdoc-ja": { "branch": "master", "commit": "05bc722e26c629ea7f0b3f22db3165bebccf99b1" },
+  "vimdoc-ja": { "branch": "master", "commit": "7306458ea78b38e0d65ac7e57a983b37a7f8b96b" },
   "winresize.nvim": { "branch": "main", "commit": "df7ac44154565b0bb91a8894ffe57c5a93689f10" }
 }
