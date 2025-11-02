@@ -141,6 +141,8 @@ return {
                     gleam = { "gleam" },
                     javascript = web_formatter,
                     javascriptreact = web_formatter,
+                    json = web_formatter,
+                    jsonc = web_formatter,
                     lua = { "stylua" },
                     markdown = { "prettierd", "prettier", stop_after_first = true },
                     nix = { "nixfmt" },
