@@ -1,4 +1,4 @@
-local function check_config_file_exists(filenames)
+local check_config_file_exists = function(filenames)
     local cwd = vim.fn.getcwd()
 
     for _, config_file in ipairs(filenames) do
@@ -9,6 +9,45 @@ local function check_config_file_exists(filenames)
     end
 
     return false
+end
+
+local eslint_d_condition = function()
+    return check_config_file_exists {
+        "eslint.config.js",
+        "eslint.config.mjs",
+        "eslint.config.cjs",
+        "eslint.config.ts",
+        "eslint.config.mts",
+        "eslint.config.cts",
+        -- deprecated
+        ".eslintrc.js",
+        ".eslintrc.cjs",
+        ".eslintrc.yaml",
+        ".eslintrc.yml",
+        ".eslintrc.json",
+        ".eslintrc",
+    }
+end
+
+local oxlint_condition = function()
+    return check_config_file_exists {
+        "oxlintrc.json",
+        ".oxlintrc.json",
+    }
+end
+
+local markuplint_condition = function()
+    return check_config_file_exists {
+        ".markuplintrc.json",
+        ".markuplintrc.yaml",
+        ".markuplintrc.yml",
+        ".markuplintrc.js",
+        ".markuplintrc.cjs",
+        ".markuplintrc.ts",
+        "markuplint.config.js",
+        "markuplint.config.cjs",
+        "markuplint.config.ts",
+    }
 end
 
 return {
@@ -37,45 +76,6 @@ return {
                 typescriptreact = { "eslint_d", "markuplint", "oxlint" },
                 vue = { "eslint_d", "oxlint" },
             }
-
-            local eslint_d_condition = function()
-                return check_config_file_exists {
-                    "eslint.config.js",
-                    "eslint.config.mjs",
-                    "eslint.config.cjs",
-                    "eslint.config.ts",
-                    "eslint.config.mts",
-                    "eslint.config.cts",
-                    -- deprecated
-                    ".eslintrc.js",
-                    ".eslintrc.cjs",
-                    ".eslintrc.yaml",
-                    ".eslintrc.yml",
-                    ".eslintrc.json",
-                    ".eslintrc",
-                }
-            end
-
-            local oxlint_condition = function()
-                return check_config_file_exists {
-                    "oxlintrc.json",
-                    ".oxlintrc.json",
-                }
-            end
-
-            local markuplint_condition = function()
-                return check_config_file_exists {
-                    ".markuplintrc.json",
-                    ".markuplintrc.yaml",
-                    ".markuplintrc.yml",
-                    ".markuplintrc.js",
-                    ".markuplintrc.cjs",
-                    ".markuplintrc.ts",
-                    "markuplint.config.js",
-                    "markuplint.config.cjs",
-                    "markuplint.config.ts",
-                }
-            end
 
             local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
             vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
@@ -115,6 +115,25 @@ return {
                     lint.try_lint "cspell"
                 end,
             })
+        end,
+    },
+    {
+        "nvimtools/none-ls.nvim",
+        dependencies = {
+            "nvimtools/none-ls-extras.nvim",
+            "nvim-lua/plenary.nvim",
+        },
+        event = { "BufReadPre", "BufNewFile" },
+        config = function()
+            local null_ls = require "null-ls"
+
+            null_ls.setup {
+                sources = {
+                    require("none-ls.code_actions.eslint_d").with {
+                        condition = eslint_d_condition,
+                    },
+                },
+            }
         end,
     },
     -- Formatter
