@@ -1,20 +1,45 @@
+local function check_config_file_exists(filenames)
+    local cwd = vim.fn.getcwd()
+
+    for _, config_file in ipairs(filenames) do
+        local file_path = cwd .. "/" .. config_file
+        if vim.loop.fs_stat(file_path) then
+            return true
+        end
+    end
+
+    return false
+end
+
 return {
     -- Linter
     {
-        "nvimtools/none-ls.nvim",
-        dependencies = {
-            "nvimtools/none-ls-extras.nvim",
-            "davidmh/cspell.nvim",
-            "nvim-lua/plenary.nvim",
-        },
+        "mfussenegger/nvim-lint",
         event = { "BufReadPre", "BufNewFile" },
         config = function()
-            local null_ls = require "null-ls"
+            local lint = require "lint"
 
-            local cspell = require "cspell"
+            lint.linters.cspell.args = vim.list_extend(lint.linters.cspell.args, {
+                "--config",
+                vim.fn.expand "~/.config/cspell/cspell.json",
+            })
 
-            local eslint_condition = function(utils)
-                return utils.root_has_file {
+            lint.linters.oxlint.args = { "--type-aware", "--format", "github" }
+
+            lint.linters_by_ft = {
+                javascript = { "eslint_d", "oxlint" },
+                javascriptreact = { "eslint_d", "markuplint", "oxlint" },
+                lua = { "selene" },
+                markdown = { "markdownlint" },
+                nix = { "nixpkgs_lint" },
+                python = { "ruff" },
+                typescript = { "eslint_d", "oxlint" },
+                typescriptreact = { "eslint_d", "markuplint", "oxlint" },
+                vue = { "eslint_d", "oxlint" },
+            }
+
+            local eslint_d_condition = function()
+                return check_config_file_exists {
                     "eslint.config.js",
                     "eslint.config.mjs",
                     "eslint.config.cjs",
@@ -31,41 +56,65 @@ return {
                 }
             end
 
-            null_ls.setup {
-                sources = {
-                    -- cspell
-                    cspell.diagnostics.with {
-                        diagnostics_postprocess = function(diagnostic)
-                            diagnostic.severity = vim.diagnostic.severity.HINT
-                        end,
-                        extra_args = { "--config", vim.fn.expand "~/.config/cspell/cspell.json" },
-                    },
-                    -- javascript/typescript
-                    require("none-ls.diagnostics.eslint_d").with {
-                        condition = eslint_condition,
-                    },
-                    require("none-ls.code_actions.eslint_d").with {
-                        condition = eslint_condition,
-                    },
-                    null_ls.builtins.diagnostics.markuplint.with {
-                        condition = function(utils)
-                            return utils.root_has_file {
-                                ".markuplintrc",
-                                ".markuplintrc.json",
-                                ".markuplintrc.yaml",
-                                ".markuplintrc.yml",
-                            }
-                        end,
-                    },
-                    -- lua
-                    null_ls.builtins.diagnostics.selene,
-                    -- python
-                    null_ls.builtins.diagnostics.mypy,
-                    -- textlint
-                    null_ls.builtins.diagnostics.textlint.with { filetypes = { "markdown" } },
-                    null_ls.builtins.code_actions.textlint.with { filetypes = { "markdown" } },
-                },
-            }
+            local oxlint_condition = function()
+                return check_config_file_exists {
+                    "oxlintrc.json",
+                    ".oxlintrc.json",
+                }
+            end
+
+            local markuplint_condition = function()
+                return check_config_file_exists {
+                    ".markuplintrc.json",
+                    ".markuplintrc.yaml",
+                    ".markuplintrc.yml",
+                    ".markuplintrc.js",
+                    ".markuplintrc.cjs",
+                    ".markuplintrc.ts",
+                    "markuplint.config.js",
+                    "markuplint.config.cjs",
+                    "markuplint.config.ts",
+                }
+            end
+
+            local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
+            vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+                group = lint_augroup,
+                callback = function(args)
+                    local filetype = vim.api.nvim_get_option_value("filetype", { buf = args.buf })
+
+                    if filetype == "javascript" or filetype == "typescript" then
+                        -- eslint_d
+                        if eslint_d_condition() then
+                            lint.try_lint "eslint_d"
+                        end
+
+                        -- oxlint
+                        if oxlint_condition() then
+                            lint.try_lint "oxlint"
+                        end
+                    elseif filetype == "javascriptreact" or filetype == "typescriptreact" or filetype == "vue" then
+                        -- eslint_d
+                        if eslint_d_condition() then
+                            lint.try_lint "eslint_d"
+                        end
+
+                        -- markuplint
+                        if markuplint_condition() then
+                            lint.try_lint "markuplint"
+                        end
+
+                        -- oxlint
+                        if oxlint_condition() then
+                            lint.try_lint "oxlint"
+                        end
+                    else
+                        lint.try_lint()
+                    end
+
+                    lint.try_lint "cspell"
+                end,
+            })
         end,
     },
     -- Formatter
