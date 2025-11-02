@@ -2,20 +2,25 @@ return {
     {
         "neovim/nvim-lspconfig",
         dependencies = {
-            "Shougo/ddc-source-lsp",
-            "uga-rosa/ddc-source-lsp-setup",
             "b0o/schemastore.nvim",
         },
         event = { "BufReadPre", "BufNewFile" },
         config = function()
-            require("ddc_source_lsp_setup").setup {
-                override_capabilities = true,
-                respect_trigger = true,
-            }
-
             ---@type vim.lsp.Config
             vim.lsp.config("*", {
-                capabilities = require("ddc_source_lsp").make_client_capabilities(),
+                capabilities = require("blink.cmp").get_lsp_capabilities {
+                    textDocument = {
+                        completion = {
+                            completionItem = {
+                                snippetSupport = true,
+                            },
+                        },
+                        foldingRange = {
+                            dynamicRegistration = false,
+                            lineFoldingOnly = true,
+                        },
+                    },
+                },
             })
 
             local lsp_names = {
