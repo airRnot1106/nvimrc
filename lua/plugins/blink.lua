@@ -6,6 +6,7 @@ return {
             "rafamadriz/friendly-snippets",
             "moyiz/blink-emoji.nvim",
             "fang2hou/blink-copilot",
+            "Xantibody/blink-cmp-skkeleton",
         },
 
         -- use a release tag to download pre-built binaries
@@ -39,12 +40,30 @@ return {
             },
 
             -- (Default) Only show the documentation popup when manually triggered
-            completion = { documentation = { auto_show = true } },
+            completion = {
+                documentation = {
+                    auto_show = true,
+                },
+                list = {
+                    selection = {
+                        -- When `true`, will automatically select the first item in the completion list
+                        preselect = false,
+                        -- When `true`, inserts the completion item automatically when selecting it
+                        auto_insert = true,
+                    },
+                },
+            },
 
             -- Default list of enabled providers defined so that you can extend it
             -- elsewhere in your config, without redefining it, due to `opts_extend`
             sources = {
-                default = { "lsp", "path", "snippets", "buffer", "emoji", "copilot" },
+                default = function()
+                    if require("blink-cmp-skkeleton").is_enabled() then
+                        return { "skkeleton" }
+                    else
+                        return { "lsp", "path", "snippets", "buffer", "emoji", "copilot" }
+                    end
+                end,
                 providers = {
                     emoji = {
                         module = "blink-emoji",
@@ -71,6 +90,10 @@ return {
                         module = "blink-copilot",
                         score_offset = 100,
                         async = true,
+                    },
+                    skkeleton = {
+                        name = "skkeleton",
+                        module = "blink-cmp-skkeleton",
                     },
                 },
             },
