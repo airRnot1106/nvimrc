@@ -70,7 +70,6 @@ return {
                 javascriptreact = { "eslint_d", "markuplint", "oxlint" },
                 lua = { "selene" },
                 markdown = { "markdownlint" },
-                nix = { "nixpkgs_lint" },
                 python = { "ruff" },
                 typescript = { "eslint_d", "oxlint" },
                 typescriptreact = { "eslint_d", "markuplint", "oxlint" },
