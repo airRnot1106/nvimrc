@@ -69,7 +69,7 @@ return {
                 javascript = { "eslint_d", "oxlint" },
                 javascriptreact = { "eslint_d", "markuplint", "oxlint" },
                 lua = { "selene" },
-                markdown = { "markdownlint" },
+                markdown = { "markdownlint-cli2" },
                 python = { "ruff" },
                 typescript = { "eslint_d", "oxlint" },
                 typescriptreact = { "eslint_d", "markuplint", "oxlint" },
