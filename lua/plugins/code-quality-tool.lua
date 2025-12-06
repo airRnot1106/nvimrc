@@ -116,25 +116,6 @@ return {
             })
         end,
     },
-    {
-        "nvimtools/none-ls.nvim",
-        dependencies = {
-            "nvimtools/none-ls-extras.nvim",
-            "nvim-lua/plenary.nvim",
-        },
-        event = { "BufReadPre", "BufNewFile" },
-        config = function()
-            local null_ls = require "null-ls"
-
-            null_ls.setup {
-                sources = {
-                    require("none-ls.code_actions.eslint_d").with {
-                        condition = eslint_d_condition,
-                    },
-                },
-            }
-        end,
-    },
     -- Formatter
     {
         "stevearc/conform.nvim",
