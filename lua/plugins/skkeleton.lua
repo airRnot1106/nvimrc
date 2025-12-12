@@ -7,6 +7,7 @@ return {
         },
         event = "InsertEnter",
         init = function()
+            vim.g["denops#server#deno_args"] = { "-q", "--no-lock", "--unstable-kv", "-A" }
             vim.api.nvim_create_autocmd("User", {
                 pattern = "skkeleton-initialize-pre",
                 callback = function()
@@ -16,6 +17,9 @@ return {
                         },
                         eggLikeNewline = true,
                         keepState = true,
+                        registerConvertResult = true,
+                        sources = { "deno_kv", "google_japanese_input" },
+                        databasePath = vim.fn.stdpath "data" .. "/skkeleton.db",
                     }
                     vim.fn["skkeleton#register_kanatable"]("rom", {
                         ["jj"] = "escape",
