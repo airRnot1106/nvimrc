@@ -132,7 +132,7 @@ return {
                     -- Denoプロジェクトの場合はLSP(denols)のフォーマットを使う (fallback)
                     return {}
                 end
-                return { "biome-check", "prettierd", "prettier", stop_after_first = true }
+                return { "oxfmt", "biome-check", "prettierd", "prettier", stop_after_first = true }
             end
 
             require("conform").setup {
