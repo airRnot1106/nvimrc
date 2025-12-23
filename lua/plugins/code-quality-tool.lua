@@ -118,8 +118,7 @@ return {
     },
     -- Formatter
     {
-        "sfrieds3/conform.nvim",
-        branch = "fix/vim-wait",
+        "stevearc/conform.nvim",
         event = { "BufReadPre", "BufNewFile" },
         config = function()
             local function is_deno_project()
