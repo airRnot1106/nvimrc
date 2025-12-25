@@ -36,8 +36,8 @@ return {
                 "oxlint",
                 "pylsp",
                 "rust_analyzer",
-                "ts_ls",
                 "tsp_server",
+                "vtsls",
                 "vue_ls",
                 "yamlls",
             }
