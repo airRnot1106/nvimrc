@@ -1,55 +1,3 @@
-local check_config_file_exists = function(filenames)
-    local cwd = vim.fn.getcwd()
-
-    for _, config_file in ipairs(filenames) do
-        local file_path = cwd .. "/" .. config_file
-        if vim.loop.fs_stat(file_path) then
-            return true
-        end
-    end
-
-    return false
-end
-
-local eslint_d_condition = function()
-    return check_config_file_exists {
-        "eslint.config.js",
-        "eslint.config.mjs",
-        "eslint.config.cjs",
-        "eslint.config.ts",
-        "eslint.config.mts",
-        "eslint.config.cts",
-        -- deprecated
-        ".eslintrc.js",
-        ".eslintrc.cjs",
-        ".eslintrc.yaml",
-        ".eslintrc.yml",
-        ".eslintrc.json",
-        ".eslintrc",
-    }
-end
-
-local oxlint_condition = function()
-    return check_config_file_exists {
-        "oxlintrc.json",
-        ".oxlintrc.json",
-    }
-end
-
-local markuplint_condition = function()
-    return check_config_file_exists {
-        ".markuplintrc.json",
-        ".markuplintrc.yaml",
-        ".markuplintrc.yml",
-        ".markuplintrc.js",
-        ".markuplintrc.cjs",
-        ".markuplintrc.ts",
-        "markuplint.config.js",
-        "markuplint.config.cjs",
-        "markuplint.config.ts",
-    }
-end
-
 return {
     -- Linter
     {
@@ -80,31 +28,27 @@ return {
             vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
                 group = lint_augroup,
                 callback = function(args)
+                    local utils = require "utils"
                     local filetype = vim.api.nvim_get_option_value("filetype", { buf = args.buf })
 
                     if filetype == "javascript" or filetype == "typescript" then
-                        -- eslint_d
-                        if eslint_d_condition() then
+                        if utils.has_local_bin "eslint" then
                             lint.try_lint "eslint_d"
                         end
 
-                        -- oxlint
-                        if oxlint_condition() then
+                        if utils.has_local_bin "oxlint" then
                             lint.try_lint "oxlint"
                         end
                     elseif filetype == "javascriptreact" or filetype == "typescriptreact" or filetype == "vue" then
-                        -- eslint_d
-                        if eslint_d_condition() then
+                        if utils.has_local_bin "eslint" then
                             lint.try_lint "eslint_d"
                         end
 
-                        -- markuplint
-                        if markuplint_condition() then
+                        if utils.has_local_bin "markuplint" then
                             lint.try_lint "markuplint"
                         end
 
-                        -- oxlint
-                        if oxlint_condition() then
+                        if utils.has_local_bin "oxlint" then
                             lint.try_lint "oxlint"
                         end
                     else
@@ -121,6 +65,7 @@ return {
         "stevearc/conform.nvim",
         event = { "BufReadPre", "BufNewFile" },
         config = function()
+            local utils = require "utils"
             local function is_deno_project()
                 local cwd = vim.fn.getcwd()
                 return vim.fn.filereadable(cwd .. "/deno.json") == 1
@@ -132,7 +77,21 @@ return {
                     -- Denoプロジェクトの場合はLSP(denols)のフォーマットを使う (fallback)
                     return {}
                 end
-                return { "oxfmt", "biome-check", "prettierd", "prettier", stop_after_first = true }
+
+                local formatters = {}
+                if utils.has_local_bin "oxfmt" then
+                    table.insert(formatters, "oxfmt")
+                end
+                if utils.has_local_bin "oxlint" then
+                    table.insert(formatters, "oxlint")
+                end
+                if utils.has_local_bin "biome-check" then
+                    table.insert(formatters, "biome-check")
+                end
+                if utils.has_local_bin "prettier" then
+                    table.insert(formatters, "prettierd")
+                end
+                return formatters
             end
 
             require("conform").setup {
@@ -143,13 +102,13 @@ return {
                     json = web_formatter,
                     jsonc = web_formatter,
                     lua = { "stylua" },
-                    markdown = { "prettierd", "prettier", stop_after_first = true },
+                    markdown = { "oxfmt", "prettierd", "prettier", stop_after_first = true },
                     nix = { "nixfmt" },
                     kdl = { "kdlfmt" },
                     python = { "ruff" },
                     typescript = web_formatter,
                     typescriptreact = web_formatter,
-                    vue = { "prettierd", "prettier", stop_after_first = true },
+                    vue = { "oxfmt", "prettierd", "prettier", stop_after_first = true },
                 },
                 format_on_save = {
                     timeout_ms = 1000,
