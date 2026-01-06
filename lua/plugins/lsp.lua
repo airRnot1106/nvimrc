@@ -32,7 +32,7 @@ return {
                 "jsonls",
                 "lua_ls",
                 "mdx_analyzer",
-                "nil_ls",
+                "nixd",
                 "oxlint",
                 "pylsp",
                 "rust_analyzer",
