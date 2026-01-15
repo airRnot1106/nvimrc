@@ -37,6 +37,7 @@ return {
                 "pylsp",
                 "rust_analyzer",
                 "tsp_server",
+                "version-lsp",
                 "vtsls",
                 "vue_ls",
                 "yamlls",
