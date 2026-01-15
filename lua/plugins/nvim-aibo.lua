@@ -9,6 +9,12 @@ return {
                 '<Cmd>Aibo -opener="botright vsplit" claude<CR>',
                 { noremap = true, silent = true }
             )
+            vim.keymap.set(
+                "n",
+                "<Leader>ac",
+                '<Cmd>Aibo -opener="botright vsplit" claude -c<CR>',
+                { noremap = true, silent = true }
+            )
             vim.keymap.set("n", "<Leader>ad", "<Cmd>bdelete!<CR>", { noremap = true, silent = true })
         end,
     },
