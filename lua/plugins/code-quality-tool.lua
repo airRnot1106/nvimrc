@@ -14,6 +14,7 @@ return {
             lint.linters.oxlint.args = { "--type-aware", "--format", "github" }
 
             lint.linters_by_ft = {
+                go = { "golangcilint" },
                 javascript = { "eslint_d", "oxlint" },
                 javascriptreact = { "eslint_d", "markuplint", "oxlint" },
                 lua = { "selene" },
@@ -97,6 +98,7 @@ return {
             require("conform").setup {
                 formatters_by_ft = {
                     gleam = { "gleam" },
+                    go = { "gofumpt" },
                     javascript = web_formatter,
                     javascriptreact = web_formatter,
                     json = web_formatter,
