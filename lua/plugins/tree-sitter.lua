@@ -32,7 +32,6 @@ return {
                 "jsdoc",
                 "json",
                 "json5",
-                "jsonc",
                 "kdl",
                 "kotlin",
                 "lua",
