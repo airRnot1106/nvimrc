@@ -1,9 +1,10 @@
 local picker_ignore_patterns = {
-    "node_modules/*",
-    "^.git/*",
-    ".next/*",
-    "dist/*",
     ".DS_Store",
+    ".direnv/*",
+    ".next/*",
+    "^.git/*",
+    "dist/*",
+    "node_modules/*",
     "package-lock.json",
 }
 
