@@ -73,44 +73,50 @@ return {
                     or vim.fn.filereadable(cwd .. "/deno.jsonc") == 1
                     or vim.fn.filereadable(cwd .. "/deps.ts") == 1
             end
-            local web_formatter = function()
-                if is_deno_project() then
-                    -- Denoプロジェクトの場合はLSP(denols)のフォーマットを使う (fallback)
-                    return {}
-                end
+            local web_formatter = function(opts)
+                opts = opts or {}
+                return function()
+                    if is_deno_project() then
+                        -- Denoプロジェクトの場合はLSP(denols)のフォーマットを使う (fallback)
+                        return {}
+                    end
 
-                local formatters = {}
-                if utils.has_local_bin "oxfmt" then
-                    table.insert(formatters, "oxfmt")
+                    local formatters = {}
+                    if utils.has_local_bin "oxfmt" then
+                        table.insert(formatters, "oxfmt")
+                    end
+                    if utils.has_local_bin "oxlint" then
+                        table.insert(formatters, "oxlint")
+                    end
+                    if utils.has_local_bin "biome" then
+                        table.insert(formatters, "biome-check")
+                    end
+                    if utils.has_local_bin "prettier" then
+                        table.insert(formatters, "prettierd")
+                    end
+                    if opts.stop_after_first then
+                        formatters.stop_after_first = true
+                    end
+                    return formatters
                 end
-                if utils.has_local_bin "oxlint" then
-                    table.insert(formatters, "oxlint")
-                end
-                if utils.has_local_bin "biome-check" then
-                    table.insert(formatters, "biome-check")
-                end
-                if utils.has_local_bin "prettier" then
-                    table.insert(formatters, "prettierd")
-                end
-                return formatters
             end
 
             require("conform").setup {
                 formatters_by_ft = {
                     gleam = { "gleam" },
                     go = { "gofumpt" },
-                    javascript = web_formatter,
-                    javascriptreact = web_formatter,
-                    json = web_formatter,
-                    jsonc = web_formatter,
-                    lua = { "stylua" },
-                    markdown = { "oxfmt", "prettierd", "prettier", stop_after_first = true },
-                    nix = { "nixfmt" },
+                    javascript = web_formatter { stop_after_first = true },
+                    javascriptreact = web_formatter { stop_after_first = true },
+                    json = web_formatter { stop_after_first = true },
+                    jsonc = web_formatter { stop_after_first = true },
                     kdl = { "kdlfmt" },
+                    lua = { "stylua" },
+                    markdown = web_formatter { stop_after_first = true },
+                    nix = { "nixfmt" },
                     python = { "ruff" },
-                    typescript = web_formatter,
-                    typescriptreact = web_formatter,
-                    vue = { "oxfmt", "prettierd", "prettier", stop_after_first = true },
+                    typescript = web_formatter { stop_after_first = true },
+                    typescriptreact = web_formatter { stop_after_first = true },
+                    vue = web_formatter { stop_after_first = true },
                 },
                 format_on_save = {
                     timeout_ms = 1000,
