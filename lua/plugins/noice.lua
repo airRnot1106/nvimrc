@@ -85,6 +85,7 @@ return {
             require("notify").setup {
                 timeout = 2000,
                 stages = "static",
+                merge_duplicates = true,
             }
         end,
     },

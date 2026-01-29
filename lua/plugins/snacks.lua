@@ -1,13 +1,3 @@
-local picker_ignore_patterns = {
-    ".DS_Store",
-    ".direnv/*",
-    ".next/*",
-    "^.git/*",
-    "dist/*",
-    "node_modules/*",
-    "package-lock.json",
-}
-
 return {
     {
         "folke/snacks.nvim",
@@ -39,120 +29,22 @@ return {
                 end,
             },
 
-            -- picker
-            {
-                "<Leader>fsm",
-                function()
-                    Snacks.picker.smart { hidden = true, ignored = true, exclude = picker_ignore_patterns }
-                end,
-            },
-            {
-                "<Leader>fb",
-                function()
-                    Snacks.picker.buffers()
-                end,
-            },
-            {
-                "<Leader>fgr",
-                function()
-                    Snacks.picker.grep { hidden = true, ignored = true, exclude = picker_ignore_patterns }
-                end,
-            },
-            {
-                "<Leader>fch",
-                function()
-                    Snacks.picker.command_history()
-                end,
-            },
-            {
-                "<Leader>fno",
-                function()
-                    Snacks.picker "noice"
-                end,
-            },
-            {
-                "<Leader>ff",
-                function()
-                    Snacks.picker.smart { hidden = true, ignored = true, exclude = picker_ignore_patterns }
-                end,
-            },
-            {
-                "<Leader>fgf",
-                function()
-                    Snacks.picker.git_files()
-                end,
-            },
-            {
-                "<Leader>fpj",
-                function()
-                    Snacks.picker.projects()
-                end,
-            },
-            {
-                "<Leader>frc",
-                function()
-                    Snacks.picker.recent()
-                end,
-            },
-            {
-                "<Leader>fgb",
-                function()
-                    Snacks.picker.git_branches()
-                end,
-            },
-            {
-                "<Leader>fsh",
-                function()
-                    Snacks.picker.search_history()
-                end,
-            },
-            {
-                "<Leader>fdi",
-                function()
-                    Snacks.picker.diagnostics()
-                end,
-            },
-            {
-                "<Leader>fql",
-                function()
-                    Snacks.picker.qflist()
-                end,
-            },
-            {
-                "<Leader>fld",
-                function()
-                    Snacks.picker.lsp_definitions()
-                end,
-            },
-            {
-                "<Leader>flr",
-                function()
-                    Snacks.picker.lsp_references()
-                end,
-                nowait = true,
-            },
-            {
-                "<Leader>fre",
-                function()
-                    Snacks.picker.resume()
-                end,
-            },
-            {
-                "<Leader>fpi",
-                function()
-                    Snacks.picker.pickers()
-                end,
-            },
-
-            -- scratch
-            {
-                "<Leader>cr",
-                function()
-                    Snacks.scratch.open()
-                end,
-            },
-
             -- terminal
+            {
+                "<F7>",
+                function()
+                    Snacks.terminal.toggle(nil, {
+                        win = {
+                            position = "float",
+                            relative = "editor",
+                            border = "bold",
+                        },
+                        start_insert = true,
+                        auto_insert = false,
+                    })
+                end,
+                mode = { "n", "i", "t" },
+            },
             {
                 "<Leader>tv",
                 function()
@@ -191,9 +83,6 @@ return {
                             openDirInEditor = '[ -z "$NVIM" ] && (nvim -- {{dir}}) || (nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{dir}})',
                         },
                     },
-                },
-                picker = {
-                    ui_select = true,
                 },
             }
             vim.ui.input = Snacks.input.input
