@@ -9,7 +9,8 @@ return {
             {
                 "<Leader>gbl",
                 function()
-                    Snacks.git.blame_line()
+                    local file = vim.api.nvim_buf_get_name(0)
+                    Snacks.terminal.open { "blake", file }
                 end,
             },
 
