@@ -82,12 +82,6 @@ return {
                     end
 
                     local formatters = {}
-                    if utils.has_local_bin "oxfmt" then
-                        table.insert(formatters, "oxfmt")
-                    end
-                    if utils.has_local_bin "oxlint" then
-                        table.insert(formatters, "oxlint")
-                    end
                     if utils.has_local_bin "biome" then
                         table.insert(formatters, "biome-check")
                     end

@@ -10,6 +10,10 @@ local vue_plugin = {
 
 ---@type vim.lsp.Config
 return {
+    on_init = function(client)
+        client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.documentRangeFormattingProvider = false
+    end,
     cmd = { "vtsls", "--stdio" },
     filetypes = {
         "javascript",

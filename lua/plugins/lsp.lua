@@ -34,6 +34,7 @@ return {
                 "lua_ls",
                 "mdx_analyzer",
                 "nixd",
+                "oxfmt",
                 "oxlint",
                 "pylsp",
                 "rust_analyzer",
