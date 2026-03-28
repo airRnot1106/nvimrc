@@ -7,6 +7,7 @@ return {
         "astro",
         "javascript",
         "javascriptreact",
+        "json",
         "svelte",
         "typescript",
         "typescriptreact",
