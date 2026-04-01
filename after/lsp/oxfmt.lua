@@ -9,6 +9,7 @@ return {
         "javascript",
         "javascriptreact",
         "json",
+        "jsonc",
         "markdown",
         "svelte",
         "toml",
