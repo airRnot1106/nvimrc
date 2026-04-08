@@ -5,6 +5,7 @@ return {
             { "vim-denops/denops.vim" },
             { "delphinus/skkeleton_indicator.nvim" },
         },
+        lazy = false,
         event = "InsertEnter",
         init = function()
             vim.g["denops#server#deno_args"] = { "-q", "--no-lock", "--unstable-kv", "-A" }
