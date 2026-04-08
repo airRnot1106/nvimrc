@@ -38,6 +38,7 @@ return {
                 "oxlint",
                 "pylsp",
                 "rust_analyzer",
+                "tailwindcss",
                 "tsp_server",
                 "version-lsp",
                 "vtsls",
