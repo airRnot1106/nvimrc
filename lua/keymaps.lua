@@ -60,3 +60,6 @@ keymap("n", "<Esc><Esc>", ":nohlsearch<CR>", { silent = true })
 
 -- search
 keymap("n", "*", "*N", { silent = true })
+
+-- register
+keymap("n", "<Leader>yj", "<Cmd>JoinRegister<CR>", { silent = true })
