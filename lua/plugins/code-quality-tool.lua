@@ -114,7 +114,7 @@ return {
                 },
                 format_on_save = {
                     timeout_ms = 1000,
-                    lsp_format = "prefer",
+                    lsp_format = "first",
                 },
             }
         end,
