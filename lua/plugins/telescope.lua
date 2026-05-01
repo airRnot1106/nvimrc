@@ -15,6 +15,23 @@ return {
             -- setup telescope
             require("telescope").setup {
                 defaults = {
+                    vimgrep_arguments = {
+                        "rg",
+                        "--color=never",
+                        "--no-heading",
+                        "--with-filename",
+                        "--line-number",
+                        "--column",
+                        "--smart-case",
+                        "--hidden",
+                        "--glob=!**/.DS_Store",
+                        "--glob=!**/.direnv/*",
+                        "--glob=!**/.next/*",
+                        "--glob=!**/.git/*",
+                        "--glob=!**/dist/*",
+                        "--glob=!**/node_modules/*",
+                        "--glob=!**/package-lock.json",
+                    },
                     mappings = {
                         i = {
                             ["<C-y>"] = function()
