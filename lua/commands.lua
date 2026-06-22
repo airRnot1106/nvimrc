@@ -9,7 +9,7 @@ end, { desc = "Yank the relative path of the current buffer to clipboard" })
 
 create_user_command("JoinRegister", function()
     local reg = vim.fn.getreg "+"
-    local cleaned = vim.trim((reg:gsub("\n", " "):gsub(" +", " ")))
+    local cleaned = vim.trim((reg:gsub("\n", ""):gsub(" +", " ")))
     vim.fn.setreg("+", cleaned, "c")
     local lines = vim.split(reg, "\n")
     vim.api.nvim_echo({ { string.format("%d lines joined", #lines), "Normal" } }, false, {})
