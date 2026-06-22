@@ -78,7 +78,12 @@ return {
             vim.keymap.set("n", "<Leader>fld", builtin.lsp_definitions, { desc = "Telescope LSP definitions" })
             vim.keymap.set("n", "<Leader>flr", builtin.lsp_references, { desc = "Telescope LSP references" })
             vim.keymap.set("n", "<Leader>fli", builtin.lsp_implementations, { desc = "Telescope LSP implementations" })
-            vim.keymap.set("n", "<Leader>flt", builtin.lsp_type_definitions, { desc = "Telescope LSP type definitions" })
+            vim.keymap.set(
+                "n",
+                "<Leader>flt",
+                builtin.lsp_type_definitions,
+                { desc = "Telescope LSP type definitions" }
+            )
             vim.keymap.set("n", "<Leader>fn", extensions.notify.notify, { desc = "Telescope notify" })
         end,
     },
