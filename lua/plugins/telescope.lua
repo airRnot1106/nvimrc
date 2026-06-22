@@ -10,7 +10,7 @@ return {
             "nvim-tree/nvim-web-devicons",
             "kkharji/sqlite.lua",
         },
-        events = { "VeryLazy" },
+        event = { "VeryLazy" },
         config = function()
             -- setup telescope
             require("telescope").setup {
