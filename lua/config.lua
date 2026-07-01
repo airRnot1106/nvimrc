@@ -1,6 +1,7 @@
 local keymap = vim.keymap.set
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
+local usercmd = vim.api.nvim_create_user_command
 
 -- appearance
 vim.opt.number = true
@@ -67,6 +68,22 @@ vim.opt.fileencoding = "utf-8"
 vim.opt.swapfile = false
 
 keymap("", "<Leader>w", ":w<CR>", { silent = true, desc = "Save file" })
+
+-- commands
+usercmd("YankRelativePath", function()
+    local relative_path = vim.fn.fnamemodify(vim.fn.expand "%:p", ":~:.")
+    vim.fn.setreg("+", relative_path)
+    vim.fn.setreg('"', relative_path)
+    print("Yanked: " .. relative_path)
+end, { desc = "Yank the relative path of the current buffer to clipboard" })
+
+usercmd("JoinRegister", function()
+    local reg = vim.fn.getreg "+"
+    local cleaned = vim.trim((reg:gsub("\n", ""):gsub(" +", " ")))
+    vim.fn.setreg("+", cleaned, "c")
+    local lines = vim.split(reg, "\n")
+    vim.api.nvim_echo({ { string.format("%d lines joined", #lines), "Normal" } }, false, {})
+end, { desc = "Join clipboard register lines into a single line" })
 
 -- misc
 vim.opt.mouse = ""
