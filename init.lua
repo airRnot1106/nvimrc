@@ -32,10 +32,9 @@ vim.g.maplocalleader = " "
 -- dpp.vim setup
 local dpp_base = vim.fn.expand "~/.cache/dpp"
 local dpp_repos = dpp_base .. "/repos/github.com"
-local denops_src = dpp_repos .. "/vim-denops/denops.vim"
-local dpp_config_path = vim.fn.stdpath "config" .. "/dpp.ts"
 
 for _, path in ipairs {
+    dpp_repos .. "/vim-denops/denops.vim",
     dpp_repos .. "/Shougo/dpp.vim",
     dpp_repos .. "/Shougo/dpp-ext-installer",
     dpp_repos .. "/Shougo/dpp-ext-lazy",
@@ -44,48 +43,48 @@ for _, path in ipairs {
     vim.opt.runtimepath:prepend(path)
 end
 
-local dpp = require "dpp"
+local cache = require("dpp-cache").new(dpp_base, vim.fn.stdpath "config" .. "/dpp.ts")
 
-local ok, load_failed = pcall(dpp.load_state, dpp_base)
-if not ok then
-    vim.notify("dpp: failed to load cached state, rebuilding: " .. tostring(load_failed), vim.log.levels.WARN)
-    load_failed = true
-end
-
--- Only reload state post-rebuild if nothing was sourced yet this session (avoids E227 double-source)
-local state_loaded = not load_failed
-
-local needs_rebuild = load_failed
-if state_loaded then
-    local stale = dpp.check_files(dpp_base)
-    needs_rebuild = type(stale) == "table" and #stale > 0
-end
-
-if needs_rebuild then
-    vim.opt.runtimepath:prepend(denops_src)
-
-    local reloaded = false
-    local function rebuild()
-        dpp.make_state(dpp_base, dpp_config_path)
+local sourced = false
+local function source_once()
+    if sourced then
+        return
     end
+    cache.load()
+    sourced = true
+end
 
-    -- wait_async fires immediately if denops is already ready, unlike a plain DenopsReady autocmd
-    vim.fn["denops#server#wait_async"](rebuild)
+-- when the reconstruction of state.vim and startup.vim for dpp.vim is complete
+vim.api.nvim_create_autocmd("User", {
+    pattern = "Dpp:makeStatePost",
+    callback = function()
+        -- load startup.vim if it has not been loaded yet in this session
+        source_once()
+        -- start installation for any plugins that have not been cloned yet
+        if not cache.install_missing() then
+            vim.notify "dpp: Setup complete. Please restart Neovim."
+        end
+    end,
+})
 
-    vim.api.nvim_create_autocmd("User", {
-        pattern = "Dpp:makeStatePost",
-        once = true,
-        callback = function()
-            if not state_loaded and not reloaded then
-                reloaded = true
-                dpp.load_state(dpp_base)
-            end
-            local not_installed = vim.fn["dpp#sync_ext_action"]("installer", "getNotInstalled", vim.empty_dict())
-            if type(not_installed) == "table" and #not_installed > 0 then
-                vim.fn["dpp#async_ext_action"]("installer", "install")
-            end
-        end,
-    })
+-- regenerate state.vim and startup.vim whenever a plugin clone or update is completed
+vim.api.nvim_create_autocmd("User", {
+    pattern = "Dpp:ext:installer:updateDone",
+    callback = cache.rebuild,
+})
+
+-- if the plugin pointed to by state.vim is broken, delete state.vim and startup.vim
+if cache.is_broken() then
+    cache.discard()
+end
+
+-- detect plugins that are not yet installed and install them if any are found
+local fresh = cache.load()
+sourced = not fresh
+if fresh or cache.config_changed() then
+    cache.rebuild()
+else
+    cache.install_missing()
 end
 
 vim.cmd "filetype indent plugin on"
