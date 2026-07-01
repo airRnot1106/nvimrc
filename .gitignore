@@ -1,0 +1,5 @@
+*.log
+.claude
+.direnv
+.env
+.pre-commit-config.yaml
