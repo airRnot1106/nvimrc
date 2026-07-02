@@ -77,6 +77,12 @@ usercmd("YankRelativePath", function()
     print("Yanked: " .. relative_path)
 end, { desc = "Yank the relative path of the current buffer to clipboard" })
 
+usercmd("DppUpdate", function()
+    vim.fn["denops#server#wait_async"](function()
+        vim.fn["dpp#async_ext_action"]("installer", "update")
+    end)
+end, { desc = "Update all plugins managed by dpp.vim" })
+
 usercmd("JoinRegister", function()
     local reg = vim.fn.getreg "+"
     local cleaned = vim.trim((reg:gsub("\n", ""):gsub(" +", " ")))
