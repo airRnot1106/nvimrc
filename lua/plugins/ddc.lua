@@ -5,6 +5,7 @@ return {
         "ddc-emoji",
         "ddc-fuzzy",
         "ddc-path",
+        "ddc-previewer-floating",
         "ddc-source-around",
         "ddc-source-buffer",
         "ddc-source-cmdline",
@@ -187,6 +188,12 @@ return {
         })
 
         vim.fn["ddc#enable"]()
+
+        local ddc_previewer_floating = require "ddc_previewer_floating"
+        ddc_previewer_floating.setup {
+            ui = "pum",
+        }
+        ddc_previewer_floating.enable()
 
         local function pum_or(rhs, fallback)
             return function()
