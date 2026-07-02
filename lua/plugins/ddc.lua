@@ -77,10 +77,12 @@ return {
             },
             cmdline = {
                 mark = "[C]",
+                minAutoCompleteLength = 1,
             },
             cmdline_history = {
                 mark = "history",
                 sorters = { "sorter_cmdline_history" },
+                minAutoCompleteLength = 1,
             },
             copilot = {
                 mark = "[Copilot]",
