@@ -180,6 +180,9 @@ return {
                 types = { "public.utf8-plain-text" },
                 dbPath = "~/Library/Containers/org.p0deje.Maccy/Data/Library/Application Support/Maccy/Storage.sqlite",
                 maxByteLength = 10000,
+                dedupe = true,
+                excludeAfterUse = true,
+                maxUseCount = 1,
             },
             path = {
                 absolute = false,
