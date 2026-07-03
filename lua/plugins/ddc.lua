@@ -181,6 +181,7 @@ return {
                 dbPath = "~/Library/Containers/org.p0deje.Maccy/Data/Library/Application Support/Maccy/Storage.sqlite",
                 maxByteLength = 10000,
                 dedupe = true,
+                trimTrailingNewline = true,
                 excludeAfterUse = true,
                 maxUseCount = 1,
             },
