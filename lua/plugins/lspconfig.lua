@@ -5,8 +5,26 @@ return {
     on_event = { "VimEnter" },
     lua_source = function()
         local lsp_names = {
+            "astro",
+            "bashls",
+            "biome",
+            "cssls",
             "denols",
+            "eslint",
+            "gleam",
+            "gopls",
+            "html",
+            "jsonls",
             "lua_ls",
+            "nixd",
+            "oxfmt",
+            "oxlint",
+            "pylsp",
+            "rust_analyzer",
+            "tailwindcss",
+            "tsp_server",
+            "version_lsp",
+            "vtsls",
         }
         vim.lsp.enable(lsp_names)
 
