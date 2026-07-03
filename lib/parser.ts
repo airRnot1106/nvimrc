@@ -61,8 +61,10 @@ export function functionParser(): Parser {
     const parts: string[] = [];
     for (let i = startLine; i < lines.length; i++) {
       const line = i === startLine ? lines[i].slice(funcStart) : lines[i];
-      depth += (line.match(openers) ?? []).length;
-      depth -= (line.match(/\bend\b/g) ?? []).length;
+      // コメント行に含まれる if/do/end 等を誤カウントしないよう除外する
+      const counted = line.trimStart().startsWith("--") ? "" : line;
+      depth += (counted.match(openers) ?? []).length;
+      depth -= (counted.match(/\bend\b/g) ?? []).length;
       parts.push(line);
       if (depth === 0) break;
     }
