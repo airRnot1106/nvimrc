@@ -1,7 +1,7 @@
 return {
     name = "ddt",
     repo = "Shougo/ddt.vim",
-    depends = { "ddt-ui-shell", "ddt-ui-terminal" },
+    depends = { "ddt-ui-shell", "ddt-ui-terminal", "nui" },
     on_event = { "VimEnter" },
     lua_source = function()
         local ddt_cache_dir = vim.fn.stdpath "cache" .. "/ddt"
@@ -82,6 +82,79 @@ return {
         vim.keymap.set("n", "<C-s><C-t>", function()
             vim.fn["ddt#start"] {
                 name = vim.t.ddt_ui_terminal_last_name or ("terminal-" .. vim.fn.win_getid()),
+                ui = "terminal",
+            }
+        end)
+
+        local float_popup
+
+        local function find_float_terminal_buf()
+            for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+                if vim.api.nvim_buf_is_loaded(buf) and vim.b[buf].ddt_ui_name == "floating-terminal" then
+                    return buf
+                end
+            end
+        end
+
+        -- close the border window together when the popup is closed with :q
+        -- etc.; hide() keeps the terminal buffer alive unlike unmount()
+        local function hide_on_win_closed(popup)
+            vim.api.nvim_create_autocmd("WinClosed", {
+                pattern = tostring(popup.winid),
+                once = true,
+                callback = function()
+                    popup:hide()
+                end,
+            })
+        end
+
+        -- recalculate the "%" based size and position on editor resize;
+        -- while hidden this only refreshes win_config for the next show()
+        vim.api.nvim_create_autocmd("VimResized", {
+            callback = function()
+                if float_popup then
+                    float_popup:update_layout()
+                end
+            end,
+        })
+
+        vim.keymap.set({ "n", "t" }, "<F7>", function()
+            if float_popup and float_popup.winid and vim.api.nvim_win_is_valid(float_popup.winid) then
+                float_popup:hide()
+                return
+            end
+
+            local terminal_buf = find_float_terminal_buf()
+
+            if float_popup and terminal_buf then
+                -- ddt replaces the popup's scratch buffer via :enew on first
+                -- start, so point the popup at the real terminal buffer
+                -- before showing it again
+                float_popup.bufnr = terminal_buf
+                float_popup:show()
+            else
+                local Popup = require "nui.popup"
+                float_popup = Popup {
+                    enter = true,
+                    focusable = true,
+                    relative = "editor",
+                    position = "50%",
+                    size = { width = "80%", height = "80%" },
+                    border = {
+                        style = "rounded",
+                        text = { top = " terminal ", top_align = "center" },
+                    },
+                    -- reuse the existing session if the popup object was lost;
+                    -- an explicit bufnr is never deleted by nui
+                    bufnr = terminal_buf,
+                }
+                float_popup:mount()
+            end
+
+            hide_on_win_closed(float_popup)
+
+            vim.fn["ddt#start"] {
+                name = "floating-terminal",
                 ui = "terminal",
             }
         end)
