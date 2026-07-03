@@ -82,6 +82,7 @@ return {
             },
             cmdline_history = {
                 mark = "history",
+                maxItems = 10,
                 sorters = { "sorter_cmdline_history" },
                 minAutoCompleteLength = 1,
             },
