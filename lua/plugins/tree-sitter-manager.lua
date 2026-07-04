@@ -12,9 +12,6 @@ return {
                 "javascript",
                 "json",
                 "kdl",
-                "lua",
-                "markdown",
-                "markdown_inline",
                 "nix",
                 "pkl",
                 "python",
@@ -24,7 +21,6 @@ return {
                 "toml",
                 "typescript",
                 "typst",
-                "vim",
                 "yaml",
             },
         }
