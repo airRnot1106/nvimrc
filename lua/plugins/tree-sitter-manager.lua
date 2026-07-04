@@ -19,6 +19,7 @@ return {
                 "ruby",
                 "rust",
                 "toml",
+                "tsx",
                 "typescript",
                 "typst",
                 "yaml",
