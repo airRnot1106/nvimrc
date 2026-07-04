@@ -15,6 +15,7 @@ return {
             "gopls",
             "html",
             "jsonls",
+            "kakehashi",
             "lua_ls",
             "nixd",
             "oxfmt",

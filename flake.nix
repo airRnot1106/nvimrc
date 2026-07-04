@@ -10,8 +10,9 @@
       url = "github:cachix/git-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    mocword.url = "github:blyoa/nix-mocword";
+    kakehashi.url = "github:atusy/kakehashi";
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    mocword.url = "github:blyoa/nix-mocword";
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -39,7 +40,7 @@
           };
         };
 
-        inherit (inputs) mocword;
+        inherit (inputs) kakehashi mocword;
       in
       {
         nput.dpp = dpp.packages.${system}.manifest;
@@ -60,6 +61,7 @@
                 [
                   copilot-language-server
                   deno
+                  kakehashi.packages.${system}.default
                   lua-language-server
                   mocword.packages.${system}.default
                   ripgrep
