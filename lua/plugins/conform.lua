@@ -25,8 +25,7 @@ return {
             end
         end
 
-        local js =
-            pick { { "biome-organize-imports" }, { "oxlint" }, { "deno_fmt", "oxfmt", "biome-check", "prettierd" } }
+        local js = pick { { "biome-organize-imports" }, { "deno_fmt", "oxfmt", "biome-check", "prettierd" } }
         local md = pick { { "oxfmt", "prettierd" } }
 
         require("conform").setup {
@@ -38,7 +37,6 @@ return {
                     require_cwd = true,
                 },
                 oxfmt = { require_cwd = true },
-                oxlint = { require_cwd = true },
                 prettierd = { require_cwd = true },
             },
             formatters_by_ft = {
