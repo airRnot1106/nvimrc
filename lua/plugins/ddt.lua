@@ -127,11 +127,15 @@ return {
             local terminal_buf = find_float_terminal_buf()
 
             if float_popup and terminal_buf then
-                -- ddt replaces the popup's scratch buffer via :enew on first
-                -- start, so point the popup at the real terminal buffer
-                -- before showing it again
+                -- reuse the existing session: just re-show the window.
+                -- do NOT call ddt#start here, or it will respawn the shell
+                -- (and reset its cwd to the project root) on every toggle
                 float_popup.bufnr = terminal_buf
                 float_popup:show()
+                hide_on_win_closed(float_popup)
+                vim.schedule(function()
+                    vim.cmd "startinsert"
+                end)
             else
                 local Popup = require "nui.popup"
                 float_popup = Popup {
@@ -149,14 +153,18 @@ return {
                     bufnr = terminal_buf,
                 }
                 float_popup:mount()
+                hide_on_win_closed(float_popup)
+
+                -- only start a fresh shell when there is no existing one
+                vim.fn["ddt#start"] {
+                    name = "floating-terminal",
+                    ui = "terminal",
+                }
+
+                vim.schedule(function()
+                    vim.cmd "startinsert"
+                end)
             end
-
-            hide_on_win_closed(float_popup)
-
-            vim.fn["ddt#start"] {
-                name = "floating-terminal",
-                ui = "terminal",
-            }
         end)
     end,
 }
