@@ -1,6 +1,6 @@
 {
   "imports": {
-    "@std/path": "jsr:@std/path@~1.1.5",
+    "@std/path": "jsr:@std/path@~1.1.6",
     "@shougo/dpp-vim": "jsr:@shougo/dpp-vim@~6.6.0",
     "@shougo/dpp-ext-installer": "jsr:@shougo/dpp-ext-installer@~2.2.0",
     "@shougo/dpp-ext-lazy": "jsr:@shougo/dpp-ext-lazy@~2.0.1",
