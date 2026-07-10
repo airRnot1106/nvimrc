@@ -2,9 +2,14 @@
   inputs = {
     agent-skills = {
       url = "path:./nix/agent-skills";
+      inputs.flake-utils.follows = "flake-utils";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    dpp.url = "path:./nix/dpp";
+    dpp = {
+      url = "path:./nix/dpp";
+      inputs.flake-utils.follows = "flake-utils";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     flake-utils.url = "github:numtide/flake-utils";
     git-hooks = {
       url = "github:cachix/git-hooks.nix";
@@ -43,7 +48,10 @@
         inherit (inputs) kakehashi mocword;
       in
       {
-        nput.dpp = dpp.packages.${system}.manifest;
+        nput = {
+          inherit (inputs.agent-skills.nput.${system}) skills;
+          inherit (inputs.dpp.nput.${system}) dpp;
+        };
 
         devShells =
           let

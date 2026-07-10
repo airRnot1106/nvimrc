@@ -1,11 +1,13 @@
 {
   inputs = {
-    agent-skills.url = "github:Kyure-A/agent-skills-nix";
+    flake-utils.url = "github:numtide/flake-utils";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nput.url = "github:yasunori0418/nput";
+
     mattpocock-skills = {
       url = "github:mattpocock/skills";
       flake = false;
     };
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     stop-slop = {
       url = "github:hardikpandya/stop-slop";
       flake = false;
@@ -14,74 +16,65 @@
 
   outputs =
     {
-      agent-skills,
-      mattpocock-skills,
+      flake-utils,
       nixpkgs,
-      stop-slop,
+      nput,
       ...
-    }:
-    let
-      inherit (nixpkgs) lib;
-      forEachSystem = lib.genAttrs [
-        "aarch64-darwin"
-        "aarch64-linux"
-        "x86_64-darwin"
-        "x86_64-linux"
-      ];
-    in
-    {
-      devShells = forEachSystem (
-        system:
-        let
-          pkgs = import nixpkgs { inherit system; };
+    }@inputs:
+    flake-utils.lib.eachDefaultSystem (
+      system:
+      let
+        pkgs = import nixpkgs { inherit system; };
 
-          agentLib = agent-skills.lib.agent-skills;
-          sources = {
-            mattpocock-skills = {
-              path = mattpocock-skills;
-              subdir = "skills";
-            };
-            stop-slop = {
-              path = stop-slop;
-            };
+        mkEntry =
+          {
+            name,
+            src,
+            subpath,
+          }:
+          {
+            name = ".claude/skills/${name}";
+            value = { inherit src subpath; };
           };
-          catalog = agentLib.discoverCatalog sources;
-          allowlist = agentLib.allowlistFor {
-            inherit catalog sources;
-            enable = [ "stop-slop" ];
-          };
-          selection = agentLib.selectSkills {
-            inherit catalog allowlist sources;
-            skills = {
-              grill-me = {
-                from = "mattpocock-skills";
-                path = "productivity/grill-me";
-              };
-              grilling = {
-                from = "mattpocock-skills";
-                path = "productivity/grilling";
-              };
-              handoff = {
-                from = "mattpocock-skills";
-                path = "productivity/handoff";
-              };
-            };
-          };
-          bundle = agentLib.mkBundle { inherit pkgs selection; };
-          localTargets = {
-            claude = agentLib.defaultLocalTargets.claude // {
-              enable = true;
-            };
-          };
-        in
-        {
-          default = pkgs.mkShellNoCC {
-            shellHook = agentLib.mkShellHook {
-              inherit pkgs bundle;
-              targets = localTargets;
-            };
-          };
-        }
-      );
-    };
+
+        skills =
+          let
+            inherit (inputs) mattpocock-skills stop-slop;
+          in
+          [
+            {
+              name = "grill-me";
+              src = mattpocock-skills;
+              subpath = "skills/productivity/grill-me";
+            }
+            {
+              name = "grilling";
+              src = mattpocock-skills;
+              subpath = "skills/productivity/grilling";
+            }
+            {
+              name = "handoff";
+              src = mattpocock-skills;
+              subpath = "skills/productivity/handoff";
+            }
+            {
+              name = "stop-slop";
+              src = stop-slop;
+              subpath = ".";
+            }
+          ];
+      in
+      {
+        nput.skills = nput.lib.mkManifest {
+          inherit pkgs;
+          root = nput.lib.projectRoot;
+          entries = builtins.listToAttrs (map mkEntry skills);
+        };
+
+        devShells.default = pkgs.mkShellNoCC {
+          packages = [ nput.packages.${system}.nput ];
+          shellHook = "nput apply skills --no-wait";
+        };
+      }
+    );
 }

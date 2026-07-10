@@ -1,5 +1,6 @@
 {
   inputs = {
+    flake-utils.url = "github:numtide/flake-utils";
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nput.url = "github:yasunori0418/nput";
 
@@ -27,70 +28,70 @@
 
   outputs =
     {
+      flake-utils,
       nixpkgs,
       nput,
-      denops-vim,
-      dpp-vim,
-      dpp-ext-installer,
-      dpp-ext-lazy,
-      dpp-protocol-git,
       ...
-    }:
-    let
-      inherit (nixpkgs) lib;
-      forEachSystem = lib.genAttrs [
-        "aarch64-darwin"
-        "aarch64-linux"
-        "x86_64-darwin"
-        "x86_64-linux"
-      ];
-    in
-    {
-      packages = forEachSystem (
-        system:
-        let
-          pkgs = import nixpkgs { inherit system; };
-        in
-        {
-          inherit (nput.packages.${system}) nput;
+    }@inputs:
+    flake-utils.lib.eachDefaultSystem (
+      system:
+      let
+        pkgs = import nixpkgs { inherit system; };
 
-          manifest = nput.lib.mkManifest {
-            inherit pkgs;
-            root = nput.lib.homeRoot;
-            entries = {
-              ".cache/dpp/repos/github.com/Shougo/dpp.vim" = {
-                src = dpp-vim;
-              };
-              ".cache/dpp/repos/github.com/Shougo/dpp-ext-installer" = {
-                src = dpp-ext-installer;
-              };
-              ".cache/dpp/repos/github.com/Shougo/dpp-ext-lazy" = {
-                src = dpp-ext-lazy;
-              };
-              ".cache/dpp/repos/github.com/Shougo/dpp-protocol-git" = {
-                src = dpp-protocol-git;
-              };
-              ".cache/dpp/repos/github.com/vim-denops/denops.vim" = {
-                src = denops-vim;
-              };
-            };
+        mkEntry =
+          {
+            repo,
+            src,
+          }:
+          {
+            name = ".cache/dpp/repos/github.com/${repo}";
+            value = { inherit src; };
           };
-        }
-      );
 
-      devShells = forEachSystem (
-        system:
-        let
-          pkgs = import nixpkgs { inherit system; };
-        in
-        {
-          default = pkgs.mkShellNoCC {
-            packages = [ nput.packages.${system}.nput ];
-            shellHook = ''
-              nput apply dpp --no-wait
-            '';
-          };
-        }
-      );
-    };
+        repos =
+          let
+            inherit (inputs)
+              dpp-vim
+              dpp-ext-installer
+              dpp-ext-lazy
+              dpp-protocol-git
+              denops-vim
+              ;
+          in
+          [
+            {
+              repo = "Shougo/dpp.vim";
+              src = dpp-vim;
+            }
+            {
+              repo = "Shougo/dpp-ext-installer";
+              src = dpp-ext-installer;
+            }
+            {
+              repo = "Shougo/dpp-ext-lazy";
+              src = dpp-ext-lazy;
+            }
+            {
+              repo = "Shougo/dpp-protocol-git";
+              src = dpp-protocol-git;
+            }
+            {
+              repo = "vim-denops/denops.vim";
+              src = denops-vim;
+            }
+          ];
+      in
+      {
+        nput.dpp = nput.lib.mkManifest {
+          inherit pkgs;
+          root = nput.lib.homeRoot;
+          entries = builtins.listToAttrs (map mkEntry repos);
+        };
+
+        devShells.default = pkgs.mkShellNoCC {
+          packages = [ nput.packages.${system}.nput ];
+          shellHook = "nput apply dpp --no-wait";
+        };
+      }
+    );
 }
