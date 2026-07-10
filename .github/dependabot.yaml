@@ -15,9 +15,11 @@ updates:
   - package-ecosystem: "nix"
     directories:
       - "/"
-      - "/nix/dpp"
       - "/nix/agent-skills"
+      - "/nix/dpp"
     schedule:
       interval: "weekly"
-    cooldown:
-      default-days: 7
+    groups:
+      flake-inputs:
+        patterns:
+          - "*"
