@@ -6,7 +6,7 @@ return {
         require("mini.comment").setup {
             mappings = {
                 comment = "<Leader>/",
-                comment_line = "<Leader>//",
+                comment_line = "<Leader>/",
                 comment_visual = "<Leader>/",
                 textobject = "<Leader>/",
             },
