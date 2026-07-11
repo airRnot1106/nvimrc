@@ -54,6 +54,7 @@ export class Config extends BaseConfig {
           repo: passThrough(),
           rev: passThrough(),
           depends: toStringArray(),
+          if: toBoolean(),
           lazy: toBoolean(),
           on_cmd: toJsonValue(),
           on_event: toJsonValue(),
