@@ -39,5 +39,20 @@ return {
             "<Plug>(skkeleton-disable)",
             { noremap = false, desc = "Disable skkeleton" }
         )
+
+        -- skkeleton#internal#map#restore() clears all buffer-local insert
+        -- keymaps via `mapclear <buffer>` before restoring a pre-enable
+        -- snapshot, which can permanently wipe nvim-autopairs' keymaps if
+        -- they were attached after that snapshot was taken. Force
+        -- nvim-autopairs to re-attach every time skkeleton is disabled.
+        vim.api.nvim_create_autocmd("User", {
+            pattern = "skkeleton-disable-post",
+            callback = function()
+                local ok, autopairs = pcall(require, "nvim-autopairs")
+                if ok then
+                    autopairs.force_attach()
+                end
+            end,
+        })
     end,
 }
