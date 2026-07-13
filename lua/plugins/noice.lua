@@ -57,6 +57,12 @@ return {
                     },
                     opts = { skip = true },
                 },
+                {
+                    filter = {
+                        find = pattern_quote "[ddc-rg] rg exited with non-zero status",
+                    },
+                    opts = { skip = true },
+                },
             },
             cmdline = {
                 enabled = true,
