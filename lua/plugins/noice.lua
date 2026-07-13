@@ -63,6 +63,12 @@ return {
                     },
                     opts = { skip = true },
                 },
+                {
+                    filter = {
+                        find = "E89:",
+                    },
+                    opts = { skip = true },
+                },
             },
             cmdline = {
                 enabled = true,
