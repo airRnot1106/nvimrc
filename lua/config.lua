@@ -83,6 +83,14 @@ usercmd("DppUpdate", function()
     end)
 end, { desc = "Update all plugins managed by dpp.vim" })
 
+usercmd("DenopsSharedServerInstall", function()
+    vim.fn["denops_shared_server#install"]()
+end, { desc = "Install and start the denops shared server for this OS" })
+
+usercmd("DenopsSharedServerUninstall", function()
+    vim.fn["denops_shared_server#uninstall"]()
+end, { desc = "Uninstall the denops shared server for this OS" })
+
 usercmd("JoinRegister", function()
     local reg = vim.fn.getreg "+"
     local cleaned = vim.trim((reg:gsub("\n", ""):gsub(" +", " ")))

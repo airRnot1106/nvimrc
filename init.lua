@@ -35,6 +35,7 @@ local dpp_repos = dpp_base .. "/repos/github.com"
 
 for _, path in ipairs {
     dpp_repos .. "/vim-denops/denops.vim",
+    dpp_repos .. "/vim-denops/denops-shared-server.vim",
     dpp_repos .. "/Shougo/dpp.vim",
     dpp_repos .. "/Shougo/dpp-ext-installer",
     dpp_repos .. "/Shougo/dpp-ext-lazy",
@@ -42,6 +43,10 @@ for _, path in ipairs {
 } do
     vim.opt.runtimepath:prepend(path)
 end
+
+-- connect to the denops shared server (see `:DenopsSharedServerInstall`)
+-- instead of spawning a local denops server per Neovim instance
+vim.g.denops_server_addr = "127.0.0.1:32123"
 
 local cache = require("dpp-cache").new(dpp_base, vim.fn.stdpath "config" .. "/dpp.ts")
 

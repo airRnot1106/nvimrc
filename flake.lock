@@ -22,6 +22,22 @@
       },
       "parent": []
     },
+    "denops-shared-server-vim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1723983550,
+        "narHash": "sha256-kJQCBMH/JhmwKDse2GGBRgQaiGlj2Jo4FIsO5V6LnD4=",
+        "owner": "airRnot1106",
+        "repo": "denops-shared-server.vim",
+        "rev": "829a7e7c9d1d534f71f471c3a4a312457ddecb63",
+        "type": "github"
+      },
+      "original": {
+        "owner": "airRnot1106",
+        "repo": "denops-shared-server.vim",
+        "type": "github"
+      }
+    },
     "denops-vim": {
       "flake": false,
       "locked": {
@@ -40,6 +56,7 @@
     },
     "dpp": {
       "inputs": {
+        "denops-shared-server-vim": "denops-shared-server-vim",
         "denops-vim": "denops-vim",
         "dpp-ext-installer": "dpp-ext-installer",
         "dpp-ext-lazy": "dpp-ext-lazy",
@@ -66,11 +83,11 @@
     "dpp-ext-installer": {
       "flake": false,
       "locked": {
-        "lastModified": 1783653621,
-        "narHash": "sha256-lzgTRfv1XHneOLza4/Cp/UHcaU3NnSgMYmPPg1qX3fs=",
+        "lastModified": 1784173521,
+        "narHash": "sha256-53hdU2pei+wrdZxfJNP3xmA5L5wCW8LIJkUsoMiF/KU=",
         "owner": "Shougo",
         "repo": "dpp-ext-installer",
-        "rev": "6e004955f2631c6999c90c409b1ae247cf49030e",
+        "rev": "c840235f77818c112e7404f6684a2b47d75e39ea",
         "type": "github"
       },
       "original": {
@@ -98,11 +115,11 @@
     "dpp-protocol-git": {
       "flake": false,
       "locked": {
-        "lastModified": 1780569869,
-        "narHash": "sha256-HjIVog/Ibdd5iub7OxXtaw0qtmhGsExSRp62GSC6awg=",
+        "lastModified": 1784088333,
+        "narHash": "sha256-epg1tkSCuHQH7tttTnnEw1XbrZeL1f5t1ZScvHp1naA=",
         "owner": "Shougo",
         "repo": "dpp-protocol-git",
-        "rev": "e54eef6bd604a2faddf4703bc129eadda322bdc4",
+        "rev": "000f7ca2ad3264d7589e04d6a6c490fb3962185f",
         "type": "github"
       },
       "original": {
@@ -668,11 +685,11 @@
         "treefmt-nix": "treefmt-nix_4"
       },
       "locked": {
-        "lastModified": 1783521068,
-        "narHash": "sha256-S7HmGycbCAdOYbCoMY/30j3vcUCqDSjFb7lcMvDzqaY=",
+        "lastModified": 1783871221,
+        "narHash": "sha256-8vELZwe3cAQutL8I4HV2pLXlpMRrAw+8cCR1c0/wcHI=",
         "owner": "yasunori0418",
         "repo": "nput",
-        "rev": "bb146eaa919e1319150e1ca384ef24c6f351b635",
+        "rev": "ee6da8a1b7c050e3c6613ab42ca6b690cb0e9b19",
         "type": "github"
       },
       "original": {
