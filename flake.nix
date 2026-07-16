@@ -69,7 +69,7 @@
                 [
                   copilot-language-server
                   deno
-                  kakehashi.packages.${system}.default
+                  (kakehashi.packages.${system}.default.overrideAttrs { doCheck = false; })
                   lua-language-server
                   mocword.packages.${system}.default
                   ripgrep
