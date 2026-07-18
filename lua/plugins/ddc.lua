@@ -262,7 +262,7 @@ return {
             vim.fn["ddc#enable_cmdline_completion"]()
         end
 
-        vim.keymap.set("n", ":", function()
+        vim.keymap.set({ "n", "x" }, ":", function()
             commandline_pre()
             return ":"
         end, { expr = true, desc = "Cmdline completion" })
