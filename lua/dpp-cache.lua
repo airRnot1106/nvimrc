@@ -37,6 +37,37 @@ function M.new(base, config)
                     return true
                 end
             end
+
+            -- startup.vim also bakes the &runtimepath snapshot taken at
+            -- `dpp#make_state` time into a literal
+            -- `let &runtimepath = '...'` assignment. That includes
+            -- entries dpp.ts never registers as plugins (Neovim's own
+            -- runtime dir, dpp.vim/denops.vim themselves,
+            -- ~/.nix-profile/share/nvim/site, ...), any of which can go
+            -- stale (e.g. a nixpkgs rebuild recycles the store path
+            -- behind a symlink). If one no longer exists, sourcing it
+            -- silently clobbers the correct runtimepath Neovim already
+            -- set at startup, breaking $VIMRUNTIME-based files.
+            -- dpp's own merge dir is excluded: it merges per-plugin
+            -- subdirs (after/, ftplugin/, ...) lazily, so a given
+            -- subdir legitimately may not exist yet.
+            local merged_dir = base .. "/nvim/.dpp"
+            local ok3, startup_lines = pcall(vim.fn.readfile, startup_file)
+            if ok3 then
+                for _, line in ipairs(startup_lines) do
+                    local rtp = line:match "^let &runtimepath = '(.*)'$"
+                    if rtp then
+                        for path in vim.gsplit(rtp, ",", { plain = true }) do
+                            local under_merged_dir = path == merged_dir or vim.startswith(path, merged_dir .. "/")
+                            if path ~= "" and not under_merged_dir and vim.fn.isdirectory(path) == 0 then
+                                return true
+                            end
+                        end
+                        break
+                    end
+                end
+            end
+
             return false
         end,
 
