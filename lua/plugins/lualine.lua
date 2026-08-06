@@ -27,7 +27,18 @@ return {
                 lualine_a = { "mode" },
                 lualine_b = { "branch", "diff", "diagnostics" },
                 lualine_c = { "filename" },
-                lualine_x = { "encoding", "fileformat", "filetype" },
+                lualine_x = {
+                    -- selene: allow(mixed_table)
+                    {
+                        require("noice").api.status.mode.get,
+                        ---@diagnostic disable-next-line: undefined-field
+                        cond = require("noice").api.status.mode.has,
+                        color = { fg = "#ff9e64" },
+                    },
+                    "encoding",
+                    "fileformat",
+                    "filetype",
+                },
                 lualine_y = { "progress" },
                 lualine_z = { "location" },
             },
