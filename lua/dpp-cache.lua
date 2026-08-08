@@ -51,6 +51,22 @@ function M.new(base, config)
             -- dpp's own merge dir is excluded: it merges per-plugin
             -- subdirs (after/, ftplugin/, ...) lazily, so a given
             -- subdir legitimately may not exist yet.
+            -- Nix store paths in that snapshot (e.g. Neovim's own
+            -- $VIMRUNTIME, resolved to
+            -- /nix/store/<hash>-neovim-.../share/nvim/runtime) can go
+            -- stale while the old directory is still physically present:
+            -- nix keeps a store path around until garbage collection
+            -- actually runs, so isdirectory() alone won't catch a store
+            -- path bump from a rebuild. Cross-check those entries against
+            -- the runtimepath Neovim has already computed for *this*
+            -- process instead, since that's built fresh from whatever
+            -- store paths are currently active and is read here before
+            -- startup.vim gets a chance to clobber it.
+            local current_rtp = {}
+            for path in vim.gsplit(vim.o.runtimepath, ",", { plain = true }) do
+                current_rtp[path] = true
+            end
+
             local merged_dir = base .. "/nvim/.dpp"
             local ok3, startup_lines = pcall(vim.fn.readfile, startup_file)
             if ok3 then
@@ -59,8 +75,13 @@ function M.new(base, config)
                     if rtp then
                         for path in vim.gsplit(rtp, ",", { plain = true }) do
                             local under_merged_dir = path == merged_dir or vim.startswith(path, merged_dir .. "/")
-                            if path ~= "" and not under_merged_dir and vim.fn.isdirectory(path) == 0 then
-                                return true
+                            if path ~= "" and not under_merged_dir then
+                                if vim.fn.isdirectory(path) == 0 then
+                                    return true
+                                end
+                                if vim.startswith(path, "/nix/store/") and not current_rtp[path] then
+                                    return true
+                                end
                             end
                         end
                         break
