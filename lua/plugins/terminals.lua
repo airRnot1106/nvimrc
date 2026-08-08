@@ -24,6 +24,27 @@ return {
             preserved_keys = {},
         }
 
+        -- when the terminals.nvim float closes on top of a snacks float (e.g. lazygit),
+        -- nvim falls back to the window behind it instead of the snacks float; refocus it
+        do
+            local logic = require "terminals.logic"
+            local toggle_terminal = logic.toggle_terminal
+            logic.toggle_terminal = function(...)
+                local was_open = logic.terminal_window ~= nil and vim.api.nvim_win_is_valid(logic.terminal_window)
+                toggle_terminal(...)
+                if not was_open then
+                    return
+                end
+                for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+                    local buf = vim.api.nvim_win_get_buf(win)
+                    if vim.bo[buf].filetype == "snacks_terminal" then
+                        vim.api.nvim_set_current_win(win)
+                        break
+                    end
+                end
+            end
+        end
+
         pcall(vim.keymap.del, "n", keys.go_left)
         pcall(vim.keymap.del, "n", keys.go_right)
         pcall(vim.keymap.del, "n", keys.move_left)
