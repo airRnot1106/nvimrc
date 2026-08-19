@@ -67,7 +67,6 @@
               packages =
                 with pkgs;
                 [
-                  copilot-language-server
                   deno
                   (kakehashi.packages.${system}.default.overrideAttrs { doCheck = false; })
                   lua-language-server
