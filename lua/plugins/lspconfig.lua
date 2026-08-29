@@ -22,6 +22,7 @@ return {
             "oxlint",
             "pylsp",
             "rust_analyzer",
+            "stylelint_lsp",
             "tailwindcss",
             "tsp_server",
             "unocss",
