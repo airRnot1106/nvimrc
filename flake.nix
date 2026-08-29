@@ -72,6 +72,7 @@
                   lua-language-server
                   mocword.packages.${system}.default
                   ripgrep
+                  stylua
                   tree-sitter
                 ]
                 ++ enabledPackages;
