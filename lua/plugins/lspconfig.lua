@@ -24,6 +24,7 @@ return {
             "rust_analyzer",
             "tailwindcss",
             "tsp_server",
+            "unocss",
             "version_lsp",
             "vtsls",
         }
