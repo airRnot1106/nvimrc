@@ -15,7 +15,6 @@
       url = "github:cachix/git-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    kakehashi.url = "github:atusy/kakehashi";
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     mocword.url = "github:blyoa/nix-mocword";
     treefmt-nix = {
@@ -45,7 +44,7 @@
           };
         };
 
-        inherit (inputs) kakehashi mocword;
+        inherit (inputs) mocword;
       in
       {
         nput = {
@@ -68,7 +67,6 @@
                 with pkgs;
                 [
                   deno
-                  (kakehashi.packages.${system}.default.overrideAttrs { doCheck = false; })
                   lua-language-server
                   mocword.packages.${system}.default
                   ripgrep
