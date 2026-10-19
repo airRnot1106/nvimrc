@@ -42,7 +42,9 @@ return {
             formatters_by_ft = {
                 astro = js,
                 bash = { "shfmt" },
+                css = js,
                 gleam = { "gleamfmt" },
+                html = js,
                 javascript = js,
                 javascriptreact = js,
                 json = js,

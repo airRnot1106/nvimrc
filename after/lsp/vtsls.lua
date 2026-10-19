@@ -1,5 +1,4 @@
-local npm_root = vim.trim(vim.fn.system "npm root -g")
-local cmk_ts_plugin_location = vim.env.CMK_TS_PLUGIN_LOCATION or npm_root
+local cmk_ts_plugin_location = vim.fn.expand "~/.nix-profile/lib/node_modules"
 local cmk_ts_plugin_available = vim.fn.isdirectory(cmk_ts_plugin_location .. "/@css-modules-kit/ts-plugin") == 1
 
 local filetypes = {
