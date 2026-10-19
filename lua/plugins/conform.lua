@@ -44,6 +44,7 @@ return {
                 bash = { "shfmt" },
                 css = js,
                 gleam = { "gleamfmt" },
+                go = { "gofumpt" },
                 html = js,
                 javascript = js,
                 javascriptreact = js,
