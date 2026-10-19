@@ -19,7 +19,7 @@ return {
         "ddc-ui-pum",
         "nvim-autopairs",
         "pum",
-        "skkeleton",
+        -- "skkeleton",
     },
     on_event = { "CmdlineChanged", "CmdlineEnter", "InsertEnter", "TextChangedI", "TextChangedP" },
     lua_source = function()
@@ -41,8 +41,8 @@ return {
         patch_global("sources", {
             "maccy",
             "copilot",
-            "skkeleton",
-            "skkeleton_okuri",
+            -- "skkeleton",
+            -- "skkeleton_okuri",
             "lsp",
             "around",
             "buffer",
@@ -54,8 +54,8 @@ return {
         })
         patch_global("cmdlineSources", {
             [":"] = {
-                "skkeleton",
-                "skkeleton_okuri",
+                -- "skkeleton",
+                -- "skkeleton_okuri",
                 "cmdline",
                 "cmdline_history",
                 "rg",
@@ -138,21 +138,21 @@ return {
                 mark = "[R]",
                 minAutoCompleteLength = 4,
             },
-            skkeleton = {
-                mark = "[SKK]",
-                matchers = {},
-                sorters = {},
-                converters = {},
-                isVolatile = true,
-                minAutoCompleteLength = 1,
-            },
-            skkeleton_okuri = {
-                mark = "[SKK*]",
-                matchers = {},
-                sorters = {},
-                converters = {},
-                isVolatile = true,
-            },
+            -- skkeleton = {
+            --     mark = "[SKK]",
+            --     matchers = {},
+            --     sorters = {},
+            --     converters = {},
+            --     isVolatile = true,
+            --     minAutoCompleteLength = 1,
+            -- },
+            -- skkeleton_okuri = {
+            --     mark = "[SKK*]",
+            --     matchers = {},
+            --     sorters = {},
+            --     converters = {},
+            --     isVolatile = true,
+            -- },
         })
 
         patch_global("sourceParams", {

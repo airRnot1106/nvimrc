@@ -35,6 +35,11 @@ return {
                         cond = require("noice").api.status.mode.has,
                         color = { fg = "#ff9e64" },
                     },
+                    {
+                        function()
+                            return vim.g.kanaemi_mode == "kana" and "[あ]" or ""
+                        end,
+                    },
                     "encoding",
                     "fileformat",
                     "filetype",

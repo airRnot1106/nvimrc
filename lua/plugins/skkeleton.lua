@@ -3,6 +3,7 @@ return {
     repo = "vim-skk/skkeleton",
     depends = { "skkeleton_indicator" },
     lazy = false,
+    ["if"] = false,
     lua_add = function()
         vim.g["denops#server#deno_args"] = { "-q", "--no-lock", "--unstable-kv", "-A" }
         vim.api.nvim_create_autocmd("User", {
