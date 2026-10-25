@@ -44,6 +44,8 @@ vim.opt.virtualedit = "block"
 vim.opt.showmatch = true
 
 keymap("i", "jj", "<Esc>", { silent = true, desc = "Exit insert mode" })
+keymap({ "i", "c" }, "<C-j>", "<Nop>", { silent = true, desc = "Disable newline insertion" })
+keymap({ "i", "c" }, "<C-l>", "<Nop>", { silent = true, desc = "Disable form feed insertion" })
 keymap("n", "<C-d>", "dd", { silent = true, desc = "Delete line" })
 keymap("x", "<C-d>", "d", { silent = true, desc = "Delete selection" })
 
