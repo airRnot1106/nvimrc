@@ -36,21 +36,6 @@ return {
                     "--glob=!**/package-lock.json",
                 },
                 mappings = {
-                    i = {
-                        ["<C-y>"] = function()
-                            -- enable skkeleton before input
-                            vim.api.nvim_feedkeys(
-                                vim.api.nvim_replace_termcodes("<Plug>(skkeleton-enable)", true, false, true),
-                                "m",
-                                false
-                            )
-                            vim.ui.input({ prompt = "> " }, function(input)
-                                if input then
-                                    vim.api.nvim_feedkeys(input, "n", false)
-                                end
-                            end)
-                        end,
-                    },
                     n = {
                         q = require("telescope.actions").close,
                     },
