@@ -1,5 +1,5 @@
 return {
     name = "sqlite",
-    repo = "kkharji/sqlite.lua",
+    "kkharji/sqlite.lua",
     lazy = true,
 }

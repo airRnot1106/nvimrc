@@ -1,8 +1,8 @@
 return {
     name = "snacks",
-    repo = "folke/snacks.nvim",
-    on_event = { "VimEnter" },
-    lua_source = function()
+    "folke/snacks.nvim",
+    event = { "VimEnter" },
+    config = function()
         -- reuse the current window for lazygit-edited files, but open a new tab
         -- while only the startup screen is shown
         -- selene: allow(global_usage)

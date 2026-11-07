@@ -1,4 +1,4 @@
 return {
     name = "vimdoc-ja",
-    repo = "vim-jp/vimdoc-ja",
+    "vim-jp/vimdoc-ja",
 }

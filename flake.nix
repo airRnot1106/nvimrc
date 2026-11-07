@@ -5,11 +5,6 @@
       inputs.flake-utils.follows = "flake-utils";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    dpp = {
-      url = "path:./nix/dpp";
-      inputs.flake-utils.follows = "flake-utils";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     flake-utils.url = "github:numtide/flake-utils";
     git-hooks = {
       url = "github:cachix/git-hooks.nix";
@@ -27,7 +22,6 @@
     {
       self,
       agent-skills,
-      dpp,
       flake-utils,
       git-hooks,
       nixpkgs,
@@ -49,7 +43,6 @@
       {
         nput = {
           inherit (inputs.agent-skills.nput.${system}) skills;
-          inherit (inputs.dpp.nput.${system}) dpp;
         };
 
         devShells =
@@ -60,7 +53,6 @@
             default = pkgs.mkShell {
               inputsFrom = [
                 agent-skills.devShells.${system}.default
-                dpp.devShells.${system}.default
               ];
               inherit shellHook;
               packages =

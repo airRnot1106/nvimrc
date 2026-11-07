@@ -1,9 +1,9 @@
 return {
     name = "copilot",
-    repo = "zbirenbaum/copilot.lua",
-    on_cmd = { "Copilot" },
-    on_event = { "InsertEnter" },
-    lua_source = function()
+    "zbirenbaum/copilot.lua",
+    cmd = { "Copilot" },
+    event = { "InsertEnter" },
+    config = function()
         require("copilot").setup {
             suggestion = { enabled = false },
             panel = { enabled = false },

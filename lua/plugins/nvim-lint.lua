@@ -1,8 +1,8 @@
 return {
     name = "nvim-lint",
-    repo = "mfussenegger/nvim-lint",
-    on_event = { "BufReadPre", "BufNewFile" },
-    lua_source = function()
+    "mfussenegger/nvim-lint",
+    event = { "BufReadPre", "BufNewFile" },
+    config = function()
         local lint = require "lint"
 
         lint.linters.cspell.args = vim.list_extend(lint.linters.cspell.args, {

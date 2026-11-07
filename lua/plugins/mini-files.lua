@@ -1,8 +1,8 @@
 return {
     name = "mini.files",
-    repo = "nvim-mini/mini.files",
+    "nvim-mini/mini.files",
     lazy = false,
-    lua_source = function()
+    config = function()
         local ignored_files = {
             ".DS_Store",
         }
@@ -20,7 +20,7 @@ return {
             },
         }
     end,
-    lua_add = function()
+    init = function()
         vim.keymap.set("n", "<Leader>e", function()
             require("mini.files").open(vim.api.nvim_buf_get_name(0))
         end, { desc = "Open file explorer" })

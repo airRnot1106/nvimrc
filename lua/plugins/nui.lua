@@ -1,5 +1,5 @@
 return {
     name = "nui",
-    repo = "MunifTanjim/nui.nvim",
+    "MunifTanjim/nui.nvim",
     lazy = true,
 }

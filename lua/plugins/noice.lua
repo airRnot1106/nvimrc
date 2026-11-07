@@ -1,9 +1,9 @@
 return {
     name = "noice",
-    repo = "folke/noice.nvim",
-    depends = { "nui", "nvim-notify" },
-    on_event = { "VimEnter" },
-    lua_source = function()
+    "folke/noice.nvim",
+    dependencies = { "nui", "nvim-notify" },
+    event = { "VimEnter" },
+    config = function()
         local special_chars = {
             ["("] = "%(",
             [")"] = "%)",

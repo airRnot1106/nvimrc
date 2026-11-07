@@ -1,5 +1,5 @@
 return {
     name = "pum",
-    repo = "Shougo/pum.vim",
+    "Shougo/pum.vim",
     lazy = true,
 }

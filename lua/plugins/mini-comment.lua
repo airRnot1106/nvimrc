@@ -1,8 +1,8 @@
 return {
     name = "mini.comment",
-    repo = "nvim-mini/mini.comment",
-    on_map = { nvo = { "<Leader>/" } },
-    lua_source = function()
+    "nvim-mini/mini.comment",
+    keys = { { "<Leader>/", mode = { "n", "o", "v" } } },
+    config = function()
         require("mini.comment").setup {
             mappings = {
                 comment = "<Leader>/",

@@ -1,8 +1,8 @@
 return {
     name = "mini.extra",
-    repo = "nvim-mini/mini.extra",
+    "nvim-mini/mini.extra",
     lazy = true,
-    lua_source = function()
+    config = function()
         require("mini.extra").setup()
     end,
 }

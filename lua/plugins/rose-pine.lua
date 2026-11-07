@@ -1,8 +1,8 @@
 return {
     name = "rose-pine",
-    repo = "rose-pine/neovim",
+    "rose-pine/neovim",
     lazy = false,
-    lua_add = function()
+    init = function()
         vim.cmd [[colorscheme rose-pine-moon]]
     end,
 }
