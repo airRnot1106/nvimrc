@@ -1,5 +1,6 @@
 {
   projectRootFile = "flake.nix";
+  settings.global.excludes = [ "lazy-lock.json" ];
   programs = {
     deno.enable = true;
     nixfmt.enable = true;
