@@ -23,6 +23,7 @@
   "fuzzy-motion": { "branch": "main", "commit": "d6ab71ebb77d7640c42db0ed152502f1b6100384" },
   "gitsigns": { "branch": "main", "commit": "31d6fb2d618bca1482b9f274751ead5f03461408" },
   "gmp": { "branch": "main", "commit": "2865a50f9eaa6e9d65136c7581ad9704b0f8207b" },
+  "goda-cmp": { "branch": "main", "commit": "4f0c30e25dd3a9ce12e273cf8f018f54ee5aecdc" },
   "goda.vim": { "branch": "main", "commit": "8399891df7fd77eee0473003201f9960dfbd8ebb" },
   "kanaemi.vim": { "branch": "main", "commit": "ba4cdf46021a7e225d929acb58204fbbd8da4424" },
   "kensaku": { "branch": "main", "commit": "67727c8cc81f45b3c3abc600ecfef6fba620eb88" },

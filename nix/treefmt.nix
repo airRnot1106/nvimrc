@@ -3,6 +3,7 @@
   settings.global.excludes = [ "lazy-lock.json" ];
   programs = {
     deno.enable = true;
+    gofmt.enable = true;
     nixfmt.enable = true;
     oxfmt = {
       enable = true;
