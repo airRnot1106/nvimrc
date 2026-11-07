@@ -22,22 +22,6 @@
       },
       "parent": []
     },
-    "denops-shared-server-vim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1723983550,
-        "narHash": "sha256-kJQCBMH/JhmwKDse2GGBRgQaiGlj2Jo4FIsO5V6LnD4=",
-        "owner": "airRnot1106",
-        "repo": "denops-shared-server.vim",
-        "rev": "829a7e7c9d1d534f71f471c3a4a312457ddecb63",
-        "type": "github"
-      },
-      "original": {
-        "owner": "airRnot1106",
-        "repo": "denops-shared-server.vim",
-        "type": "github"
-      }
-    },
     "denops-vim": {
       "flake": false,
       "locked": {
@@ -56,7 +40,6 @@
     },
     "dpp": {
       "inputs": {
-        "denops-shared-server-vim": "denops-shared-server-vim",
         "denops-vim": "denops-vim",
         "dpp-ext-installer": "dpp-ext-installer",
         "dpp-ext-lazy": "dpp-ext-lazy",

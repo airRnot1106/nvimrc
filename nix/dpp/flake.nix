@@ -8,10 +8,6 @@
       url = "github:vim-denops/denops.vim";
       flake = false;
     };
-    denops-shared-server-vim = {
-      url = "github:airRnot1106/denops-shared-server.vim?ref=fix/launchctl-path";
-      flake = false;
-    };
     dpp-vim = {
       url = "github:Shougo/dpp.vim";
       flake = false;
@@ -56,7 +52,6 @@
           let
             inherit (inputs)
               denops-vim
-              denops-shared-server-vim
               dpp-vim
               dpp-ext-installer
               dpp-ext-lazy
@@ -67,10 +62,6 @@
             {
               repo = "vim-denops/denops.vim";
               src = denops-vim;
-            }
-            {
-              repo = "vim-denops/denops-shared-server.vim";
-              src = denops-shared-server-vim;
             }
             {
               repo = "Shougo/dpp.vim";
