@@ -1,7 +1,6 @@
 return {
     name = "lspconfig",
     "neovim/nvim-lspconfig",
-    dependencies = { "ddc-source-lsp" },
     event = { "VimEnter" },
     config = function()
         local lsp_names = {
@@ -29,10 +28,6 @@ return {
             "vtsls",
         }
         vim.lsp.enable(lsp_names)
-
-        vim.lsp.config("*", {
-            capabilities = require("ddc_source_lsp").make_client_capabilities(),
-        })
 
         vim.diagnostic.config {
             float = {

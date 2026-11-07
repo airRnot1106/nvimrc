@@ -2,24 +2,143 @@ package main
 
 import (
 	"github.com/Shougo/goda-cmp.vim/cmp"
-	"github.com/Shougo/goda-cmp.vim/ext/filter/matcherhead"
-	"github.com/Shougo/goda-cmp.vim/ext/filter/sorterlength"
+	"github.com/Shougo/goda-cmp.vim/ext/filter/sortercmdlinehistory"
 	"github.com/Shougo/goda-cmp.vim/ext/source/around"
+	"github.com/Shougo/goda-cmp.vim/ext/source/buffer"
+	"github.com/Shougo/goda-cmp.vim/ext/source/cmdline"
+	"github.com/Shougo/goda-cmp.vim/ext/source/cmdlinehistory"
+	"github.com/Shougo/goda-cmp.vim/ext/source/file"
+	"github.com/Shougo/goda-cmp.vim/ext/source/mocword"
 	"github.com/Shougo/goda-cmp.vim/ext/ui/pum"
+
+	"goda-cmp-config/ext/filter/fuzzy"
+	"goda-cmp-config/ext/source/copilot"
+	"goda-cmp-config/ext/source/emoji"
+	"goda-cmp-config/ext/source/maccy"
+	"goda-cmp-config/ext/source/nvimlsp"
+	"goda-cmp-config/ext/source/rg"
 )
+
+const pathKeywordPattern = `[a-zA-Z0-9_.~-]*/[a-zA-Z0-9_.~/-]*`
 
 func main() {
 	b := cmp.New()
 	b.AddUI(pum.New())
-	b.AddSource(around.New(around.Params{MinLength: 2}))
-	b.AddFilter(matcherhead.New(matcherhead.Params{}))
-	b.AddFilter(sorterlength.New())
+
+	b.AddSource(maccy.New(maccy.Params{
+		RecentMs:            30000,
+		CacheTtlMs:          2000,
+		Types:               []string{"public.utf8-plain-text"},
+		DBPath:              "~/Library/Containers/org.p0deje.Maccy/Data/Library/Application Support/Maccy/Storage.sqlite",
+		MaxByteLength:       10000,
+		Dedupe:              true,
+		TrimTrailingNewline: true,
+		ExcludeAfterUse:     true,
+		MaxUseCount:         1,
+	}))
+	b.AddSource(copilot.New(copilot.Params{Copilot: "lua"}))
+	b.AddSource(nvimlsp.New(nvimlsp.Params{EnableResolveItem: true, EnableAdditionalTextEdit: true}))
+	b.AddSource(around.New(around.Params{}))
+	b.AddSource(buffer.New(buffer.Params{
+		RequireSameFiletype: new(false),
+		LimitBytes:          5000000,
+		FromAltBuf:          true,
+		ForceCollect:        true,
+	}))
+	b.AddSource(rg.New(rg.Params{}))
+	b.AddSource(mocword.New(mocword.Params{}))
+	b.AddSource(file.New(file.Params{}))
+	b.AddSource(emoji.New())
+	b.AddSource(cmdline.New())
+	b.AddSource(cmdlinehistory.New(cmdlinehistory.Params{}))
+
+	b.AddFilter(fuzzy.NewMatcher(fuzzy.MatcherParams{}))
+	b.AddFilter(fuzzy.NewSorter())
+	b.AddFilter(fuzzy.NewConverter(fuzzy.ConverterParams{}))
+	b.AddFilter(emoji.NewMatcher())
+	b.AddFilter(sortercmdlinehistory.New(sortercmdlinehistory.Params{}))
+
 	b.PatchGlobal(cmp.Config{
-		UI:      "pum",
-		Sources: []string{"around"},
+		UI: "pum",
+		AutoCompleteEvents: []string{
+			"CmdlineChanged",
+			"CmdlineEnter",
+			"InsertEnter",
+			"TextChangedI",
+			"TextChangedP",
+		},
+		Sources: []string{"maccy", "copilot", "nvimlsp", "around", "buffer", "rg", "mocword", "file", "emoji"},
+		CmdlineSources: map[string][]string{
+			":": {"cmdline", "cmdlinehistory", "rg", "file"},
+		},
 		SourceOptions: map[string]cmp.SourceOption{
-			"_": {Matchers: []string{"matcherhead"}, Sorters: []string{"sorterlength"}},
+			"_": {
+				Matchers:              []string{"matcherfuzzy"},
+				Sorters:               []string{"sorterfuzzy"},
+				Converters:            []string{"converterfuzzy"},
+				MinAutoCompleteLength: new(2),
+				MaxItems:              new(500),
+			},
+			"around": {Mark: "[A]"},
+			"buffer": {Mark: "[B]"},
+			"cmdline": {
+				Mark:                  "[C]",
+				MinAutoCompleteLength: new(1),
+			},
+			"cmdlinehistory": {
+				Mark:                  "history",
+				MaxItems:              new(10),
+				Sorters:               []string{"sortercmdlinehistory"},
+				MinAutoCompleteLength: new(1),
+			},
+			"copilot": {
+				Mark:                  "[Copilot]",
+				Matchers:              []string{},
+				MinAutoCompleteLength: new(0),
+				IsVolatile:            new(true),
+				Timeout:               new(5000),
+			},
+			"emoji": {
+				Mark:           "[E]",
+				Matchers:       []string{"emoji"},
+				Sorters:        []string{},
+				KeywordPattern: `[a-zA-Z_:]\w*`,
+			},
+			"file": {
+				Mark:                   "[F]",
+				MaxItems:               new(3),
+				IsVolatile:             new(true),
+				KeywordPattern:         pathKeywordPattern,
+				ForceCompletionPattern: `\S/\S*`,
+				MinAutoCompleteLength:  new(1),
+			},
+			"maccy": {
+				Mark:                  "[Maccy]",
+				MaxItems:              new(3),
+				Matchers:              []string{},
+				Sorters:               []string{},
+				Converters:            []string{},
+				IsVolatile:            new(true),
+				MinAutoCompleteLength: new(0),
+			},
+			"nvimlsp": {
+				Mark:                   "[LSP]",
+				IsVolatile:             new(true),
+				ForceCompletionPattern: `\.\w*|:\w*|->\w*`,
+			},
+			"mocword": {
+				Mark:                  "[M]",
+				MaxItems:              new(8),
+				IsVolatile:            new(true),
+				KeywordPattern:        `[a-zA-Z]+(?: +[a-zA-Z]*)*`,
+				MinAutoCompleteLength: new(3),
+			},
+			"rg": {
+				Mark:                  "[R]",
+				MinAutoCompleteLength: new(4),
+			},
 		},
 	})
+
 	b.Main()
 }
