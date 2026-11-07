@@ -1,7 +1,7 @@
 return {
     name = "fuzzy-motion",
     "yuki-yano/fuzzy-motion.vim",
-    dependencies = { "kensaku" },
+    dependencies = { "gks" },
     cmd = { "FuzzyMotion" },
     keys = { { "<Leader>;", mode = { "n", "x" } } },
     init = function()
