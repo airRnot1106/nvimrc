@@ -37,7 +37,11 @@ lane5() { start c.lua; keys Space f f; wait_screen 'Smart Open|Files|c\.lua' 40;
 lane6() { printf 'local t = { a = 1, b = 2 }\nprint(1)\n' > "$RUN/proj/k.lua"; start k.lua; keys Space /; sleep 1; local c; c=$(expr_ 'getline(1)'); [[ "$c" == --* ]]; local a=$?
   keys Space /; sleep 0.5; keys 0 f '{'; sleep 0.2; keys g S; sleep 1; [ "$(expr_ 'line("$")')" -gt 2 ]; local b=$?; [ $a = 0 ] && [ $b = 0 ]; result 6 $? "lazy keys"; }
 lane7() { printf '# Title\n\nbody\n' > "$RUN/proj/m.md"; start m.md; lane7_check; result 7 $? "preview"; }
-lane7_check() { [ "$(expr_ 'exists(":PreviewMarkdown")')" = 2 ]; }
+lane7_check() {
+  expr_ "execute(\"let g:gmp_browser = 'true'\")" >/dev/null; keys Escape; type_slow ":PreviewMarkdown"; keys Enter; sleep 2
+  local url; url=$(expr_ "execute(\"messages\")" | grep -oE "http://127\.0\.0\.1:[0-9]+[^ ]*" | tail -1); [ -n "$url" ] || return 1
+  curl -sf --max-time 5 "$url" | grep -qiE "<html|<!doctype"
+}
 lane8() { printf 'first\nasdf\n日本語のテキスト\n' > "$RUN/proj/j.txt"; start j.txt; keys gg; keys /; sleep 1; type_slow nihongo; sleep 1; keys Enter; sleep 1.5; wait_expr 'line(".")' 3 12; result 8 $? "kensaku"; }
 lane9() { start c.lua; keys Escape; type_slow ':Aibo cat'; keys Enter; wait_expr 'luaeval("vim.bo.filetype:find([[aibo%-prompt]]) ~= nil and 1 or 0")' 1 30; local a=$?
   if [ $a != 0 ]; then keys Escape; sleep 1; fi; [ $a = 0 ]; result 9 $? "aibo prompt"; }
