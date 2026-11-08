@@ -37,7 +37,7 @@
   "nvim-ts-autotag": { "branch": "main", "commit": "88c1453db4ba7dd24131086fe51fdf74e587d275" },
   "nvim-web-devicons": { "branch": "master", "commit": "0ca28b61a04fe7426cefbdd52c2647ef0e335b5f" },
   "plenary": { "branch": "master", "commit": "74b06c6c75e4eeb3108ec01852001636d85a932b" },
-  "pum": { "branch": "main", "commit": "f3c2436bd93f6d4818a91e480f991ccc3b20338e" },
+  "pum": { "branch": "main", "commit": "5e8d57ca472e8b0cf08a1428233320dd1e1376a2" },
   "quicker": { "branch": "master", "commit": "4a6883cb13fe097a20a046eb55f6dffd239276e3" },
   "rose-pine": { "branch": "main", "commit": "ff483051a47e27d84bdef47703538df1ed9f4a47" },
   "rustowl": { "branch": "main", "commit": "9098b341db6197c498ca4d1fbf182ff16b6cff9d" },

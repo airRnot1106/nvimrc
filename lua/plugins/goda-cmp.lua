@@ -8,7 +8,19 @@ return {
         vim.fn["pum#set_option"] {
             padding = true,
             preview = true,
+            previewer = "goda_cmp#get_previewer",
+            preview_width = 80,
         }
+
+        vim.api.nvim_create_autocmd("User", {
+            pattern = "PumPreview",
+            callback = function()
+                local win = vim.fn.win_findbuf(vim.fn["pum#get_preview_buf"]())[1]
+                if win then
+                    vim.wo[win].conceallevel = 2
+                end
+            end,
+        })
 
         vim.fn["goda_cmp#enable"]()
 
