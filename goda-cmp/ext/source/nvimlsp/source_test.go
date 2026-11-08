@@ -876,3 +876,27 @@ func TestParametersComeFromVimScript(t *testing.T) {
 		t.Error("an unknown parameter must be refused")
 	}
 }
+
+func TestSelectingAnItemAgainDoesNotUpdateItsInfo(t *testing.T) {
+	n := &neovim{
+		polls:    []string{answered(result(1, "utf-16", `[{"label":"join"}]`))},
+		resolved: `{"label":"join","documentation":"joins strings"}`,
+	}
+	e := newEngine(t, n, Params{EnableResolveItem: true}, "nvimlsp")
+	e.complete("jo", "")
+	ref := e.last().items[0].Ref
+	info := func() string {
+		out, err := e.p.Handlers()["resolve"](context.Background(), e.h, []any{ref})
+		if err != nil {
+			t.Fatal(err)
+		}
+		s, _ := out.(map[string]any)["info"].(string)
+		return s
+	}
+	if first := info(); !strings.Contains(first, "joins strings") {
+		t.Errorf("first info = %v", first)
+	}
+	if second := info(); second != "" {
+		t.Errorf("second info = %v", second)
+	}
+}

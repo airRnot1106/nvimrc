@@ -314,7 +314,9 @@ func (s *Source) Resolve(ctx context.Context, h sdk.Host, a cmp.DoneArgs) (cmp.I
 	}
 	it := a.Item
 	it.UserData = r
-	if info := r.item.info(); info != "" {
+	// pum.vim reports each info update as a new selection, so an unchanged info is left out to end the exchange.
+	it.Info = ""
+	if info := r.item.info(); info != a.Item.Info {
 		it.Info = info
 	}
 	return it, nil
