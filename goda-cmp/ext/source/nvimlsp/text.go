@@ -2,14 +2,11 @@ package nvimlsp
 
 import "strings"
 
-// Position encodings of LSP. "utf-16" is the protocol's default.
 const (
 	encUTF8  = "utf-8"
 	encUTF16 = "utf-16"
 )
 
-// byteOffset converts a character offset in the units of enc into a byte
-// offset in line, clamped to the line.
 func byteOffset(line string, char int, enc string) int {
 	if char <= 0 {
 		return 0
@@ -31,9 +28,6 @@ func byteOffset(line string, char int, enc string) int {
 	return len(line)
 }
 
-// selectText cuts an item's text to the word the popup inserts, as
-// ddc-source-lsp's createSelectText: up to the first stop character after a
-// letter or digit, outside of pairs.
 func selectText(s string) string {
 	alnumSeen := false
 	var closers []byte
@@ -79,17 +73,12 @@ func isAlnum(c byte) bool {
 	return c >= '0' && c <= '9' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z'
 }
 
-// stripSnippet turns snippet syntax into the plain text it inserts by
-// default: tab stops vanish, placeholders keep their default, choices keep
-// the first one.
 func stripSnippet(s string) string {
 	var b strings.Builder
 	stripInto(&b, s, false)
 	return b.String()
 }
 
-// stripInto writes the text of s and returns how many bytes it consumed.
-// Inside a placeholder (nested) it stops at the closing brace.
 func stripInto(b *strings.Builder, s string, nested bool) int {
 	i := 0
 	for i < len(s) {

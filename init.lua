@@ -47,7 +47,6 @@ require("lazy").setup {
     install = { colorscheme = { "rose-pine" } },
     change_detection = { enabled = false },
     rocks = { enabled = false },
-    -- clones fail with connection errors at the default concurrency
     concurrency = 8,
 }
 

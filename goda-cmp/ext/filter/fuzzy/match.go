@@ -7,16 +7,11 @@ import (
 	"unicode/utf16"
 )
 
-// threshold is the number of partial matches kept after each pattern
-// character. The dropped ones change the score of long, repetitive words, so
-// the order of the candidates depends on it.
 const threshold = 100
 
-// units is a string as UTF-16 code units. The original measures and indexes
-// JavaScript strings, and the scores depend on those lengths.
-type units = []uint16
+type utf16Units = []uint16
 
-func appendUnits(dst units, s string) units {
+func appendUnits(dst utf16Units, s string) utf16Units {
 	for _, r := range s {
 		dst = utf16.AppendRune(dst, r)
 	}
@@ -30,8 +25,7 @@ func normalize(s string, ignoreCase bool) string {
 	return s
 }
 
-// ctest reports whether pattern is a subsequence of source.
-func ctest(pattern, source units) bool {
+func ctest(pattern, source utf16Units) bool {
 	p := 0
 	for _, u := range source {
 		if p == len(pattern) {
@@ -47,9 +41,7 @@ func ctest(pattern, source units) bool {
 func isLower(u uint16) bool { return 'a' <= u && u <= 'z' }
 func isUpper(u uint16) bool { return 'A' <= u && u <= 'Z' }
 
-// wtest reports whether pattern is a subsequence of source in which each
-// character continues the previous match or begins a word.
-func wtest(pattern, source units) bool {
+func wtest(pattern, source utf16Units) bool {
 	p := 0
 	continued := true
 	for s, u := range source {
@@ -69,17 +61,12 @@ func wtest(pattern, source units) bool {
 	return p == len(pattern)
 }
 
-// scorer holds the buffers of the search, reused between words.
 type scorer struct {
-	paths, next []int32 // the partial matches, each width positions long
-	order       []int32 // the offsets of the partial matches in paths
+	paths, next []int32
+	order       []int32
 }
 
-// score returns the score of the best match of pattern in source, -Inf when
-// there is none. An empty pattern has no match. Neither has a pattern outside
-// the Basic Multilingual Plane: the original looks up its characters whole
-// among the code units of source.
-func (c *scorer) score(pattern, source units) float64 {
+func (c *scorer) score(pattern, source utf16Units) float64 {
 	if len(pattern) == 0 || slices.ContainsFunc(pattern, func(u uint16) bool { return utf16.IsSurrogate(rune(u)) }) {
 		return math.Inf(-1)
 	}
@@ -110,8 +97,6 @@ func (c *scorer) score(pattern, source units) float64 {
 	return best
 }
 
-// trim keeps the threshold partial matches that end earliest, comparing the
-// positions from the last one to the first.
 func (c *scorer) trim(width int) {
 	if len(c.paths)/width <= threshold {
 		return

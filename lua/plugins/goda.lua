@@ -4,7 +4,6 @@ return {
     lazy = true,
     init = function()
         local root = require("lazy.core.config").options.root
-        -- the binary is built from the plugin clones, so lazy-lock.json decides their versions
         vim.g["goda#workspace"] = { root .. "/goda.vim", root .. "/goda-cmp" }
     end,
     build = function()

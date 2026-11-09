@@ -9,8 +9,6 @@ import (
 	"github.com/Shougo/goda-cmp.vim/cmp"
 )
 
-// BenchmarkChain measures the filters of one source, with ddc.vim's maxItems,
-// on the words of the file FUZZY_BENCH_WORDS.
 func BenchmarkChain(b *testing.B) {
 	path := os.Getenv("FUZZY_BENCH_WORDS")
 	if path == "" {

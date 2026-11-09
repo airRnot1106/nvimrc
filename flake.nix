@@ -51,7 +51,6 @@
           tree-sitter
         ];
 
-        # plugin builds that run `nix build` use the nix that started the app
         pluginBuildTools =
           with pkgs;
           [
@@ -74,13 +73,11 @@
             export GOPATH="$root/go"
             export GOCACHE="$root/go-build"
 
-            # lazy.nvim writes lazy-lock.json next to the config, so the config cannot stay in the store
             rm -rf "$XDG_CONFIG_HOME"
             mkdir -p "$XDG_CONFIG_HOME"
             cp -R ${self} "$XDG_CONFIG_HOME/nvim"
             chmod -R u+w "$XDG_CONFIG_HOME/nvim"
 
-            # lazy.nvim keeps existing clones at their commit, and the goda-cmp binary embeds its Go config
             if [ "$(cat "$root/installed" 2>/dev/null || true)" != "${self}" ]; then
               nvim --headless "+Lazy! restore" "+Lazy! build goda-cmp" +qa
               echo "${self}" > "$root/installed"

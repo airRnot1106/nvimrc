@@ -1,8 +1,4 @@
--- Usage: nvim -l scripts/lazy-cooldown.lua [--check] [--lock <file>] [--root <dir>]
--- Moves each plugin in lazy-lock.json to the newest commit that is at least MIN_AGE_DAYS old.
--- Run `:Lazy restore` afterwards. `--check` only reports commits that are too new.
 local MIN_AGE_DAYS = 7
--- goda.vim plugins and their binaries must stay on the same protocol version
 local EXEMPT_REPOS = { "[/:]airRnot1106/", "[/:]Shougo/goda" }
 
 local function option(flag, default)

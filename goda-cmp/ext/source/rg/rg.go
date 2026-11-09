@@ -1,6 +1,5 @@
-// Package rg is a source that offers the words starting with the typed text
-// in the files under the current directory, found with ripgrep. It is a port
-// of ddc-source-rg (https://github.com/Shougo/ddc-source-rg).
+// Package rg is a port of ddc-source-rg
+// (https://github.com/Shougo/ddc-source-rg, MIT license, Copyright Shougo Matsushita).
 package rg
 
 import (
@@ -17,20 +16,13 @@ import (
 	"github.com/Shougo/goda.vim/sdk"
 )
 
-// Params are the parameters of the source.
 type Params struct {
-	// Cmd is the ripgrep executable (default "rg").
-	Cmd string `json:"cmd"`
-	// Args come before the pattern and the directory. They must make the
-	// output one match per line (default: see New).
+	Cmd  string   `json:"cmd"`
 	Args []string `json:"args"`
 }
 
 type source struct{ p Params }
 
-// New returns the source, named "rg". Args defaults to --no-filename
-// --no-heading --no-line-number --color never --only-matching --word-regexp
-// --ignore-case.
 func New(p Params) cmp.Source {
 	if p.Cmd == "" {
 		p.Cmd = "rg"
@@ -51,7 +43,6 @@ func New(p Params) cmp.Source {
 
 func (source) Name() string { return "rg" }
 
-// WithParams sets the parameters from Vim script (sourceParams).
 func (s source) WithParams(p cmp.Params) (any, error) {
 	np, err := cmp.PatchParams(s.p, p)
 	if err != nil {

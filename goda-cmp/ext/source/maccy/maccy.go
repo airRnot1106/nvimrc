@@ -1,7 +1,5 @@
-// Package maccy is a completion source for the recent clipboard history of
-// Maccy. It is a port of ddc-source-maccy
-// (https://github.com/airRnot1106/ddc-source-maccy) without its Vim support:
-// OnCompleteDone needs Neovim.
+// Package maccy is a port of ddc-source-maccy
+// (https://github.com/airRnot1106/ddc-source-maccy, MIT license, Copyright airRnot).
 package maccy
 
 import (
@@ -20,54 +18,36 @@ import (
 	_ "modernc.org/sqlite"
 )
 
-// Params are the parameters of the source. The zero value gathers nothing.
 type Params struct {
-	// RecentMs is how old a clip may be.
-	RecentMs int `json:"recentMs"`
-	// CacheTtlMs is how long the result of a query is reused; 0 or less
-	// disables the cache.
-	CacheTtlMs int `json:"cacheTtlMs"`
-	// Types are the pasteboard types to read, such as
-	// "public.utf8-plain-text".
-	Types []string `json:"types"`
-	// DBPath is Maccy's Storage.sqlite; a leading "~" is the home directory.
-	DBPath string `json:"dbPath"`
-	// MaxByteLength drops the longer clips.
-	MaxByteLength int `json:"maxByteLength"`
-	// Dedupe keeps only the newest clip of each value.
-	Dedupe bool `json:"dedupe"`
-	// TrimTrailingNewline removes the trailing newlines of a clip, before
-	// Dedupe compares it, and drops a clip with nothing else.
-	TrimTrailingNewline bool `json:"trimTrailingNewline"`
-	// ExcludeAfterUse hides a clip accepted MaxUseCount times. Copying it
-	// again makes it new.
-	ExcludeAfterUse bool `json:"excludeAfterUse"`
-	MaxUseCount     int  `json:"maxUseCount"`
+	RecentMs            int      `json:"recentMs"`
+	CacheTtlMs          int      `json:"cacheTtlMs"`
+	Types               []string `json:"types"`
+	DBPath              string   `json:"dbPath"`
+	MaxByteLength       int      `json:"maxByteLength"`
+	Dedupe              bool     `json:"dedupe"`
+	TrimTrailingNewline bool     `json:"trimTrailingNewline"`
+	ExcludeAfterUse     bool     `json:"excludeAfterUse"`
+	MaxUseCount         int      `json:"maxUseCount"`
 }
 
-// clip is one history entry. Its line breaks are "\n".
 type clip struct {
 	value    string
-	copiedAt int64 // Unix seconds
+	copiedAt int64
 }
 
 type source struct {
-	p   Params
-	now func() time.Time
-	// One value per set of parameters makes one cache per set.
+	p     Params
+	now   func() time.Time
 	cache *clipCache
-	// Shared by all values: a use of a clip does not depend on the parameters.
-	uses *useCounts
+	uses  *useCounts
 }
 
-// New returns the source, named "maccy".
 func New(p Params) cmp.Source {
 	return &source{p: p, now: time.Now, cache: &clipCache{}, uses: &useCounts{counts: map[clip]int{}}}
 }
 
 func (*source) Name() string { return "maccy" }
 
-// WithParams sets the parameters from Vim script (sourceParams).
 func (s *source) WithParams(p cmp.Params) (any, error) {
 	np, err := cmp.PatchParams(s.p, p)
 	if err != nil {
@@ -100,8 +80,6 @@ func (s *source) Gather(ctx context.Context, _ sdk.Host, c *cmp.Context) (cmp.Ga
 	return cmp.Gathered{Start: c.KeywordStart(), Items: items}, nil
 }
 
-// OnCompleteDone counts the use and inserts the lines after the first one,
-// which is the word the UI inserted.
 func (s *source) OnCompleteDone(ctx context.Context, h sdk.Host, a cmp.DoneArgs) error {
 	cl, ok := a.Item.UserData.(clip)
 	if !ok {
@@ -119,7 +97,7 @@ func (s *source) OnCompleteDone(ctx context.Context, h sdk.Host, a cmp.DoneArgs)
 	if err != nil {
 		return err
 	}
-	var cursor [2]int // the 1-based row and the 0-based byte column
+	var cursor [2]int
 	if err := sdk.Decode(v, &cursor); err != nil {
 		return err
 	}
@@ -131,8 +109,6 @@ func (s *source) OnCompleteDone(ctx context.Context, h sdk.Host, a cmp.DoneArgs)
 	return err
 }
 
-// clipCache reuses the last clips while they are fresh. Holding the lock
-// across fetch makes concurrent requests share one query.
 type clipCache struct {
 	mu    sync.Mutex
 	clips []clip
@@ -153,8 +129,6 @@ func (c *clipCache) get(now time.Time, ttl time.Duration, fetch func() ([]clip, 
 	return clips, nil
 }
 
-// useCounts counts how often each clip was accepted. A copy again has a new
-// copiedAt, so it is another key.
 type useCounts struct {
 	mu     sync.Mutex
 	counts map[clip]int
@@ -166,8 +140,6 @@ func (u *useCounts) record(cl clip) {
 	u.counts[cl]++
 }
 
-// unused returns the clips used fewer than limit times and forgets the counts
-// of what is no longer in clips.
 func (u *useCounts) unused(clips []clip, limit int) []clip {
 	u.mu.Lock()
 	defer u.mu.Unlock()
@@ -186,11 +158,8 @@ func (u *useCounts) unused(clips []clip, limit int) []clip {
 	return out
 }
 
-// Maccy stores Core Data timestamps: seconds since 2001-01-01 UTC.
 const coreDataEpoch = 978307200
 
-// load reads the clips, newest first. The connection lives for one query, so
-// that nothing holds Maccy's database between two refreshes of the cache.
 func load(ctx context.Context, p Params, now time.Time) ([]clip, error) {
 	if p.DBPath == "" || len(p.Types) == 0 || p.MaxByteLength <= 0 {
 		return nil, nil
@@ -248,7 +217,7 @@ func load(ctx context.Context, p Params, now time.Time) ([]clip, error) {
 
 var lineBreaks = strings.NewReplacer("\r\n", "\n", "\r", "\n")
 
-// dsn is the SQLite URI of path. mode=ro, not immutable=1, because Maccy's
+// mode=ro, not immutable=1, because Maccy's
 // latest clips may be in the write-ahead log.
 func dsn(path string) string {
 	if path == "~" || strings.HasPrefix(path, "~/") {
@@ -257,12 +226,10 @@ func dsn(path string) string {
 	return (&url.URL{Scheme: "file", Path: path, RawQuery: "mode=ro"}).String()
 }
 
-// fold is the one-line form of a value, for the popup.
 func fold(value string) string {
 	return strings.ReplaceAll(strings.TrimSpace(value), "\n", "↵")
 }
 
-// relativeTime is the age of a clip in seconds, in its largest unit.
 func relativeTime(age int64) string {
 	if age < 1 {
 		return "now"

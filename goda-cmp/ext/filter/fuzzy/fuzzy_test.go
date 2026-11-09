@@ -48,7 +48,6 @@ func lines(t testing.TB, path string) []string {
 	return strings.Split(strings.TrimSuffix(string(b), "\n"), "\n")
 }
 
-// testdata/golden.txt is the output of ddc-fuzzy (see gen_golden.ts).
 func TestCandidateOrderEqualsDdcFuzzy(t *testing.T) {
 	corpus := lines(t, "testdata/corpus.txt")
 	for _, row := range lines(t, "testdata/golden.txt") {
@@ -131,7 +130,6 @@ func TestScore(t *testing.T) {
 		{"😀", "😀", math.Inf(-1)},
 		{"a", "a", 1 + 0.1 + 0.01 + 0.001},
 		{"ac", "abc", 0.5 + 0.1 + 1.0/3/100 + 1.0/3/1000},
-		// "😀" counts as two characters of the source.
 		{"a", "😀a", 1 + 1.0/3/10 + 0.01 + 1.0/3/1000},
 	} {
 		var c scorer

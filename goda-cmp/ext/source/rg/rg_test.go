@@ -20,7 +20,6 @@ func host(cwd string) *cmptest.Host {
 	}}
 }
 
-// script returns an executable that runs body with sh.
 func script(t *testing.T, body string) string {
 	t.Helper()
 	path := filepath.Join(t.TempDir(), "fake-rg")
