@@ -1,8 +1,8 @@
 return {
     name = "terminals",
-    repo = "sassanh/terminals.nvim",
+    "sassanh/terminals.nvim",
     lazy = false,
-    lua_source = function()
+    config = function()
         local keys = {
             go_left = "<C-w>h",
             go_right = "<C-w>l",

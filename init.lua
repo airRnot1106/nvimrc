@@ -29,63 +29,27 @@ vim.g.loaded_rrhelper = true
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
--- dpp.vim setup
-local dpp_base = vim.fn.expand "~/.cache/dpp"
-local dpp_repos = dpp_base .. "/repos/github.com"
-
-for _, path in ipairs {
-    dpp_repos .. "/vim-denops/denops.vim",
-    dpp_repos .. "/Shougo/dpp.vim",
-    dpp_repos .. "/Shougo/dpp-ext-installer",
-    dpp_repos .. "/Shougo/dpp-ext-lazy",
-    dpp_repos .. "/Shougo/dpp-protocol-git",
-} do
-    vim.opt.runtimepath:prepend(path)
+local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
+if not vim.uv.fs_stat(lazypath) then
+    vim.fn.system {
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "--branch=stable",
+        "https://github.com/folke/lazy.nvim.git",
+        lazypath,
+    }
 end
+vim.opt.runtimepath:prepend(lazypath)
 
-local cache = require("dpp-cache").new(dpp_base, vim.fn.stdpath "config" .. "/dpp.ts")
-
-local sourced = false
-local function source_once()
-    if sourced then
-        return
-    end
-    cache.load()
-    sourced = true
-end
-
--- when the reconstruction of state.vim and startup.vim for dpp.vim is complete
-vim.api.nvim_create_autocmd("User", {
-    pattern = "Dpp:makeStatePost",
-    callback = function()
-        -- load startup.vim if it has not been loaded yet in this session
-        source_once()
-        -- start installation for any plugins that have not been cloned yet
-        if not cache.install_missing() then
-            vim.notify "dpp: Setup complete. Please restart Neovim."
-        end
-    end,
-})
-
--- regenerate state.vim and startup.vim whenever a plugin clone or update is completed
-vim.api.nvim_create_autocmd("User", {
-    pattern = "Dpp:ext:installer:updateDone",
-    callback = cache.rebuild,
-})
-
--- if the plugin pointed to by state.vim is broken, delete state.vim and startup.vim
-if cache.is_broken() then
-    cache.discard()
-end
-
--- detect plugins that are not yet installed and install them if any are found
-local fresh = cache.load()
-sourced = not fresh
-if fresh or cache.config_changed() then
-    cache.rebuild()
-else
-    cache.install_missing()
-end
+require("lazy").setup {
+    spec = { { import = "plugins" } },
+    install = { colorscheme = { "rose-pine" } },
+    change_detection = { enabled = false },
+    rocks = { enabled = false },
+    -- clones fail with connection errors at the default concurrency
+    concurrency = 8,
+}
 
 vim.cmd "filetype indent plugin on"
 vim.cmd "syntax on"

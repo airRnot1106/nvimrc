@@ -1,9 +1,9 @@
 return {
     name = "mini.hipatterns",
-    repo = "nvim-mini/mini.hipatterns",
-    depends = { "mini.extra" },
-    on_event = { "BufReadPre", "BufNewFile" },
-    lua_source = function()
+    "nvim-mini/mini.hipatterns",
+    dependencies = { "mini.extra" },
+    event = { "BufReadPre", "BufNewFile" },
+    config = function()
         local hipatterns = require "mini.hipatterns"
         local hi_words = require("mini.extra").gen_highlighter.words
         hipatterns.setup {

@@ -1,6 +1,6 @@
 return {
     name = "ddc-source-copilot",
-    repo = "Shougo/ddc-source-copilot",
-    depends = { "copilot" },
+    "Shougo/ddc-source-copilot",
+    dependencies = { "copilot" },
     lazy = true,
 }

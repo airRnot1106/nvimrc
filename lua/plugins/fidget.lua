@@ -1,7 +1,7 @@
 return {
     name = "fidget",
-    repo = "j-hui/fidget.nvim",
-    lua_source = function()
+    "j-hui/fidget.nvim",
+    config = function()
         require("fidget").setup()
     end,
 }

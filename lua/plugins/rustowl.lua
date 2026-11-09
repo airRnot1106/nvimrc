@@ -1,8 +1,8 @@
 return {
     name = "rustowl",
-    repo = "cordx56/rustowl",
-    on_ft = { "rust" },
-    lua_source = function()
+    "cordx56/rustowl",
+    ft = { "rust" },
+    config = function()
         require("rustowl").setup()
     end,
 }

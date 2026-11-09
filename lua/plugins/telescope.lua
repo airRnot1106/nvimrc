@@ -1,7 +1,7 @@
 return {
     name = "telescope",
-    repo = "nvim-telescope/telescope.nvim",
-    depends = {
+    "nvim-telescope/telescope.nvim",
+    dependencies = {
         "nvim-notify",
         "nvim-web-devicons",
         "plenary",
@@ -10,11 +10,11 @@ return {
         "telescope-fzf-native",
         "telescope-maccy",
     },
-    on_event = { "VimEnter" },
-    lua_add = function()
+    event = { "VimEnter" },
+    init = function()
         vim.g.sqlite_clib_path = "/usr/lib/libsqlite3.dylib"
     end,
-    lua_source = function()
+    config = function()
         -- setup telescope
         require("telescope").setup {
             defaults = {

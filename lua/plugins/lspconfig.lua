@@ -1,9 +1,9 @@
 return {
     name = "lspconfig",
-    repo = "neovim/nvim-lspconfig",
-    depends = { "ddc-source-lsp" },
-    on_event = { "VimEnter" },
-    lua_source = function()
+    "neovim/nvim-lspconfig",
+    dependencies = { "ddc-source-lsp" },
+    event = { "VimEnter" },
+    config = function()
         local lsp_names = {
             "astro",
             "bashls",

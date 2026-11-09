@@ -1,7 +1,7 @@
 return {
     name = "ddc",
-    repo = "Shougo/ddc.vim",
-    depends = {
+    "Shougo/ddc.vim",
+    dependencies = {
         "ddc-emoji",
         "ddc-fuzzy",
         "ddc-path",
@@ -20,8 +20,8 @@ return {
         "nvim-autopairs",
         "pum",
     },
-    on_event = { "CmdlineChanged", "CmdlineEnter", "InsertEnter", "TextChangedI", "TextChangedP" },
-    lua_source = function()
+    event = { "CmdlineChanged", "CmdlineEnter", "InsertEnter", "TextChangedI", "TextChangedP" },
+    config = function()
         local patch_global = vim.fn["ddc#custom#patch_global"]
 
         patch_global("ui", "pum")

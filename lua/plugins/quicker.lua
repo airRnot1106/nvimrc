@@ -1,9 +1,9 @@
 return {
     name = "quicker",
-    repo = "stevearc/quicker.nvim",
-    on_ft = { "qf" },
-    on_map = { n = { "<Leader>ql", "<Leader>ll" } },
-    lua_source = function()
+    "stevearc/quicker.nvim",
+    ft = { "qf" },
+    keys = { { "<Leader>ll", mode = { "n" } }, { "<Leader>ql", mode = { "n" } } },
+    config = function()
         require("quicker").setup {
             -- selene: allow(mixed_table)
             keys = {

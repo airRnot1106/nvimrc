@@ -1,5 +1,5 @@
 return {
     name = "ddc-emoji",
-    repo = "gamoutatsumi/ddc-emoji",
+    "gamoutatsumi/ddc-emoji",
     lazy = true,
 }

@@ -1,13 +1,13 @@
 return {
     name = "barbar",
-    repo = "romgrk/barbar.nvim",
-    depends = { "nvim-web-devicons" },
-    on_event = { "VimEnter" },
-    lua_add = function()
-        -- disable auto setup so the options in lua_source take effect
+    "romgrk/barbar.nvim",
+    dependencies = { "nvim-web-devicons" },
+    event = { "VimEnter" },
+    init = function()
+        -- disable auto setup so the options in config take effect
         vim.g.barbar_auto_setup = false
     end,
-    lua_source = function()
+    config = function()
         require("barbar").setup {
             animation = true,
             -- mouse is disabled in this config, so drop click handlers

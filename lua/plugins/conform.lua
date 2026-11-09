@@ -1,8 +1,8 @@
 return {
     name = "conform",
-    repo = "stevearc/conform.nvim",
-    on_event = { "BufReadPre", "BufNewFile" },
-    lua_source = function()
+    "stevearc/conform.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    config = function()
         local util = require "conform.util"
 
         local function pick(groups)

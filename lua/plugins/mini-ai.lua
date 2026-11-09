@@ -1,9 +1,9 @@
 return {
     name = "mini.ai",
-    repo = "nvim-mini/mini.ai",
-    depends = { "mini.extra" },
-    on_event = { "VimEnter" },
-    lua_source = function()
+    "nvim-mini/mini.ai",
+    dependencies = { "mini.extra" },
+    event = { "VimEnter" },
+    config = function()
         local gen_ai_spec = require("mini.extra").gen_ai_spec
         require("mini.ai").setup {
             custom_textobjects = {

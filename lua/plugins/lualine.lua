@@ -1,9 +1,9 @@
 return {
     name = "lualine.nvim",
-    repo = "nvim-lualine/lualine.nvim",
-    depends = { "nvim-web-devicons" },
-    on_event = { "VimEnter" },
-    lua_source = function()
+    "nvim-lualine/lualine.nvim",
+    dependencies = { "nvim-web-devicons" },
+    event = { "VimEnter" },
+    config = function()
         require("lualine").setup {
             options = {
                 icons_enabled = true,

@@ -1,9 +1,14 @@
 return {
     name = "nvim-aibo",
-    repo = "lambdalisue/nvim-aibo",
-    on_cmd = { "Aibo" },
-    on_map = { n = { "<Leader>aq", "<Leader>ac", "<Leader>ar", "<Leader>ad" } },
-    lua_source = function()
+    "lambdalisue/nvim-aibo",
+    cmd = { "Aibo" },
+    keys = {
+        { "<Leader>ac", mode = { "n" } },
+        { "<Leader>ad", mode = { "n" } },
+        { "<Leader>aq", mode = { "n" } },
+        { "<Leader>ar", mode = { "n" } },
+    },
+    config = function()
         require("aibo").setup()
 
         local function pum_relative(delta)

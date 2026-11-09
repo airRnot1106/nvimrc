@@ -1,9 +1,9 @@
 return {
     name = "winresize",
-    repo = "pogyomo/winresize.nvim",
-    depends = { "submode" },
-    on_map = { n = { "<C-w><C-w>" } },
-    lua_source = function()
+    "pogyomo/winresize.nvim",
+    dependencies = { "submode" },
+    keys = { { "<C-w><C-w>", mode = { "n" } } },
+    config = function()
         local submode = require "submode"
         local resize = require("winresize").resize
         submode.create("WinResize", {

@@ -1,11 +1,5 @@
 version: 2
 updates:
-  - package-ecosystem: "deno"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    cooldown:
-      default-days: 7
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
@@ -16,7 +10,6 @@ updates:
     directories:
       - "/"
       - "/nix/agent-skills"
-      - "/nix/dpp"
     schedule:
       interval: "weekly"
     groups:

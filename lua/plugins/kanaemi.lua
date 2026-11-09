@@ -1,11 +1,11 @@
 return {
     name = "kanaemi.vim",
-    repo = "kanaemi-app/kanaemi.vim",
-    on_event = { "VimEnter" },
-    lua_add = function()
+    "kanaemi-app/kanaemi.vim",
+    event = { "VimEnter" },
+    init = function()
         vim.g.kanaemi_port = 50123
     end,
-    lua_source = function()
+    config = function()
         vim.g.kanaemi_mode = "abc"
         pcall(function()
             vim.g.kanaemi_mode = vim.fn["kanaemi#get_mode"]()

@@ -1,15 +1,15 @@
 return {
     name = "nvim-mado-scratch",
-    repo = "airRnot1106/nvim-mado-scratch",
-    rev = "feature/edit-open-method",
-    on_cmd = {
+    "airRnot1106/nvim-mado-scratch",
+    branch = "feature/edit-open-method",
+    cmd = {
         "MadoScratchOpen",
         "MadoScratchClean",
         "MadoScratchOpenFile",
         "MadoScratchOpenNext",
         "MadoScratchOpenFileNext",
     },
-    lua_source = function()
+    config = function()
         require("mado-scratch").setup {
             -- Optional configuration (these are defaults)
             file_pattern = {
