@@ -58,7 +58,6 @@
               packages =
                 with pkgs;
                 [
-                  deno
                   go
                   gopls
                   lua-language-server
