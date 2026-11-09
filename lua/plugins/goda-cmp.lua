@@ -10,6 +10,7 @@ return {
             preview = true,
             previewer = "goda_cmp#get_previewer",
             preview_width = 80,
+            preview_border = "rounded",
         }
 
         vim.api.nvim_create_autocmd("User", {

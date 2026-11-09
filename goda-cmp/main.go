@@ -60,6 +60,8 @@ func main() {
 
 	b.PatchGlobal(cmp.Config{
 		UI: "pum",
+		// Moving between candidates that differ by a trailing character looks like a backspace, which closes the popup otherwise.
+		BackspaceCompletion: new(true),
 		AutoCompleteEvents: []string{
 			"CmdlineChanged",
 			"CmdlineEnter",
