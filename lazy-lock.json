@@ -20,7 +20,7 @@
   "ddc-ui-pum": { "branch": "main", "commit": "0679df221520576d07add3cf4219d478db110801" },
   "denops": { "branch": "main", "commit": "121d53056bb1e3705796559eb9881417928cf9a5" },
   "fidget": { "branch": "main", "commit": "6f793b2bcd2d35e201c09520f698bb763220908a" },
-  "fuzzy-motion": { "branch": "main", "commit": "d6ab71ebb77d7640c42db0ed152502f1b6100384" },
+  "gfm": { "branch": "main", "commit": "8fc2a02fda8e0a6f7e74feb16cc0aa9fa6c7b7e8" },
   "gitsigns": { "branch": "main", "commit": "31d6fb2d618bca1482b9f274751ead5f03461408" },
   "gks": { "branch": "main", "commit": "a6cd30969eda2ad48342d782d2ab385321afcd4e" },
   "gmp": { "branch": "main", "commit": "2865a50f9eaa6e9d65136c7581ad9704b0f8207b" },

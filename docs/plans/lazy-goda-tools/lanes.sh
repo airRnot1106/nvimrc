@@ -3,7 +3,7 @@
 # Drives a real Neovim TUI in tmux with isolated XDG directories and prints PASS or FAIL per lane.
 set -u
 CFG=$(cd "$1" && pwd); RUN=$2; shift 2
-LANES=("$@"); [ ${#LANES[@]} -eq 0 ] && LANES=(1 2 3 4 5 6 7 8 9)
+LANES=("$@"); [ ${#LANES[@]} -eq 0 ] && LANES=(1 2 3 4 5 6 7 8 9 10)
 mkdir -p "$RUN/xdg/config" "$RUN/out" "$RUN/proj/.git"
 RUN=$(cd "$RUN" && pwd)
 ln -sfn "$CFG" "$RUN/xdg/config/nvim"
@@ -43,6 +43,7 @@ lane7_check() {
   curl -sf --max-time 5 "$url" | grep -qiE "<html|<!doctype"
 }
 lane8() { printf 'first\nasdf\n日本語のテキスト\n' > "$RUN/proj/j.txt"; start j.txt; keys gg; keys /; sleep 1; type_slow nihongo; sleep 1; keys Enter; sleep 1.5; wait_expr 'line(".")' 3 12; result 8 $? "kensaku"; }
+lane10() { { printf "first\nsecond\n"; printf "日本語のテキスト\n"; printf "zebra here\n"; } > "$RUN/proj/f.txt"; start f.txt; keys gg; keys Space; "${TM[@]}" send-keys -H 3b; sleep 1.5; type_slow zebra; sleep 1; type_slow A; sleep 1; wait_expr "line(\".\")" 4 12; local a=$?; keys gg; sleep 0.3; keys Space; "${TM[@]}" send-keys -H 3b; sleep 1; type_slow nihongo; sleep 1; type_slow S; sleep 1; wait_expr "line(\".\")" 3 12; local b=$?; [ $a = 0 ] && [ $b = 0 ]; result 10 $? "fuzzy motion a=$a b=$b"; }
 lane9() { start c.lua; keys Escape; type_slow ':Aibo cat'; keys Enter; wait_expr 'luaeval("vim.bo.filetype:find([[aibo%-prompt]]) ~= nil and 1 or 0")' 1 30; local a=$?
   if [ $a != 0 ]; then keys Escape; sleep 1; fi; [ $a = 0 ]; result 9 $? "aibo prompt"; }
 for l in "${LANES[@]}"; do "lane$l"; done
