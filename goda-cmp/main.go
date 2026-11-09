@@ -13,7 +13,6 @@ import (
 
 	"goda-cmp-config/ext/filter/fuzzy"
 	"goda-cmp-config/ext/source/copilot"
-	"goda-cmp-config/ext/source/emoji"
 	"goda-cmp-config/ext/source/maccy"
 	"goda-cmp-config/ext/source/nvimlsp"
 	"goda-cmp-config/ext/source/rg"
@@ -48,14 +47,12 @@ func main() {
 	b.AddSource(rg.New(rg.Params{}))
 	b.AddSource(mocword.New(mocword.Params{}))
 	b.AddSource(file.New(file.Params{}))
-	b.AddSource(emoji.New())
 	b.AddSource(cmdline.New())
 	b.AddSource(cmdlinehistory.New(cmdlinehistory.Params{}))
 
 	b.AddFilter(fuzzy.NewMatcher(fuzzy.MatcherParams{}))
 	b.AddFilter(fuzzy.NewSorter())
 	b.AddFilter(fuzzy.NewConverter(fuzzy.ConverterParams{}))
-	b.AddFilter(emoji.NewMatcher())
 	b.AddFilter(sortercmdlinehistory.New(sortercmdlinehistory.Params{}))
 
 	b.PatchGlobal(cmp.Config{
@@ -69,7 +66,7 @@ func main() {
 			"TextChangedI",
 			"TextChangedP",
 		},
-		Sources: []string{"maccy", "copilot", "nvimlsp", "around", "buffer", "rg", "mocword", "file", "emoji"},
+		Sources: []string{"maccy", "copilot", "nvimlsp", "around", "buffer", "rg", "mocword", "file"},
 		CmdlineSources: map[string][]string{
 			":": {"cmdline", "cmdlinehistory", "rg", "file"},
 		},
@@ -99,12 +96,6 @@ func main() {
 				MinAutoCompleteLength: new(0),
 				IsVolatile:            new(true),
 				Timeout:               new(5000),
-			},
-			"emoji": {
-				Mark:           "[E]",
-				Matchers:       []string{"emoji"},
-				Sorters:        []string{},
-				KeywordPattern: `[a-zA-Z_:]\w*`,
 			},
 			"file": {
 				Mark:                   "[F]",
