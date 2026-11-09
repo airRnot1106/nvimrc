@@ -9,7 +9,6 @@ return {
             padding = true,
             preview = true,
             previewer = "goda_cmp#get_previewer",
-            preview_delay = 100,
             preview_width = 80,
             preview_border = "rounded",
         }
