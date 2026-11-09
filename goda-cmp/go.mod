@@ -5,7 +5,8 @@ go 1.26.0
 require (
 	github.com/Shougo/goda-cmp.vim v0.3.3-0.20261106074959-4f0c30e25dd3
 	github.com/Shougo/goda.vim v0.7.2
-	modernc.org/sqlite v1.61.1
+	github.com/airRnot1106/goda-cmp-source-maccy v0.0.0-20261109135354-6d1fa6c38b98
+	github.com/airRnot1106/goda-cmp-source-nvimlsp v0.0.0-20261109141259-0181f569c452
 )
 
 require (
@@ -18,4 +19,5 @@ require (
 	modernc.org/libc v1.79.0 // indirect
 	modernc.org/mathutil v1.7.1 // indirect
 	modernc.org/memory v1.12.1 // indirect
+	modernc.org/sqlite v1.61.1 // indirect
 )
