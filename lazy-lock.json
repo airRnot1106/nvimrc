@@ -1,6 +1,5 @@
 {
   "barbar": { "branch": "master", "commit": "337ecfadb8bf005050990bf2f624dc4fc828dabd" },
-  "bufpreview": { "branch": "master", "commit": "fdc917dcd8bd57e53905946b099da5336ef74129" },
   "conform": { "branch": "master", "commit": "619363c30309d29ffa631e67c8183f2a72caa373" },
   "copilot": { "branch": "master", "commit": "d521d3959f81f4fa58870ed329754f1dd5057511" },
   "ddc": { "branch": "main", "commit": "591182eed2e6eaab6d48083c15488c8b45f78db9" },
@@ -23,6 +22,8 @@
   "fidget": { "branch": "main", "commit": "6f793b2bcd2d35e201c09520f698bb763220908a" },
   "fuzzy-motion": { "branch": "main", "commit": "d6ab71ebb77d7640c42db0ed152502f1b6100384" },
   "gitsigns": { "branch": "main", "commit": "31d6fb2d618bca1482b9f274751ead5f03461408" },
+  "gmp": { "branch": "main", "commit": "2865a50f9eaa6e9d65136c7581ad9704b0f8207b" },
+  "goda.vim": { "branch": "main", "commit": "8399891df7fd77eee0473003201f9960dfbd8ebb" },
   "kanaemi.vim": { "branch": "main", "commit": "ba4cdf46021a7e225d929acb58204fbbd8da4424" },
   "kensaku": { "branch": "main", "commit": "67727c8cc81f45b3c3abc600ecfef6fba620eb88" },
   "kensaku-search": { "branch": "main", "commit": "9568c2b174a9cf31bd9922c0a991117f4dd4f0c3" },

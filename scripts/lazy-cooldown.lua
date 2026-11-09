@@ -2,7 +2,8 @@
 -- Moves each plugin in lazy-lock.json to the newest commit that is at least MIN_AGE_DAYS old.
 -- Run `:Lazy restore` afterwards. `--check` only reports commits that are too new.
 local MIN_AGE_DAYS = 7
-local EXEMPT_OWNER = "airRnot1106"
+-- goda.vim plugins and their binaries must stay on the same protocol version
+local EXEMPT_REPOS = { "[/:]airRnot1106/", "[/:]Shougo/goda" }
 
 local function option(flag, default)
     for i, value in ipairs(vim.v.argv) do
@@ -25,7 +26,12 @@ end
 
 local function is_exempt(dir)
     local url = git(dir, "remote", "get-url", "origin") or ""
-    return url:find("[/:]" .. EXEMPT_OWNER .. "/") ~= nil
+    for _, pattern in ipairs(EXEMPT_REPOS) do
+        if url:find(pattern) then
+            return true
+        end
+    end
+    return false
 end
 
 local function newest_allowed(dir, branch, exempt)
