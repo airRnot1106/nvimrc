@@ -10,10 +10,9 @@ import (
 )
 
 const (
-	snippetFormat  = 2
-	kindSnippet    = 15
-	applyKindMerge = 2
-	// snippetIndicator marks a snippet in the popup, as in ddc-source-lsp.
+	snippetFormat    = 2
+	kindSnippet      = 15
+	applyKindMerge   = 2
 	snippetIndicator = "~"
 )
 
@@ -27,7 +26,6 @@ type lspRange struct {
 	End   position `json:"end"`
 }
 
-// textEdit is a TextEdit (Range) or an InsertReplaceEdit (Insert, Replace).
 type textEdit struct {
 	NewText string    `json:"newText"`
 	Range   *lspRange `json:"range,omitempty"`
@@ -35,8 +33,6 @@ type textEdit struct {
 	Replace *lspRange `json:"replace,omitempty"`
 }
 
-// insertRange is the range an accepted item replaces. It is the insert range
-// of an InsertReplaceEdit, ddc-source-lsp's default confirmBehavior.
 func (e *textEdit) insertRange() *lspRange {
 	if e.Insert != nil {
 		return e.Insert
@@ -77,7 +73,6 @@ func (ci *completionItem) info() string {
 	return ci.Detail + "\n\n" + doc
 }
 
-// abbr is what the popup shows for the item.
 func (ci *completionItem) abbr() string {
 	s := ci.Label
 	if ci.LabelDetails != nil {
@@ -92,7 +87,6 @@ func (ci *completionItem) abbr() string {
 	return s
 }
 
-// documentation reads a string or a MarkupContent.
 func documentation(raw json.RawMessage) string {
 	if len(raw) == 0 {
 		return ""
@@ -124,7 +118,6 @@ func kindName(k int) string {
 	return kindNames[1]
 }
 
-// editRange is itemDefaults.editRange: a Range or {insert, replace}.
 type editRange struct {
 	lspRange
 	Insert  *lspRange `json:"insert"`
@@ -151,8 +144,6 @@ type completionList struct {
 	Items        []json.RawMessage `json:"items"`
 }
 
-// decodeCompletion reads a completion result: null, CompletionItem[] or a
-// CompletionList. Items stay raw, since completionItem/resolve gets them back.
 func decodeCompletion(raw json.RawMessage) (completionList, error) {
 	var l completionList
 	s := bytes.TrimSpace(raw)
@@ -165,7 +156,6 @@ func decodeCompletion(raw json.RawMessage) (completionList, error) {
 	return l, json.Unmarshal(s, &l)
 }
 
-// fill gives ci the defaults of the list it came in.
 func (l *completionList) fill(ci *completionItem) {
 	d := l.ItemDefaults
 	if d == nil {
@@ -186,7 +176,6 @@ func (l *completionList) fill(ci *completionItem) {
 	}
 }
 
-// data combines an item's data with the default, by applyKind.
 func (l *completionList) data(own json.RawMessage) json.RawMessage {
 	def := l.ItemDefaults.Data
 	if len(own) == 0 {
@@ -209,7 +198,6 @@ func (l *completionList) data(own json.RawMessage) json.RawMessage {
 	return merged
 }
 
-// filled is raw with what fill gave ci, for completionItem/resolve.
 func (l *completionList) filled(raw json.RawMessage, ci *completionItem) json.RawMessage {
 	d := l.ItemDefaults
 	if d == nil {
@@ -243,12 +231,11 @@ func (l *completionList) filled(raw json.RawMessage, ci *completionItem) json.Ra
 	return b
 }
 
-// request is the text of one completion request.
 type request struct {
 	bufnr, lnum int
-	input       string // the line before the cursor
-	after       string // the line after the cursor
-	keyword     int    // where the keyword before the cursor starts
+	input       string
+	after       string
+	keyword     int
 }
 
 func newRequest(c *cmp.Context) *request {
@@ -257,15 +244,11 @@ func newRequest(c *cmp.Context) *request {
 
 func (r *request) word() word { return word{r.bufnr, r.lnum, r.keyword} }
 
-// edit is what accepting an item does to the line, in bytes of the request's
-// line.
 type edit struct {
 	start, end int
 	text       string
 }
 
-// edit returns false for an edit that does not stay on the cursor line, which
-// the popup cannot offer.
 func (r *request) edit(ci *completionItem, encoding string) (edit, bool) {
 	if ci.TextEdit == nil {
 		return edit{r.keyword, len(r.input), stdcmp.Or(ci.InsertText, strings.TrimSpace(ci.Label))}, true
@@ -279,8 +262,6 @@ func (r *request) edit(ci *completionItem, encoding string) (edit, bool) {
 	return edit{start, byteOffset(line, rg.End.Character, encoding), ci.TextEdit.NewText}, true
 }
 
-// wordStart is where the popup starts the word of an edit. Some servers start
-// the range at the indentation before the keyword.
 func (r *request) wordStart(e edit) int {
 	if e.start >= r.keyword {
 		return e.start
@@ -289,9 +270,6 @@ func (r *request) wordStart(e edit) int {
 	return e.start + len(blank) - len(strings.TrimLeft(blank, " \t"))
 }
 
-// filterText is what matchers compare with the text from start to the cursor.
-// clangd completes "obj.p" to "obj->prop" with the range on the dot and the
-// filter text "prop", which needs the dot to be compared at all.
 func (r *request) filterText(ci *completionItem, start int) string {
 	filter := strings.TrimLeft(stdcmp.Or(ci.FilterText, ci.Label), " \t")
 	if start < r.keyword {
@@ -302,13 +280,11 @@ func (r *request) filterText(ci *completionItem, start int) string {
 	return filter
 }
 
-// candidate is an item and where its word starts.
 type candidate struct {
 	item  cmp.Item
 	start int
 }
 
-// candidates converts the items of one client's answer.
 func (r *request) candidates(cl client, l *completionList) []candidate {
 	out := make([]candidate, 0, len(l.Items))
 	for _, raw := range l.Items {
@@ -339,8 +315,6 @@ func (r *request) candidates(cl client, l *completionList) []candidate {
 	return out
 }
 
-// popupWord is the text shown in the buffer while the item is selected. The
-// text of the item replaces it on accept.
 func popupWord(ci *completionItem, text string) string {
 	if ci.isSnippet() {
 		text = stripSnippet(text)
@@ -362,8 +336,6 @@ func (r *request) placeholder() cmp.Gathered {
 	return cmp.Gathered{Start: r.keyword, Items: []cmp.Item{item}, Incomplete: true}
 }
 
-// gathered expresses the candidates relative to the leftmost start, the one
-// column the popup replaces from.
 func (r *request) gathered(found []candidate, incomplete bool) cmp.Gathered {
 	start := r.keyword
 	for i, c := range found {

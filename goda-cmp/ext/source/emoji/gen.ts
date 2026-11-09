@@ -1,4 +1,3 @@
-// Writes table.go from the table ddc-emoji reads.
 import {
   EMOJIS,
   EMOJIS_ALIAS,

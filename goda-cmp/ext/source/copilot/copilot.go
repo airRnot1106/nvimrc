@@ -1,8 +1,6 @@
-// Package copilot is a completion source for GitHub Copilot through
-// copilot.lua. It is a port of ddc-source-copilot
+// Package copilot is a port of ddc-source-copilot
 // (https://github.com/Shougo/ddc-source-copilot, MIT license, Copyright
-// Shougo Matsushita) without its copilot.vim integration. The Lua side is
-// lua/goda_cmp_copilot.lua of this configuration.
+// Shougo Matsushita) without its copilot.vim integration.
 package copilot
 
 import (
@@ -15,9 +13,7 @@ import (
 	"github.com/Shougo/goda.vim/sdk"
 )
 
-// Params are the parameters of the source.
 type Params struct {
-	// Copilot is the integration to use. Only "lua" gathers anything.
 	Copilot string `json:"copilot"`
 }
 
@@ -29,12 +25,10 @@ const placeholder = "?"
 
 type source struct{ p Params }
 
-// New returns the source, named "copilot".
 func New(p Params) cmp.Source { return source{p} }
 
 func (source) Name() string { return "copilot" }
 
-// WithParams sets the parameters from Vim script (sourceParams).
 func (s source) WithParams(p cmp.Params) (any, error) {
 	np, err := cmp.PatchParams(s.p, p)
 	if err != nil {
@@ -87,7 +81,6 @@ func (s source) GatherStream(ctx context.Context, h sdk.Host, c *cmp.Context, em
 	}
 }
 
-// OnCompleteDone puts the suggestion in place of its placeholder word.
 func (source) OnCompleteDone(ctx context.Context, h sdk.Host, a cmp.DoneArgs) error {
 	text, ok := a.Item.UserData.(string)
 	if !ok {
@@ -98,10 +91,6 @@ func (source) OnCompleteDone(ctx context.Context, h sdk.Host, a cmp.DoneArgs) er
 	return err
 }
 
-// item makes the candidate of a suggestion, whose text starts at the
-// beginning of the line. A popup item holds one line, so a text with control
-// characters is shown and inserted in a printable form; UserData keeps the
-// text for OnCompleteDone.
 func item(text string, start int) cmp.Item {
 	completion := text[min(start, len(text)):]
 	it := cmp.Item{Word: completion, Info: dedent(text)}
@@ -125,7 +114,6 @@ func printable(s string, replace func(rune) string) string {
 	return b.String()
 }
 
-// caret is Vim's display of a control character, such as ^J.
 func caret(r rune) string {
 	switch {
 	case r <= 0x1f:
@@ -136,7 +124,6 @@ func caret(r rune) string {
 	return "~" + string(r-0x40)
 }
 
-// dedent removes the indent of the first line from every line.
 func dedent(text string) string {
 	n := len(text) - len(strings.TrimLeftFunc(text, unicode.IsSpace))
 	lines := strings.Split(text, "\n")

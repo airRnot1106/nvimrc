@@ -11,8 +11,6 @@ import (
 	"github.com/Shougo/goda-cmp.vim/cmp/cmptest"
 )
 
-// answering is a luaeval whose poll is pending for the given number of calls,
-// then returns answer.
 func answering(pending int, answer any) *cmptest.Host {
 	return &cmptest.Host{Funcs: map[string]func(...any) (any, error){
 		"luaeval": func(a ...any) (any, error) {

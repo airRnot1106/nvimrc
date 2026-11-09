@@ -13,8 +13,6 @@ import (
 	"github.com/Shougo/goda-cmp.vim/cmp/cmptest"
 )
 
-// With NVIMLSP_PLUGIN set the test binary is the plugin binary that
-// testdata/round_trip.lua starts.
 func TestMain(m *testing.M) {
 	if os.Getenv("NVIMLSP_PLUGIN") != "" {
 		b := cmp.New()

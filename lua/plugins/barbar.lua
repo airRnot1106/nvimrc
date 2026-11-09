@@ -4,7 +4,6 @@ return {
     dependencies = { "nvim-web-devicons" },
     event = { "VimEnter" },
     init = function()
-        -- disable auto setup so the options in config take effect
         vim.g.barbar_auto_setup = false
     end,
     config = function()

@@ -1,8 +1,4 @@
-// Package emoji is a source that offers emoji by their names, and the matcher
-// for it. It is a port of ddc-emoji (https://github.com/gamoutatsumi/ddc-emoji).
-//
-// Every name begins with a colon, as in ":smile:", so the source needs a
-// keywordPattern that keeps the colon, such as `[a-zA-Z_:]\w*`.
+// Package emoji is a port of ddc-emoji (https://github.com/gamoutatsumi/ddc-emoji).
 package emoji
 
 //go:generate deno run --allow-write=table.go gen.ts
@@ -16,7 +12,6 @@ import (
 	"github.com/Shougo/goda.vim/sdk"
 )
 
-// Metadata is the UserData of the items.
 type Metadata struct {
 	Name  string
 	Emoji string
@@ -32,8 +27,6 @@ var items = sync.OnceValue(func() []cmp.Item {
 
 type source struct{}
 
-// New returns the source, named "emoji". It offers every emoji and leaves the
-// choice to NewMatcher.
 func New() cmp.Source { return source{} }
 
 func (source) Name() string { return "emoji" }
@@ -44,8 +37,6 @@ func (source) Gather(_ context.Context, _ sdk.Host, c *cmp.Context) (cmp.Gathere
 
 type matcher struct{}
 
-// NewMatcher returns the filter named "emoji": the items of this source whose
-// name starts with the typed text.
 func NewMatcher() cmp.Filter { return matcher{} }
 
 func (matcher) Name() string { return "emoji" }

@@ -1,8 +1,3 @@
-// Package nvimlsp is a completion source that asks the LSP clients Neovim
-// already has attached to the buffer. It starts no language server, so the
-// servers stay configured in one place and run once per language. Its Neovim
-// side is lua/goda_cmp_lsp.lua, which must be on 'runtimepath'.
-//
 // The source polls Neovim for the answers. A notification from Neovim cannot
 // reach it during a gather: goda.vim handles the notifications of the editor
 // one at a time, and cmp.complete, which runs the gather, is one of them.
@@ -31,43 +26,28 @@ const (
 	confirmExpr = "require('goda_cmp_lsp').confirm(_A)"
 )
 
-// pollInterval bounds what polling adds to a fast answer. A poll costs Neovim
-// about 10 microseconds, and it polls only while a request is in flight.
 const pollInterval = time.Millisecond
 
-// resolveTimeout is ddc-source-lsp's.
 const resolveTimeout = time.Second
 
-// Params are ddc-source-lsp's parameters of the same names, off by default
-// as they are there.
 type Params struct {
-	// EnableResolveItem sends completionItem/resolve for the selected and
-	// the accepted item.
-	EnableResolveItem bool `json:"enableResolveItem"`
-	// EnableAdditionalTextEdit applies additionalTextEdits (an auto import)
-	// when an item is accepted.
+	EnableResolveItem        bool `json:"enableResolveItem"`
 	EnableAdditionalTextEdit bool `json:"enableAdditionalTextEdit"`
 }
 
-// Source is the source. It implements cmp.StreamSource, cmp.Resolver,
-// cmp.CompleteDoner and cmp.Previewer.
 type Source struct {
 	p Params
 
-	mu sync.Mutex
-	// incompleteWord is the word whose last answer was isIncomplete.
+	mu             sync.Mutex
 	incompleteWord word
 }
 
-// word is the word being completed. The zero value is no word.
 type word struct{ bufnr, lnum, start int }
 
-// New returns the source, named "nvimlsp".
 func New(p Params) *Source { return &Source{p: p} }
 
 func (*Source) Name() string { return "nvimlsp" }
 
-// WithParams sets the parameters from Vim script (sourceParams).
 func (s *Source) WithParams(p cmp.Params) (any, error) {
 	np, err := cmp.PatchParams(s.p, p)
 	if err != nil {
@@ -80,8 +60,7 @@ func (s *Source) Gather(ctx context.Context, h sdk.Host, c *cmp.Context) (cmp.Ga
 	return cmp.Collect(ctx, h, c, s)
 }
 
-// GatherStream emits after every client's answer, so that a slow server does
-// not hold back a fast one. It is a stream also because the engine leaves a
+// It is a stream because the engine leaves a
 // plain source out of a request after hideTimeout, which vtsls can exceed.
 func (s *Source) GatherStream(ctx context.Context, h sdk.Host, c *cmp.Context, emit func(cmp.Gathered) error) error {
 	if c.Mode != "" && c.Mode != "i" {
@@ -118,15 +97,12 @@ func (s *Source) GatherStream(ctx context.Context, h sdk.Host, c *cmp.Context, e
 	})
 }
 
-// await polls request id until it ended, and hands each answer to each. When
-// it returns earlier, the request is cancelled.
 func await(ctx context.Context, h sdk.Host, id int, each func(*answer) error) error {
 	running := true
 	defer func() {
 		if !running {
 			return
 		}
-		// ctx may be done already, and Neovim has to hear about it anyway.
 		if err := h.Notify(context.Background(), "luaeval", cancelExpr, id); err != nil {
 			log.Printf("nvimlsp: cancel: %v", err)
 		}
@@ -189,28 +165,24 @@ func (s *Source) setIncomplete(r *request, incomplete bool) {
 	}
 }
 
-// client is what the source keeps of the client that gave an item.
 type client struct {
 	ID         int    `json:"clientId"`
 	Encoding   string `json:"offsetEncoding"`
 	Resolvable bool   `json:"resolvable"`
 }
 
-// clientResult is the answer of one client to textDocument/completion.
 type clientResult struct {
 	client
 	Result json.RawMessage `json:"result"`
 	Error  string          `json:"error"`
 }
 
-// answer is what poll hands over.
 type answer struct {
 	Done    bool           `json:"done"`
 	Stale   bool           `json:"stale"`
 	Results []clientResult `json:"results"`
 }
 
-// poll returns nil while nothing new arrived.
 func poll(ctx context.Context, h sdk.Host, id int) (*answer, error) {
 	v, err := h.Call(ctx, "luaeval", pollExpr, id)
 	if err != nil {
@@ -227,18 +199,15 @@ func poll(ctx context.Context, h sdk.Host, id int) (*answer, error) {
 	return &a, nil
 }
 
-// itemData is the UserData of an item.
 type itemData struct {
 	client   client
 	request  *request
-	list     *completionList // the list of the item, for its defaults
+	list     *completionList
 	raw      json.RawMessage
 	item     completionItem
 	resolved bool
 }
 
-// resolve returns d with the details the server adds, d itself when it has
-// none to add or the user moved on.
 func (d *itemData) resolve(ctx context.Context, h sdk.Host) (*itemData, error) {
 	if d.resolved || !d.client.Resolvable {
 		return d, nil
@@ -285,8 +254,6 @@ func (d *itemData) resolve(ctx context.Context, h sdk.Host) (*itemData, error) {
 	return out, nil
 }
 
-// overlay lays the fields of a resolved item over the item, since a server
-// may answer with only what it adds.
 func overlay(item, resolved json.RawMessage) (json.RawMessage, error) {
 	if len(resolved) == 0 || string(resolved) == "null" {
 		return item, nil
@@ -302,7 +269,6 @@ func overlay(item, resolved json.RawMessage) (json.RawMessage, error) {
 	return json.Marshal(base)
 }
 
-// Resolve fills the documentation of the selected item.
 func (s *Source) Resolve(ctx context.Context, h sdk.Host, a cmp.DoneArgs) (cmp.Item, error) {
 	d, ok := a.Item.UserData.(*itemData)
 	if !ok || !s.p.EnableResolveItem {
@@ -322,7 +288,6 @@ func (s *Source) Resolve(ctx context.Context, h sdk.Host, a cmp.DoneArgs) (cmp.I
 	return it, nil
 }
 
-// confirmation is what lua/goda_cmp_lsp.lua applies to an accepted item.
 type confirmation struct {
 	Bufnr               int             `json:"bufnr"`
 	Lnum                int             `json:"lnum"`
@@ -338,9 +303,6 @@ type confirmation struct {
 	Command             json.RawMessage `json:"command,omitempty"`
 }
 
-// OnCompleteDone expands the snippet, applies the edit where it differs from
-// the word and the additionalTextEdits. The server may leave those out until
-// the item is resolved.
 func (s *Source) OnCompleteDone(ctx context.Context, h sdk.Host, a cmp.DoneArgs) error {
 	d, ok := a.Item.UserData.(*itemData)
 	if !ok {
@@ -381,8 +343,6 @@ func (s *Source) OnCompleteDone(ctx context.Context, h sdk.Host, a cmp.DoneArgs)
 	return err
 }
 
-// Preview shows what ddc-source-lsp shows: the snippet of a snippet item,
-// otherwise the detail and the documentation.
 func (s *Source) Preview(ctx context.Context, h sdk.Host, a cmp.DoneArgs) (cmp.Preview, error) {
 	d, ok := a.Item.UserData.(*itemData)
 	if !ok {

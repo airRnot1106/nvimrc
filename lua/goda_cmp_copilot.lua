@@ -2,7 +2,6 @@ local M = {}
 
 local latest = { seq = -1 }
 
---- Asks copilot.lua for completions at the cursor.
 --- @param seq integer the request; a newer one replaces it
 function M.request(seq)
     local client = require("copilot.client").get()
@@ -35,8 +34,6 @@ function M.poll(seq)
     return latest.texts
 end
 
---- Replaces the placeholder word before the cursor with the lines of the
---- suggestion and moves the cursor behind them.
 --- @param word string
 --- @param lines string[]
 function M.accept(word, lines)

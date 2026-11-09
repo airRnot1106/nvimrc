@@ -15,23 +15,20 @@ import (
 	"github.com/Shougo/goda.vim/sdk"
 )
 
-// neovim fakes lua/goda_cmp_lsp.lua behind Host.Call: the answers of poll
-// come from a script, and what the source sends is kept for the test.
 type neovim struct {
 	mu           sync.Mutex
-	polls        []string // what poll answers, one per call; "" afterwards
+	polls        []string
 	noClients    bool
 	starts       []map[string]any
 	cancels      []any
 	resolves     []map[string]any
 	confirms     []map[string]any
-	resolved     string // the item a resolve request answers with
-	resolveError string // the error it answers with instead
+	resolved     string
+	resolveError string
 	shows        []shown
 	hides        int
 }
 
-// shown is one list the UI got.
 type shown struct {
 	col   int
 	items []cmp.Item
@@ -103,7 +100,6 @@ func (n *neovim) cancelled() []any {
 	return append([]any(nil), n.cancels...)
 }
 
-// result is the answer of one client, in the shape poll sends it.
 func result(id int, encoding, body string) string {
 	b, _ := json.Marshal(map[string]any{
 		"clientId": id, "offsetEncoding": encoding, "resolvable": true, "result": json.RawMessage(body),
@@ -111,7 +107,6 @@ func result(id int, encoding, body string) string {
 	return string(b)
 }
 
-// answered is a poll answer with every client done.
 func answered(results ...string) string {
 	return `{"done":true,"stale":false,"results":[` + strings.Join(results, ",") + `]}`
 }
@@ -120,7 +115,6 @@ func newContext(input, after string) *cmp.Context {
 	return &cmp.Context{Seq: 1, Tick: 3, Bufnr: 1, Lnum: 5, Input: input, NextInput: after, Mode: "i"}
 }
 
-// gather returns the last thing the source emitted.
 func gather(t *testing.T, s *Source, n *neovim, c *cmp.Context) cmp.Gathered {
 	t.Helper()
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -141,7 +135,6 @@ func words(items []cmp.Item) []string {
 }
 
 func TestStartFollowsTheServersRange(t *testing.T) {
-	// "日本語😀" is 13 bytes, 5 UTF-16 units and 4 code points.
 	const prefix = "日本語😀"
 	edit := func(start, end int) string {
 		b, _ := json.Marshal(map[string]any{"label": "foo", "textEdit": map[string]any{
@@ -273,8 +266,6 @@ func TestServerFieldsReachThePopup(t *testing.T) {
 	}
 }
 
-// The items of ddc-source-lsp's confirm tests, whose servers each use the range
-// and the filter text in their own way.
 func TestItemsOfRealServersMatchWhatIsTyped(t *testing.T) {
 	tests := []struct {
 		name   string
@@ -486,8 +477,6 @@ func TestSupersededEmitEndsTheRequest(t *testing.T) {
 	}
 }
 
-// engine is a real goda-cmp engine with the source, a test UI and a second
-// source that always offers "other".
 type engine struct {
 	t  *testing.T
 	p  sdk.Plugin
@@ -660,7 +649,6 @@ func TestResolveFillsTheDocumentation(t *testing.T) {
 		t.Errorf("the server got %s, want the default data in it", n.resolves[0]["item"])
 	}
 
-	// A second selection of the same item asks the server no more.
 	e.call("resolve", ref)
 	if len(n.resolves) != 1 {
 		t.Errorf("resolves = %d, want the first answer kept", len(n.resolves))
@@ -800,7 +788,6 @@ func TestResolveWithoutAnAnswerIsCancelledWithItsContext(t *testing.T) {
 	if _, err := e.p.Handlers()["resolve"](ctx, e.h, []any{e.last().items[0].Ref}); err == nil {
 		t.Error("the unanswered request ended without an error")
 	}
-	// The engine stops waiting at the deadline, and the source ends right after.
 	for deadline := time.Now().Add(5 * time.Second); len(n.cancelled()) == 0 && time.Now().Before(deadline); {
 		time.Sleep(pollInterval)
 	}

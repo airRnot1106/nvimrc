@@ -1,9 +1,4 @@
-// Package fuzzy holds the filters matcherfuzzy, sorterfuzzy and
-// converterfuzzy, a port of ddc-fuzzy (https://github.com/tani/ddc-fuzzy).
-//
-// Like the original, the matcher and the sorter are case sensitive unless the
-// source option ignoreCase is set. They read Item.Filter(), which is the word
-// of the original unless the source set a filter text or matcherKey is used.
+// Package fuzzy is a port of ddc-fuzzy (https://github.com/tani/ddc-fuzzy).
 package fuzzy
 
 import (
@@ -16,31 +11,23 @@ import (
 	"github.com/Shougo/goda-cmp.vim/cmp"
 )
 
-// SplitMode says which characters of a candidate the typed characters match.
 type SplitMode string
 
 const (
-	// SplitCharacter matches any character: "abc" matches "axbxc".
 	SplitCharacter SplitMode = "character"
-	// SplitWord matches where a word begins: "abc" matches "a_bc" and
-	// "a_b_c", but not "axbxc".
-	SplitWord SplitMode = "word"
+	SplitWord      SplitMode = "word"
 )
 
-// MatcherParams are the settings of matcherfuzzy.
 type MatcherParams struct {
-	// SplitMode is SplitCharacter unless it is SplitWord.
 	SplitMode SplitMode `json:"splitMode"`
 }
 
 type matcher struct{ p MatcherParams }
 
-// NewMatcher returns the filter named "matcherfuzzy".
 func NewMatcher(p MatcherParams) cmp.Filter { return matcher{p} }
 
 func (matcher) Name() string { return "matcherfuzzy" }
 
-// WithParams sets the parameters from Vim script (filterParams).
 func (f matcher) WithParams(p cmp.Params) (any, error) {
 	np, err := cmp.PatchParams(f.p, p)
 	if err != nil {
@@ -56,7 +43,7 @@ func (f matcher) Filter(_ context.Context, in cmp.FilterInput) ([]cmp.Item, erro
 	}
 	pattern := appendUnits(nil, normalize(in.Complete, in.IgnoreCase))
 	var out []cmp.Item
-	var source units
+	var source utf16Units
 	for i := range in.Items {
 		source = appendUnits(source[:0], normalize(in.Items[i].Filter(), in.IgnoreCase))
 		if test(pattern, source) {
@@ -68,8 +55,6 @@ func (f matcher) Filter(_ context.Context, in cmp.FilterInput) ([]cmp.Item, erro
 
 type sorter struct{}
 
-// NewSorter returns the filter named "sorterfuzzy": the best matches first,
-// and candidates with equal scores in the order they came.
 func NewSorter() cmp.Filter { return sorter{} }
 
 func (sorter) Name() string { return "sorterfuzzy" }
@@ -82,7 +67,7 @@ func (sorter) Filter(_ context.Context, in cmp.FilterInput) ([]cmp.Item, error) 
 	pattern := appendUnits(nil, normalize(in.Complete, in.IgnoreCase))
 	ranks := make([]ranked, len(in.Items))
 	var c scorer
-	var source units
+	var source utf16Units
 	for i := range in.Items {
 		source = appendUnits(source[:0], normalize(in.Items[i].Filter(), in.IgnoreCase))
 		ranks[i] = ranked{c.score(pattern, source), i}
@@ -103,10 +88,7 @@ func (sorter) Filter(_ context.Context, in cmp.FilterInput) ([]cmp.Item, error) 
 	return out, nil
 }
 
-// ConverterParams are the settings of converterfuzzy.
 type ConverterParams struct {
-	// HlGroup is the highlight group of the matched text (default
-	// "FuzzyAccent", linked to Number).
 	HlGroup string `json:"hlGroup"`
 }
 
@@ -115,8 +97,6 @@ type converter struct {
 	done *atomic.Bool
 }
 
-// NewConverter returns the filter named "converterfuzzy".
-//
 // cmp.Item has no field for the highlights of single characters, which is
 // what the original adds to each item. This filter leaves the items as they
 // are and gives HlGroup to pum.vim's highlight_matches option instead, so the
@@ -130,7 +110,6 @@ func NewConverter(p ConverterParams) cmp.Filter {
 
 func (converter) Name() string { return "converterfuzzy" }
 
-// WithParams sets the parameters from Vim script (filterParams).
 func (f converter) WithParams(p cmp.Params) (any, error) {
 	np, err := cmp.PatchParams(f.p, p)
 	if err != nil {

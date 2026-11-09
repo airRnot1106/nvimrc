@@ -12,8 +12,6 @@ import (
 
 const keywordPattern = `[a-zA-Z_:]\w*`
 
-// complete runs input through the engine with the options of lua/plugins/ddc.lua
-// and returns what the UI was asked to show.
 func complete(t *testing.T, input string) (col int, items []cmp.Item) {
 	t.Helper()
 	b := cmp.New().AddUI(cmptest.NewUI("test")).AddSource(emoji.New()).AddFilter(emoji.NewMatcher())

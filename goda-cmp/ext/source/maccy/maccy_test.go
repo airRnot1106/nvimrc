@@ -18,7 +18,6 @@ const plainText = "public.utf8-plain-text"
 
 var testNow = time.Unix(1_800_000_000, 0)
 
-// fixture is a database with Maccy's schema and only generated clips.
 type fixture struct {
 	t    *testing.T
 	path string
@@ -48,7 +47,6 @@ func newFixture(t *testing.T) *fixture {
 	return &fixture{t, path, db}
 }
 
-// copied adds a clip copied age ago, relative to testNow.
 func (f *fixture) copied(age time.Duration, typ, value string) {
 	f.t.Helper()
 	at := float64(testNow.Add(-age).UnixMilli())/1000 - coreDataEpoch

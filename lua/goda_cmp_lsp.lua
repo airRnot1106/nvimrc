@@ -1,7 +1,3 @@
--- The Neovim side of the goda-cmp source "nvimlsp" (goda-cmp/ext/source/nvimlsp).
--- It talks to the LSP clients attached to a buffer and starts no language server.
--- Answers cross to Go as JSON text: Go keeps the items as the server sent them, for
--- completionItem/resolve.
 local M = {}
 
 local json_options = { luanil = { object = true } }
@@ -67,7 +63,6 @@ local function is_stale(p)
     return not vim.api.nvim_buf_is_valid(p.bufnr) or vim.api.nvim_buf_get_changedtick(p.bufnr) ~= p.tick
 end
 
----Cancels a request. It is safe for a request that already ended.
 ---@param id integer
 function M.cancel(id)
     local p = pending[id]
@@ -83,12 +78,9 @@ function M.cancel(id)
     end
 end
 
----Asks every client attached to the buffer for completion. A request of older text asks nobody,
----and poll() reports it as stale.
 ---@param args { bufnr: integer, tick: integer, lnum: integer, input: string, incomplete: boolean }
 ---@return integer id the id for poll() and cancel(), 0 when there is nothing to wait for
 function M.start(args)
-    -- Go has no id to cancel when it gave up during this call.
     for id, p in pairs(pending) do
         if is_stale(p) then
             M.cancel(id)
@@ -115,7 +107,6 @@ function M.start(args)
     return register(p)
 end
 
----Asks a client to resolve an item. A change of the text cancels this, as the user moved on.
 ---@param args { clientId: integer, bufnr: integer, item: string }
 ---@return integer id the id for poll() and cancel(), 0 when the client is gone
 function M.resolve(args)
@@ -133,8 +124,6 @@ function M.resolve(args)
     return register(p)
 end
 
----Hands over what arrived since the last call. A request whose text changed ends here, since
----goda.vim runs cmp.complete notifications one at a time and the newer one cannot cancel it.
 ---@param id integer
 ---@return string answer "" while nothing is new, otherwise JSON of { done, stale, results }
 function M.poll(id)
@@ -185,7 +174,6 @@ end
 ---@field additionalTextEdits? lsp.TextEdit[]
 ---@field command? lsp.Command
 
----Turns the word the popup inserted into what the server meant to insert.
 ---@param json string JSON of a goda_cmp_lsp.Confirmation
 function M.confirm(json)
     ---@type goda_cmp_lsp.Confirmation
@@ -211,7 +199,6 @@ function M.confirm(json)
     end
 
     vim.cmd "let &undolevels = &undolevels"
-    -- The additional edits refer to the line of the request.
     vim.api.nvim_buf_set_text(c.bufnr, row - 1, word_start, row - 1, col, { c.input:sub(word_start + 1) })
     vim.api.nvim_win_set_cursor(0, { row, #c.input })
     vim.lsp.util.apply_text_edits(edits, c.bufnr, c.offsetEncoding, nil, { keep_cursor = true })
