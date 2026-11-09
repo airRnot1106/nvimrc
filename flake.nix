@@ -51,18 +51,20 @@
           tree-sitter
         ];
 
+        # plugin builds that run `nix build` use the nix that started the app
+        pluginBuildTools =
+          with pkgs;
+          [
+            git
+            gnumake
+            inputs.neovim-nightly-overlay.packages.${system}.default
+            stdenv.cc
+          ]
+          ++ editorTools;
+
         minimal = pkgs.writeShellApplication {
           name = "nvim-minimal";
-          # plugin builds that run `nix build` use the nix that started this app
-          runtimeInputs =
-            with pkgs;
-            [
-              git
-              gnumake
-              inputs.neovim-nightly-overlay.packages.${system}.default
-              stdenv.cc
-            ]
-            ++ editorTools;
+          runtimeInputs = pluginBuildTools;
           text = ''
             root="''${XDG_CACHE_HOME:-$HOME/.cache}/nvimrc-minimal"
             export XDG_CONFIG_HOME="$root/config"
@@ -87,16 +89,32 @@
             exec nvim "$@"
           '';
         };
+
+        lazyUpdate = pkgs.writeShellApplication {
+          name = "lazy-update";
+          runtimeInputs = pluginBuildTools;
+          text = ''
+            nvim -l ${./scripts/lazy-cooldown.lua}
+            nvim --headless "+Lazy! restore" +qa
+          '';
+        };
       in
       {
         nput = {
           inherit (inputs.agent-skills.nput.${system}) skills;
         };
 
-        apps.default = {
-          type = "app";
-          program = pkgs.lib.getExe minimal;
-          meta.description = "Neovim with this config, isolated from the user's XDG directories";
+        apps = {
+          default = {
+            type = "app";
+            program = pkgs.lib.getExe minimal;
+            meta.description = "Neovim with this config, isolated from the user's XDG directories";
+          };
+          lazy-update = {
+            type = "app";
+            program = pkgs.lib.getExe lazyUpdate;
+            meta.description = "Update lazy-lock.json within the 7-day cooldown and restore the plugins";
+          };
         };
 
         devShells =
