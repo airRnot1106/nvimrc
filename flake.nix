@@ -59,6 +59,8 @@
                 with pkgs;
                 [
                   deno
+                  go
+                  gopls
                   lua-language-server
                   mocword.packages.${system}.default
                   ripgrep

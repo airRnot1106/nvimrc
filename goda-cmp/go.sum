@@ -1,0 +1,4 @@
+github.com/Shougo/goda-cmp.vim v0.3.3-0.20261106074959-4f0c30e25dd3 h1:PybvgE7kikswNGzt53XL2TJ/CsZx3cFE260cJvLsOKA=
+github.com/Shougo/goda-cmp.vim v0.3.3-0.20261106074959-4f0c30e25dd3/go.mod h1:p4H0fGlTvf6p7WQIGFI29xplHUMG2RxjiGC8rPBHEcw=
+github.com/Shougo/goda.vim v0.7.2 h1:3H2C8HmrMlrpUy0Jm2eCF04phLLQUnyfpe72Xf/61QM=
+github.com/Shougo/goda.vim v0.7.2/go.mod h1:ohGPksso9XrqpdVRLS3TzoUtz2x3yMT8x+x+MnMpbM8=
