@@ -32,7 +32,7 @@ lane2() { start c.lua; sleep 2; local m; m=$(expr_ 'execute("messages")'); print
   [ "$(expr_ 'luaeval("#vim.tbl_filter(function(p) return not p._.installed end, require([[lazy]]).plugins())")')" = 0 ]; local b=$?; [ $a = 0 ] && [ $b = 0 ]; result 2 $? "startup"; }
 lane3() { printf 'local x = 1\n\n' > "$RUN/proj/l.lua"; BOOT_WAIT=2 start l.lua
   wait_expr 'luaeval("#vim.lsp.get_clients{bufnr=0}")' 1 80; sleep 6; keys G; keys i; sleep 1; type_slow string.up; wait_screen 'upper' 60; result 3 $? "lsp"; }
-lane4() { start c.lua; keys Escape; type_slow ":let g:lane4 = 42"; sleep 1; local p; p=$(expr_ "pum#visible()"); keys Enter; sleep 0.5; [ "$(expr_ "get(g:, 'lane4', 0)")" = 42 ]; result 4 $? "cmdline pum=$p"; }
+lane4() { start c.lua; keys Escape; type_slow ":"; sleep 1; keys Escape; sleep 0.5; type_slow ":ech"; wait_expr "pum#visible()" true 20; local a=$?; keys C-c; keys Escape; type_slow ":let g:lane4 = 42"; keys Enter; sleep 0.5; [ "$(expr_ "get(g:, 'lane4', 0)")" = 42 ]; local b=$?; [ $a = 0 ] && [ $b = 0 ]; result 4 $? "cmdline pum=$a let=$b"; }
 lane5() { start c.lua; keys Space f f; wait_screen 'Smart Open|Files|c\.lua' 40; local a=$?; keys Escape Escape q; sleep 0.5; keys Space f g; sleep 1; type_slow alpha; wait_screen 'alphabetical = 1' 40; local b=$?; keys Escape Escape q; [ $a = 0 ] && [ $b = 0 ]; result 5 $? "telescope"; }
 lane6() { printf 'local t = { a = 1, b = 2 }\nprint(1)\n' > "$RUN/proj/k.lua"; start k.lua; keys Space /; sleep 1; local c; c=$(expr_ 'getline(1)'); [[ "$c" == --* ]]; local a=$?
   keys Space /; sleep 0.5; keys 0 f '{'; sleep 0.2; keys g S; sleep 1; [ "$(expr_ 'line("$")')" -gt 2 ]; local b=$?; [ $a = 0 ] && [ $b = 0 ]; result 6 $? "lazy keys"; }

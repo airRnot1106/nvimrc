@@ -30,7 +30,7 @@ return {
         vim.api.nvim_create_autocmd("FileType", {
             pattern = "aibo-prompt*",
             callback = function(args)
-                vim.fn["ddc#custom#patch_buffer"]("specialBufferCompletion", true)
+                vim.fn["goda_cmp#patch_buffer"] { specialBufferCompletion = true }
                 vim.keymap.set("i", "<C-p>", pum_relative(-1), { buffer = args.buf, silent = true })
                 vim.keymap.set("i", "<C-n>", pum_relative(1), { buffer = args.buf, silent = true })
             end,

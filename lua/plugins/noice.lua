@@ -59,12 +59,6 @@ return {
                 },
                 {
                     filter = {
-                        find = pattern_quote "[ddc-rg] rg exited with non-zero status",
-                    },
-                    opts = { skip = true },
-                },
-                {
-                    filter = {
                         find = "E89:",
                     },
                     opts = { skip = true },
