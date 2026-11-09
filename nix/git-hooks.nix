@@ -17,6 +17,22 @@ in
       enable = true;
       package = pkgs.gitleaks;
     };
+    lazy-cooldown = {
+      enable = true;
+      name = "lazy-cooldown";
+      entry = getExe (
+        pkgs.writeShellApplication {
+          name = "lazy-cooldown-check";
+          runtimeInputs = with pkgs; [
+            git
+            neovim
+          ];
+          text = "nvim -l scripts/lazy-cooldown.lua --check --lock lazy-lock.json";
+        }
+      );
+      files = "^lazy-lock\\.json$";
+      pass_filenames = false;
+    };
     pinact = rec {
       enable = true;
       package = pkgs.pinact;
