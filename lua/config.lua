@@ -92,3 +92,6 @@ vim.opt.mouse = ""
 vim.opt.wildoptions = "fuzzy"
 vim.opt.helplang = "ja"
 vim.opt.updatetime = 500
+
+-- ShaDa read time grows with the per-file marks and change lists it keeps
+vim.o.shada = vim.o.shada:gsub("'%d+", "'50")
