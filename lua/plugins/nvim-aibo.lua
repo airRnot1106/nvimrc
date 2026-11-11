@@ -9,7 +9,10 @@ return {
         { "<Leader>ar", mode = { "n" } },
     },
     config = function()
-        require("aibo").setup()
+        require("aibo").setup {
+            prompt_blend_insert = 0,
+            prompt_blend_normal = 0,
+        }
 
         local function pum_relative(delta)
             return function()
