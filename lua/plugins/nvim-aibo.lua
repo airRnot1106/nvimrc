@@ -2,6 +2,7 @@ return {
     name = "nvim-aibo",
     "lambdalisue/nvim-aibo",
     cmd = { "Aibo" },
+    dependencies = { "goda-cmp" },
     keys = {
         { "<Leader>ac", mode = { "n" } },
         { "<Leader>ad", mode = { "n" } },
