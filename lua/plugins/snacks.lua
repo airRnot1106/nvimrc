@@ -50,7 +50,6 @@ return {
 
         local snacks = require "snacks"
         snacks.setup {
-            input = { enabled = true },
             lazygit = {
                 enabled = true,
                 config = {
@@ -62,10 +61,14 @@ return {
                     },
                 },
             },
-            picker = { enabled = true },
         }
-        vim.ui.input = snacks.input.input
-        vim.ui.select = snacks.picker.select
+        -- enabling input and picker in setup loads both modules at startup
+        vim.ui.input = function(...)
+            return snacks.input.input(...)
+        end
+        vim.ui.select = function(...)
+            return snacks.picker.select(...)
+        end
 
         vim.keymap.set("n", "<Leader>lg", function()
             snacks.lazygit.open()
