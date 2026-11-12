@@ -28,6 +28,16 @@ return {
                 lualine_b = { "branch", "diff", "diagnostics" },
                 lualine_c = { "filename" },
                 lualine_x = {
+                    -- vim-wakatime runs lualine.setup again unless it finds this component
+                    {
+                        function()
+                            return require("wakatime").statusline()
+                        end,
+                        cond = function()
+                            return require("wakatime").statusline() ~= ""
+                        end,
+                        __wakatime_statusline = true,
+                    },
                     -- selene: allow(mixed_table)
                     {
                         require("noice").api.status.mode.get,
