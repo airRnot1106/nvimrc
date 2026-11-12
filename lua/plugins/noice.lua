@@ -24,6 +24,7 @@ return {
         end
 
         require("noice").setup {
+            health = { checker = false },
             views = {
                 cmdline_popup = {
                     position = {
