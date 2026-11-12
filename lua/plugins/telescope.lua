@@ -1,3 +1,15 @@
+local function builtin(name)
+    return function()
+        require("telescope.builtin")[name]()
+    end
+end
+
+local function extension(ext, name)
+    return function()
+        require("telescope").extensions[ext][name]()
+    end
+end
+
 return {
     name = "telescope",
     "nvim-telescope/telescope.nvim",
@@ -10,7 +22,23 @@ return {
         "telescope-fzf-native",
         "telescope-maccy",
     },
-    event = { "VimEnter" },
+    keys = {
+        { "<Leader>fb", builtin "buffers", desc = "Telescope buffers" },
+        { "<Leader>fc", builtin "command_history", desc = "Telescope command history" },
+        { "<Leader>fd", builtin "diagnostics", desc = "Telescope diagnostics" },
+        { "<Leader>ff", extension("smart_open", "smart_open"), desc = "Telescope smart open" },
+        { "<Leader>fg", builtin "live_grep", desc = "Telescope live grep" },
+        { "<Leader>fh", builtin "help_tags", desc = "Telescope help tags" },
+        { "<Leader>fk", builtin "keymaps", desc = "Telescope keymaps" },
+        { "<Leader>fld", builtin "lsp_definitions", desc = "Telescope LSP definitions" },
+        { "<Leader>fli", builtin "lsp_implementations", desc = "Telescope LSP implementations" },
+        { "<Leader>flr", builtin "lsp_references", desc = "Telescope LSP references" },
+        { "<Leader>flt", builtin "lsp_type_definitions", desc = "Telescope LSP type definitions" },
+        { "<Leader>fm", extension("maccy", "maccy"), desc = "Telescope maccy" },
+        { "<Leader>fn", extension("notify", "notify"), desc = "Telescope notify" },
+        { "<Leader>fp", builtin "pickers", desc = "Telescope pickers" },
+        { "<Leader>fr", builtin "resume", desc = "Telescope resume" },
+    },
     init = function()
         vim.g.sqlite_clib_path = "/usr/lib/libsqlite3.dylib"
     end,
@@ -50,24 +78,5 @@ return {
         load_extension "maccy"
         load_extension "notify"
         load_extension "smart_open"
-
-        -- register keymaps
-        local builtin = require "telescope.builtin"
-        local extensions = require("telescope").extensions
-        vim.keymap.set("n", "<Leader>fb", builtin.buffers, { desc = "Telescope buffers" })
-        vim.keymap.set("n", "<Leader>fc", builtin.command_history, { desc = "Telescope command history" })
-        vim.keymap.set("n", "<Leader>fd", builtin.diagnostics, { desc = "Telescope diagnostics" })
-        vim.keymap.set("n", "<Leader>ff", extensions.smart_open.smart_open, { desc = "Telescope smart open" })
-        vim.keymap.set("n", "<Leader>fg", builtin.live_grep, { desc = "Telescope live grep" })
-        vim.keymap.set("n", "<Leader>fh", builtin.help_tags, { desc = "Telescope help tags" })
-        vim.keymap.set("n", "<Leader>fk", builtin.keymaps, { desc = "Telescope keymaps" })
-        vim.keymap.set("n", "<Leader>fld", builtin.lsp_definitions, { desc = "Telescope LSP definitions" })
-        vim.keymap.set("n", "<Leader>fli", builtin.lsp_implementations, { desc = "Telescope LSP implementations" })
-        vim.keymap.set("n", "<Leader>flr", builtin.lsp_references, { desc = "Telescope LSP references" })
-        vim.keymap.set("n", "<Leader>flt", builtin.lsp_type_definitions, { desc = "Telescope LSP type definitions" })
-        vim.keymap.set("n", "<Leader>fm", extensions.maccy.maccy, { desc = "Telescope maccy" })
-        vim.keymap.set("n", "<Leader>fn", extensions.notify.notify, { desc = "Telescope notify" })
-        vim.keymap.set("n", "<Leader>fp", builtin.pickers, { desc = "Telescope pickers" })
-        vim.keymap.set("n", "<Leader>fr", builtin.resume, { desc = "Telescope resume" })
     end,
 }
