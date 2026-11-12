@@ -2,7 +2,6 @@
   "barbar": { "branch": "master", "commit": "337ecfadb8bf005050990bf2f624dc4fc828dabd" },
   "conform": { "branch": "master", "commit": "619363c30309d29ffa631e67c8183f2a72caa373" },
   "copilot": { "branch": "master", "commit": "d521d3959f81f4fa58870ed329754f1dd5057511" },
-  "fidget": { "branch": "main", "commit": "6f793b2bcd2d35e201c09520f698bb763220908a" },
   "gfm": { "branch": "main", "commit": "8fc2a02fda8e0a6f7e74feb16cc0aa9fa6c7b7e8" },
   "gitsigns": { "branch": "main", "commit": "31d6fb2d618bca1482b9f274751ead5f03461408" },
   "gks": { "branch": "main", "commit": "a6cd30969eda2ad48342d782d2ab385321afcd4e" },
