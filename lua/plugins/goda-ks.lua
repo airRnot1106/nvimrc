@@ -1,6 +1,6 @@
 return {
-    name = "gks",
-    "airRnot1106/gks.vim",
+    name = "goda-ks",
+    "airRnot1106/goda-ks.vim",
     dependencies = { "goda.vim", "kensaku-search" },
     build = "nix build",
     event = { "CmdlineEnter", "CmdlineChanged" },

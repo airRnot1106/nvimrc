@@ -1,7 +1,7 @@
 return {
-    name = "gfm",
-    "airRnot1106/gfm.vim",
-    dependencies = { "goda.vim", "gks" },
+    name = "goda-fm",
+    "airRnot1106/goda-fm.vim",
+    dependencies = { "goda.vim", "goda-ks" },
     build = "nix build",
     cmd = { "FuzzyMotion" },
     keys = { { "<Leader>;", mode = { "n", "x" } } },
