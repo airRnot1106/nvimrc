@@ -13,13 +13,13 @@ import (
 	"github.com/Shougo/goda-cmp.vim/ext/source/mocword"
 	"github.com/Shougo/goda-cmp.vim/ext/ui/pum"
 
+	"github.com/airRnot1106/goda-cmp-ext-copilot.vim/ext/source/copilot"
 	"github.com/airRnot1106/goda-cmp-ext-maccy.vim/ext/source/maccy"
 	"github.com/airRnot1106/goda-cmp-ext-nvimlsp.vim/ext/source/nvimlsp"
 	"github.com/delphinus/goda-cmp-ext-fuzzy.vim/ext/filter/matcherfuzzy"
 	"github.com/delphinus/goda-cmp-ext-fuzzy.vim/ext/filter/matchernottyped"
 	"github.com/delphinus/goda-cmp-ext-fuzzy.vim/ext/filter/sorterfuzzy"
 	"github.com/delphinus/goda-cmp-ext-fuzzy.vim/ext/filter/sorterglobal"
-	"goda-cmp-config/ext/source/copilot"
 	"goda-cmp-config/ext/source/rg"
 )
 
