@@ -5,11 +5,11 @@ go 1.26.0
 require (
 	github.com/Shougo/goda-cmp.vim v0.3.3-0.20261106074959-4f0c30e25dd3
 	github.com/Shougo/goda.vim v0.7.2
-	github.com/airRnot1106/goda-cmp-source-maccy v0.0.0-20261109135354-6d1fa6c38b98
-	github.com/airRnot1106/goda-cmp-source-nvimlsp v0.0.0-20261109141259-0181f569c452
 )
 
 require (
+	github.com/airRnot1106/goda-cmp-ext-maccy.vim v0.0.0-20261113131801-3d3906f530f0
+	github.com/airRnot1106/goda-cmp-ext-nvimlsp.vim v0.0.0-20261113131610-1579687cc449
 	github.com/dustin/go-humanize v1.1.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/mattn/go-isatty v0.0.24 // indirect

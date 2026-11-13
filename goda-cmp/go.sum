@@ -2,10 +2,10 @@ github.com/Shougo/goda-cmp.vim v0.3.3-0.20261106074959-4f0c30e25dd3 h1:PybvgE7ki
 github.com/Shougo/goda-cmp.vim v0.3.3-0.20261106074959-4f0c30e25dd3/go.mod h1:p4H0fGlTvf6p7WQIGFI29xplHUMG2RxjiGC8rPBHEcw=
 github.com/Shougo/goda.vim v0.7.2 h1:3H2C8HmrMlrpUy0Jm2eCF04phLLQUnyfpe72Xf/61QM=
 github.com/Shougo/goda.vim v0.7.2/go.mod h1:ohGPksso9XrqpdVRLS3TzoUtz2x3yMT8x+x+MnMpbM8=
-github.com/airRnot1106/goda-cmp-source-maccy v0.0.0-20261109135354-6d1fa6c38b98 h1:/ETq7F0Iwhmwh+46QmvR0kCosmS0nWUSpV40Unpmfvk=
-github.com/airRnot1106/goda-cmp-source-maccy v0.0.0-20261109135354-6d1fa6c38b98/go.mod h1:AN1TKGQoqAmBxCMeZTGlAl0JWY3SY/8ZonflZPHOizM=
-github.com/airRnot1106/goda-cmp-source-nvimlsp v0.0.0-20261109141259-0181f569c452 h1:oTPPWEnjg7OCAqcPXdIQH81EeiYP+Bt17TAZNkbey/M=
-github.com/airRnot1106/goda-cmp-source-nvimlsp v0.0.0-20261109141259-0181f569c452/go.mod h1:MexepZ8EHSYO/aEA+0xtjdfrE4kOq+nXxqq3bkTgFsI=
+github.com/airRnot1106/goda-cmp-ext-maccy.vim v0.0.0-20261113131801-3d3906f530f0 h1:rNB8iHEN1xP4zLoEMBmDvG4pRO/8fgBB9UcsF4mZTjU=
+github.com/airRnot1106/goda-cmp-ext-maccy.vim v0.0.0-20261113131801-3d3906f530f0/go.mod h1:4EHfrpeUKbRSK/3dPGZyVfWIQ2rVv3n7sppMQwt1aUU=
+github.com/airRnot1106/goda-cmp-ext-nvimlsp.vim v0.0.0-20261113131610-1579687cc449 h1:DdX7VufGlGLd8yIJecH7JUcLSlGTZeJW7SdnoZVEgFQ=
+github.com/airRnot1106/goda-cmp-ext-nvimlsp.vim v0.0.0-20261113131610-1579687cc449/go.mod h1:YWXdewpF/ubdv+ZTkoN96rU749d9bBgye+aLbjVoKic=
 github.com/dustin/go-humanize v1.1.0 h1:dbKTrvD0klcbBV/h4AWJdMuZogJACoMlvWIWZ5b2xWg=
 github.com/dustin/go-humanize v1.1.0/go.mod h1:hc1CvRkJMsgxqjmjMQF3QNRAZBwY8AXBAzKYoSX9sFI=
 github.com/google/pprof v0.0.0-20261016150608-1facf8f91b50 h1:PlNWJRxu5APSV0pWqfIsZ0qt9OOGHSWfZQ4zvx+WgWs=

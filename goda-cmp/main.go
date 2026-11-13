@@ -11,8 +11,8 @@ import (
 	"github.com/Shougo/goda-cmp.vim/ext/source/mocword"
 	"github.com/Shougo/goda-cmp.vim/ext/ui/pum"
 
-	"github.com/airRnot1106/goda-cmp-source-maccy/ext/source/maccy"
-	"github.com/airRnot1106/goda-cmp-source-nvimlsp/ext/source/nvimlsp"
+	"github.com/airRnot1106/goda-cmp-ext-maccy.vim/ext/source/maccy"
+	"github.com/airRnot1106/goda-cmp-ext-nvimlsp.vim/ext/source/nvimlsp"
 	"goda-cmp-config/ext/filter/fuzzy"
 	"goda-cmp-config/ext/source/copilot"
 	"goda-cmp-config/ext/source/rg"
