@@ -1,6 +1,8 @@
 package main
 
 import (
+	"context"
+
 	"github.com/Shougo/goda-cmp.vim/cmp"
 	"github.com/Shougo/goda-cmp.vim/ext/filter/sortercmdlinehistory"
 	"github.com/Shougo/goda-cmp.vim/ext/source/around"
@@ -13,12 +15,27 @@ import (
 
 	"github.com/airRnot1106/goda-cmp-ext-maccy.vim/ext/source/maccy"
 	"github.com/airRnot1106/goda-cmp-ext-nvimlsp.vim/ext/source/nvimlsp"
-	"goda-cmp-config/ext/filter/fuzzy"
+	"github.com/delphinus/goda-cmp-ext-fuzzy.vim/ext/filter/matcherfuzzy"
+	"github.com/delphinus/goda-cmp-ext-fuzzy.vim/ext/filter/matchernottyped"
+	"github.com/delphinus/goda-cmp-ext-fuzzy.vim/ext/filter/sorterfuzzy"
+	"github.com/delphinus/goda-cmp-ext-fuzzy.vim/ext/filter/sorterglobal"
 	"goda-cmp-config/ext/source/copilot"
 	"goda-cmp-config/ext/source/rg"
 )
 
 const pathKeywordPattern = `[a-zA-Z0-9_.~-]*/[a-zA-Z0-9_.~/-]*`
+
+// insertOnly passes the candidates of the command line through unchanged, so that sortercmdlinehistory keeps the order of the history.
+type insertOnly struct{ inner cmp.Filter }
+
+func (f insertOnly) Name() string { return f.inner.Name() }
+
+func (f insertOnly) Filter(ctx context.Context, in cmp.FilterInput) ([]cmp.Item, error) {
+	if in.Context != nil && in.Context.Mode == "c" {
+		return in.Items, nil
+	}
+	return f.inner.Filter(ctx, in)
+}
 
 func main() {
 	b := cmp.New()
@@ -50,9 +67,17 @@ func main() {
 	b.AddSource(cmdline.New())
 	b.AddSource(cmdlinehistory.New(cmdlinehistory.Params{}))
 
-	b.AddFilter(fuzzy.NewMatcher(fuzzy.MatcherParams{}))
-	b.AddFilter(fuzzy.NewSorter())
-	b.AddFilter(fuzzy.NewConverter(fuzzy.ConverterParams{}))
+	b.AddFilter(matcherfuzzy.New())
+	b.AddFilter(sorterfuzzy.New())
+	b.AddFilter(matchernottyped.New())
+	// maccy and copilot have no matcher and score 0, so they need offsets above any match score to stay on top.
+	b.AddFilter(insertOnly{sorterglobal.New(map[string]int{
+		"maccy":   2000,
+		"copilot": 1000,
+		"nvimlsp": 50,
+		// The predictions of mocword match the head of the typed text and would otherwise outscore the words of the buffer.
+		"mocword": -100,
+	})})
 	b.AddFilter(sortercmdlinehistory.New(sortercmdlinehistory.Params{}))
 
 	b.PatchGlobal(cmp.Config{
@@ -66,7 +91,8 @@ func main() {
 			"TextChangedI",
 			"TextChangedP",
 		},
-		Sources: []string{"maccy", "copilot", "nvimlsp", "around", "buffer", "rg", "mocword", "file"},
+		Sources:     []string{"maccy", "copilot", "nvimlsp", "around", "buffer", "rg", "mocword", "file"},
+		PostFilters: []string{"sorterglobal"},
 		CmdlineSources: map[string][]string{
 			":": {"cmdline", "cmdlinehistory", "rg", "file"},
 		},
@@ -74,12 +100,17 @@ func main() {
 			"_": {
 				Matchers:              []string{"matcherfuzzy"},
 				Sorters:               []string{"sorterfuzzy"},
-				Converters:            []string{"converterfuzzy"},
 				MinAutoCompleteLength: new(2),
 				MaxItems:              new(500),
 			},
-			"around": {Mark: "[A]"},
-			"buffer": {Mark: "[B]"},
+			"around": {
+				Mark:     "[A]",
+				Matchers: []string{"matcherfuzzy", "matchernottyped"},
+			},
+			"buffer": {
+				Mark:     "[B]",
+				Matchers: []string{"matcherfuzzy", "matchernottyped"},
+			},
 			"cmdline": {
 				Mark:                  "[C]",
 				MinAutoCompleteLength: new(1),
@@ -121,6 +152,7 @@ func main() {
 			},
 			"mocword": {
 				Mark:                  "[M]",
+				Matchers:              []string{"matcherfuzzy", "matchernottyped"},
 				MaxItems:              new(8),
 				IsVolatile:            new(true),
 				KeywordPattern:        `[a-zA-Z]+(?: +[a-zA-Z]*)*`,
