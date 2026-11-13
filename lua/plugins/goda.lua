@@ -4,7 +4,7 @@ return {
     lazy = true,
     init = function()
         local root = require("lazy.core.config").options.root
-        vim.g["goda#workspace"] = { root .. "/goda.vim", root .. "/goda-cmp" }
+        vim.g["goda#workspace"] = { root .. "/goda.vim", root .. "/goda-cmp", root .. "/goda-cmp-ui-pum" }
     end,
     build = function()
         local plugin = require("lazy.core.config").plugins["goda-cmp"]

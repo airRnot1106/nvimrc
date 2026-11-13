@@ -172,6 +172,7 @@ func TestRipgrepTakesTheTypedTextLiterally(t *testing.T) {
 	if _, err := p.Handlers()["complete"](context.Background(), h, []any{request}); err != nil {
 		t.Fatal(err)
 	}
+	cmptest.Wait(p)
 	if len(shown) != 1 || shown[0].Word != "alp.habet" {
 		t.Errorf("shown = %+v", shown)
 	}

@@ -1,7 +1,7 @@
 return {
     name = "goda-cmp",
     "Shougo/goda-cmp.vim",
-    dependencies = { "goda.vim", "nvim-autopairs", "pum" },
+    dependencies = { "goda.vim", "nvim-autopairs", "pum", "goda-cmp-ui-pum" },
     event = { "CmdlineChanged", "CmdlineEnter", "InsertEnter", "TextChangedI", "TextChangedP" },
     build = ":call goda_cmp#build()",
     config = function()

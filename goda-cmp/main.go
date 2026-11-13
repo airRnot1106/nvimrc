@@ -3,15 +3,15 @@ package main
 import (
 	"context"
 
+	"github.com/Shougo/goda-cmp-ext/ext/filter/sortercmdlinehistory"
+	"github.com/Shougo/goda-cmp-ext/ext/source/around"
+	"github.com/Shougo/goda-cmp-ext/ext/source/buffer"
+	"github.com/Shougo/goda-cmp-ext/ext/source/cmdline"
+	"github.com/Shougo/goda-cmp-ext/ext/source/cmdlinehistory"
+	"github.com/Shougo/goda-cmp-ext/ext/source/file"
+	"github.com/Shougo/goda-cmp-ext/ext/source/mocword"
+	"github.com/Shougo/goda-cmp-ui-pum.vim/ext/ui/pum"
 	"github.com/Shougo/goda-cmp.vim/cmp"
-	"github.com/Shougo/goda-cmp.vim/ext/filter/sortercmdlinehistory"
-	"github.com/Shougo/goda-cmp.vim/ext/source/around"
-	"github.com/Shougo/goda-cmp.vim/ext/source/buffer"
-	"github.com/Shougo/goda-cmp.vim/ext/source/cmdline"
-	"github.com/Shougo/goda-cmp.vim/ext/source/cmdlinehistory"
-	"github.com/Shougo/goda-cmp.vim/ext/source/file"
-	"github.com/Shougo/goda-cmp.vim/ext/source/mocword"
-	"github.com/Shougo/goda-cmp.vim/ext/ui/pum"
 
 	"github.com/airRnot1106/goda-cmp-ext-copilot.vim/ext/source/copilot"
 	"github.com/airRnot1106/goda-cmp-ext-maccy.vim/ext/source/maccy"
