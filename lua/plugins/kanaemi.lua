@@ -15,13 +15,22 @@ return {
             vim.cmd.redrawstatus()
         end)
 
+        local group = vim.api.nvim_create_augroup("kanaemi", {})
+        local function set_abc()
+            pcall(vim.fn["kanaemi#set_mode"], "abc")
+        end
+
         vim.api.nvim_create_autocmd("InsertLeave", {
-            group = vim.api.nvim_create_augroup("kanaemi", {}),
+            group = group,
             pattern = "*",
-            callback = function()
-                pcall(vim.fn["kanaemi#set_mode"], "abc")
-            end,
+            callback = set_abc,
             desc = "Switch Kanaemi back to ABC mode when leaving insert mode",
+        })
+        vim.api.nvim_create_autocmd("CmdlineLeave", {
+            group = group,
+            pattern = { "/", "?" },
+            callback = set_abc,
+            desc = "Switch Kanaemi back to ABC mode when leaving search",
         })
     end,
 }
