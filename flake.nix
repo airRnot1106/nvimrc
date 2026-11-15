@@ -1,10 +1,5 @@
 {
   inputs = {
-    agent-skills = {
-      url = "path:./nix/agent-skills";
-      inputs.flake-utils.follows = "flake-utils";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     flake-utils.url = "github:numtide/flake-utils";
     git-hooks = {
       url = "github:cachix/git-hooks.nix";
@@ -22,7 +17,6 @@
   outputs =
     {
       self,
-      agent-skills,
       flake-utils,
       git-hooks,
       nixpkgs,
@@ -97,10 +91,6 @@
         };
       in
       {
-        nput = {
-          inherit (inputs.agent-skills.nput.${system}) skills;
-        };
-
         apps = {
           default = {
             type = "app";
@@ -120,9 +110,6 @@
           in
           {
             default = pkgs.mkShell {
-              inputsFrom = [
-                agent-skills.devShells.${system}.default
-              ];
               inherit shellHook;
               packages = editorTools ++ enabledPackages;
             };
