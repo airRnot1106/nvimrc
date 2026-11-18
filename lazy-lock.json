@@ -8,6 +8,7 @@
   "goda-fm": { "branch": "main", "commit": "616f0985d2f581ce8959c268cb58b5d0a4496780" },
   "goda-ks": { "branch": "main", "commit": "177465c4c1b3db12121dd47f9812dc90f27038ab" },
   "goda-mp": { "branch": "main", "commit": "dce68b2c64fcc04e9635b0b6e266e279c0901b31" },
+  "goda-wakachi": { "branch": "main", "commit": "cad28255e879f46f82f73bd9a9b919062d2630e4" },
   "goda.vim": { "branch": "main", "commit": "92c436606106fb0829c29c22271b595aad72c142" },
   "kanaemi.vim": { "branch": "main", "commit": "ba4cdf46021a7e225d929acb58204fbbd8da4424" },
   "kensaku-search": { "branch": "main", "commit": "9568c2b174a9cf31bd9922c0a991117f4dd4f0c3" },
