@@ -1,6 +1,7 @@
 return {
     name = "nvim-aibo",
-    "lambdalisue/nvim-aibo",
+    "airRnot1106/nvim-aibo",
+    branch = "feat/hermes-agent",
     cmd = { "Aibo" },
     dependencies = { "goda-cmp" },
     keys = {
@@ -43,19 +44,19 @@ return {
         vim.keymap.set(
             "n",
             "<Leader>aq",
-            '<Cmd>Aibo -opener="botright vsplit" claude --permission-mode auto<CR>',
+            '<Cmd>Aibo -opener="botright vsplit" hermes<CR>',
             { noremap = true, silent = true }
         )
         vim.keymap.set(
             "n",
             "<Leader>ac",
-            '<Cmd>Aibo -opener="botright vsplit" claude -c --permission-mode auto<CR>',
+            '<Cmd>Aibo -opener="botright vsplit" hermes -c<CR>',
             { noremap = true, silent = true }
         )
         vim.keymap.set(
             "n",
             "<Leader>ar",
-            '<Cmd>Aibo -opener="botright vsplit" claude -r --permission-mode auto<CR>',
+            '<Cmd>Aibo -opener="botright vsplit" hermes sessions browse<CR>',
             { noremap = true, silent = true }
         )
         vim.keymap.set("n", "<Leader>as", "<Cmd>AiboSend -input<CR>", { noremap = true, silent = true })
