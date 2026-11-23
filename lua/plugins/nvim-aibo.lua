@@ -40,22 +40,28 @@ return {
             end,
         })
 
+        -- herdr looks for Claude in the pane's foreground process, so we have Claude inside nvim report its status through hooks
+        local claude = "claude"
+        if vim.env.HERDR_PANE_ID then
+            claude = claude .. " --settings " .. vim.fn.expand "~/.claude/herdr-nvim.json"
+        end
+
         vim.keymap.set(
             "n",
             "<Leader>aq",
-            '<Cmd>Aibo -opener="botright vsplit" claude --permission-mode auto<CR>',
+            '<Cmd>Aibo -opener="botright vsplit" ' .. claude .. " --permission-mode auto<CR>",
             { noremap = true, silent = true }
         )
         vim.keymap.set(
             "n",
             "<Leader>ac",
-            '<Cmd>Aibo -opener="botright vsplit" claude -c --permission-mode auto<CR>',
+            '<Cmd>Aibo -opener="botright vsplit" ' .. claude .. " -c --permission-mode auto<CR>",
             { noremap = true, silent = true }
         )
         vim.keymap.set(
             "n",
             "<Leader>ar",
-            '<Cmd>Aibo -opener="botright vsplit" claude -r --permission-mode auto<CR>',
+            '<Cmd>Aibo -opener="botright vsplit" ' .. claude .. " -r --permission-mode auto<CR>",
             { noremap = true, silent = true }
         )
         vim.keymap.set("n", "<Leader>as", "<Cmd>AiboSend -input<CR>", { noremap = true, silent = true })
