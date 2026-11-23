@@ -28,7 +28,7 @@
   "noice.nvim": { "branch": "main", "commit": "7bfd942445fb63089b59f97ca487d605e715f155" },
   "nui": { "branch": "main", "commit": "de740991c12411b663994b2860f1a4fd0937c130" },
   "nui.nvim": { "branch": "main", "commit": "10fc361835c856ba4233ef5ea135b919bf3dce97" },
-  "nvim-aibo": { "branch": "feat/hermes-agent", "commit": "ccb401403202c6f2a2775220fb612a4e783d5423" },
+  "nvim-aibo": { "branch": "main", "commit": "0505c2ef5471d43fb48df5823ede9705b9c9e73e" },
   "nvim-autopairs": { "branch": "master", "commit": "7b9923abad60b903ece7c52940e1321d39eccc79" },
   "nvim-lint": { "branch": "master", "commit": "a219b2c9e5b4765e5c845aba119dad55806fcaf1" },
   "nvim-mado-scratch": { "branch": "feature/edit-open-method", "commit": "e9a9894f4f20717e35064ea765b27b9d99eb4f9d" },
