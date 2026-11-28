@@ -2,8 +2,8 @@ github.com/Shougo/goda-cmp-ext v0.1.4 h1:r8vQvkL3xLZjIDADK2RKlZBo3cKpr8p1ukQkcwi
 github.com/Shougo/goda-cmp-ext v0.1.4/go.mod h1:GZXca8m2hwqoltp6El7rA/n9OdHabLC5jEf2DhXcWgw=
 github.com/Shougo/goda-cmp-ui-pum.vim v0.1.0 h1:LjHdZYkyK+60KuZQVQTyv/6ALNVeGv4NDlgnj6mWITo=
 github.com/Shougo/goda-cmp-ui-pum.vim v0.1.0/go.mod h1:wtp0SCCOE43P6wB1HYrSFvkvjFZF25m5DRqBMVS07Ns=
-github.com/Shougo/goda-cmp.vim v0.6.0 h1:rNqhASptuVqsF3Xnqw/K3aF59V0k5ng7PU+FsIsYvlc=
-github.com/Shougo/goda-cmp.vim v0.6.0/go.mod h1:4gpSkupNQFGSpyehYY8d7K4Og0iKxS4Q/gDWS5GV3PM=
+github.com/Shougo/goda-cmp.vim v0.8.0 h1:rveT+wvMf3Ir9xLevqmPPREN4vdGN9mcTyv5/XWRmBc=
+github.com/Shougo/goda-cmp.vim v0.8.0/go.mod h1:TVErggvuoi7a075y9AeTFh32DrIW5ZDtWLZzUHqBIk0=
 github.com/Shougo/goda.vim v0.9.0 h1:FVqf1RkS6XgUbU6WFE7LAvLGzA2ETTdQDybXAMRgHqo=
 github.com/Shougo/goda.vim v0.9.0/go.mod h1:ohGPksso9XrqpdVRLS3TzoUtz2x3yMT8x+x+MnMpbM8=
 github.com/airRnot1106/goda-cmp-ext-copilot.vim v0.0.0-20261113142212-45ccbf080520 h1:lDiERD83KPsZVPGJ6HSGWDM7ft6I5ex7F9wxQI/sAFU=
